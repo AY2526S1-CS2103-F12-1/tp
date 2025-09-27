@@ -3,6 +3,7 @@
   "pages": [
     {
       "src": "AboutUs.md",
+      "title": "About Us",
       "headings": {
         "about-us": "About Us",
         "project-team": "Project team",
@@ -144,6 +145,7 @@
     },
     {
       "src": "team/dannyoncode.md",
+      "title": "Danny's Project Portfolio Page",
       "headings": {
         "project-addressbook-level-3": "Project: AddressBook Level 3"
       },
@@ -151,6 +153,7 @@
     },
     {
       "src": "team/kahkoii.md",
+      "title": "Kah Ho's Project Portfolio Page",
       "headings": {
         "project-addressbook-level-3": "Project: AddressBook Level 3"
       },
@@ -166,6 +169,7 @@
     },
     {
       "src": "team/z-puyu.md",
+      "title": "Puyu's Project Portfolio Page",
       "headings": {
         "project-addressbook-level-3": "Project: AddressBook Level 3"
       },
