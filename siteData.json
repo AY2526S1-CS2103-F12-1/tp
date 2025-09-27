@@ -8,7 +8,7 @@
         "project-team": "Project team",
         "caleb-goh": "Caleb Goh",
         "danny-chan": "Danny Chan",
-        "johnny-doe": "Johnny Doe",
+        "swee-kah-ho": "Swee Kah Ho",
         "xu-yong-lin": "Xu Yong Lin",
         "zhang-puyu": "Zhang Puyu"
       },
@@ -144,6 +144,13 @@
     },
     {
       "src": "team/dannyoncode.md",
+      "headings": {
+        "project-addressbook-level-3": "Project: AddressBook Level 3"
+      },
+      "headingKeywords": {}
+    },
+    {
+      "src": "team/kahkoii.md",
       "headings": {
         "project-addressbook-level-3": "Project: AddressBook Level 3"
       },
