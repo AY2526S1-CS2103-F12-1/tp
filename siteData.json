@@ -3,12 +3,11 @@
   "pages": [
     {
       "src": "AboutUs.md",
-      "title": "About Us",
       "headings": {
         "about-us": "About Us",
         "project-team": "Project team",
-        "john-doe": "John Doe",
-        "jane-doe": "Jane Doe",
+        "caleb-goh": "Caleb Goh",
+        "danny-chan": "Danny Chan",
         "johnny-doe": "Johnny Doe",
         "jean-doe": "Jean Doe",
         "james-doe": "James Doe"
@@ -136,8 +135,15 @@
       "headingKeywords": {}
     },
     {
-      "src": "team/johndoe.md",
-      "title": "John Doe's Project Portfolio Page",
+      "src": "team/calebanana.md",
+      "title": "Caleb's Project Portfolio Page",
+      "headings": {
+        "project-addressbook-level-3": "Project: AddressBook Level 3"
+      },
+      "headingKeywords": {}
+    },
+    {
+      "src": "team/dannyoncode.md",
       "headings": {
         "project-addressbook-level-3": "Project: AddressBook Level 3"
       },
