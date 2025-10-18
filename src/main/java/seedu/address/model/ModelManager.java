@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.audit.AuditLog;
 import seedu.address.model.person.Person;
 
 /**
@@ -154,4 +155,14 @@ public class ModelManager implements Model {
                 && filteredPersons.equals(otherModelManager.filteredPersons);
     }
 
+    //=========== Audit Log Entry  =============================================================
+    @Override
+    public void addAuditEntry(String action, String details) {
+        addressBook.addAuditEntry(action, details);
+    }
+
+    @Override
+    public AuditLog getAuditLog() {
+        return addressBook.getAuditLog();
+    }
 }
