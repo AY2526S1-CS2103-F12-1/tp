@@ -1,0 +1,42 @@
+package seedu.henri.logic.parser;
+
+import static seedu.henri.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.henri.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.henri.logic.parser.CommandParserTestUtil.assertParseSuccess;
+
+import org.junit.jupiter.api.Test;
+
+import seedu.henri.logic.Messages;
+import seedu.henri.logic.commands.SetSalaryCommand;
+
+class SetSalaryCommandParserTest {
+    private SetSalaryCommandParser parser = new SetSalaryCommandParser();
+
+    @Test
+    void parse_validFormat_success() {
+        assertParseSuccess(parser, "E12345 100", new SetSalaryCommand("E12345", 10000));
+        assertParseSuccess(parser, "E12345 100.45", new SetSalaryCommand("E12345", 10045));
+        assertParseSuccess(parser, "E12345 100.3", new SetSalaryCommand("E12345", 10030));
+        assertParseSuccess(parser, "E12345 100.03", new SetSalaryCommand("E12345", 10003));
+        assertParseSuccess(parser, "E12345 100.126", new SetSalaryCommand("E12345", 10012));
+    }
+
+    @Test
+    void parse_invalidFormat_failure() {
+        assertParseFailure(parser, "E12345",
+                           String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetSalaryCommand.MESSAGE_USAGE));
+
+        assertParseFailure(parser, "E12345,100",
+                           String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetSalaryCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    void parse_invalidId_failure() {
+        assertParseFailure(parser, "12345 100", Messages.MESSAGE_INVALID_PERSON_ID);
+    }
+
+    @Test
+    void parse_invalidSalary_failure() {
+        assertParseFailure(parser, "E12345 -100", Messages.MESSAGE_INVALID_SALARY);
+    }
+}
