@@ -123,6 +123,8 @@
         "deleting-a-team-delete-team": "Deleting a team delete-team",
         "locating-persons-by-name-view": "Locating persons by name: view",
         "deleting-a-person-delete": "Deleting a person : delete",
+        "setting-a-person-s-salary-set-salary": "Setting a person's salary: set-salary",
+        "sorting-persons-sort": "Sorting persons: sort",
         "clearing-all-entries-clear": "Clearing all entries : clear",
         "importing-contacts-from-data-file-import": "Importing contacts from data file : import",
         "viewing-of-audit-logs-audit": "Viewing of audit logs : audit",
