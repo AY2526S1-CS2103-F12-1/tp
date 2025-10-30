@@ -35,7 +35,7 @@ public class AddToTeamCommandTest {
         assertEquals(String.format(AddToTeamCommand.MESSAGE_SUCCESS, "E0001", "T0001"),
                 result.getFeedbackToUser());
 
-        assertTrue(model.getAddressBook().getTeamList().stream()
+        assertTrue(model.getHenri().getTeamList().stream()
                 .filter(t -> "T0001".equals(t.getId()))
                 .findFirst()
                 .map(t -> t.getMembers().contains("E0001"))

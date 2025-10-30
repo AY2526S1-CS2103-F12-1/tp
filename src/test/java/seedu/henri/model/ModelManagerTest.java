@@ -21,7 +21,7 @@ import seedu.henri.model.audit.AuditLog;
 import seedu.henri.model.person.NameContainsKeywordsPredicate;
 import seedu.henri.model.person.Person;
 import seedu.henri.model.team.Team;
-import seedu.henri.testutil.AddressBookBuilder;
+import seedu.henri.testutil.HenriBuilder;
 import seedu.henri.testutil.PersonBuilder;
 import seedu.henri.testutil.TeamBuilder;
 
@@ -33,7 +33,7 @@ public class ModelManagerTest {
     public void constructor() {
         assertEquals(new UserPrefs(), modelManager.getUserPrefs());
         assertEquals(new GuiSettings(), modelManager.getGuiSettings());
-        assertEquals(new Henri(), new Henri(modelManager.getAddressBook()));
+        assertEquals(new Henri(), new Henri(modelManager.getHenri()));
     }
 
     @Test
@@ -44,14 +44,14 @@ public class ModelManagerTest {
     @Test
     public void setUserPrefs_validUserPrefs_copiesUserPrefs() {
         UserPrefs userPrefs = new UserPrefs();
-        userPrefs.setAddressBookFilePath(Paths.get("address/book/file/path"));
+        userPrefs.setHenriFilePath(Paths.get("address/book/file/path"));
         userPrefs.setGuiSettings(new GuiSettings(1, 2, 3, 4));
         modelManager.setUserPrefs(userPrefs);
         assertEquals(userPrefs, modelManager.getUserPrefs());
 
         // Modifying userPrefs should not modify modelManager's userPrefs
         UserPrefs oldUserPrefs = new UserPrefs(userPrefs);
-        userPrefs.setAddressBookFilePath(Paths.get("new/address/book/file/path"));
+        userPrefs.setHenriFilePath(Paths.get("new/address/book/file/path"));
         assertEquals(oldUserPrefs, modelManager.getUserPrefs());
     }
 
@@ -68,15 +68,15 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void setAddressBookFilePath_nullPath_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> modelManager.setAddressBookFilePath(null));
+    public void setHenriFilePath_nullPath_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.setHenriFilePath(null));
     }
 
     @Test
-    public void setAddressBookFilePath_validPath_setsAddressBookFilePath() {
-        Path path = Paths.get("address/book/file/path");
-        modelManager.setAddressBookFilePath(path);
-        assertEquals(path, modelManager.getAddressBookFilePath());
+    public void setHenriFilePath_validPath_setsHenriFilePath() {
+        Path path = Paths.get("henri/book/file/path");
+        modelManager.setHenriFilePath(path);
+        assertEquals(path, modelManager.getHenriFilePath());
     }
 
     @Test
@@ -85,12 +85,12 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void hasPerson_personNotInAddressBook_returnsFalse() {
+    public void hasPerson_personNotInHenri_returnsFalse() {
         assertFalse(modelManager.hasPerson(ALICE));
     }
 
     @Test
-    public void hasPerson_personInAddressBook_returnsTrue() {
+    public void hasPerson_personInHenri_returnsTrue() {
         modelManager.addPerson(ALICE);
         assertTrue(modelManager.hasPerson(ALICE));
     }
@@ -122,20 +122,20 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void addTeam_addsTeamToAddressBook() {
+    public void addTeam_addsTeamToHenri() {
         ModelManager model = new ModelManager();
         Team team = new TeamBuilder().withId("T0001").withTeamName("Core").build();
         model.addTeam(team);
-        assertTrue(model.getAddressBook().getTeamList().contains(team));
+        assertTrue(model.getHenri().getTeamList().contains(team));
     }
 
     @Test
-    public void removeTeam_removesTeamFromAddressBook() {
+    public void removeTeam_removesTeamFromHenri() {
         ModelManager model = new ModelManager();
         Team team = new TeamBuilder().withId("T0001").withTeamName("Core").build();
         model.addTeam(team);
         model.removeTeam(team);
-        assertFalse(model.getAddressBook().getTeamList().contains(team));
+        assertFalse(model.getHenri().getTeamList().contains(team));
     }
 
     @Test
@@ -148,7 +148,7 @@ public class ModelManagerTest {
         model.setTeam(original, edited);
 
         // find team with same id and verify updated name
-        boolean foundEditedName = model.getAddressBook().getTeamList().stream()
+        boolean foundEditedName = model.getHenri().getTeamList().stream()
                 .filter(t -> "T0001".equals(t.getId()))
                 .anyMatch(t -> "Core Renamed".equals(t.getTeamName().teamName()));
         assertTrue(foundEditedName);
@@ -174,7 +174,7 @@ public class ModelManagerTest {
 
     @Test
     public void equals() {
-        Henri henri = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        Henri henri = new HenriBuilder().withPerson(ALICE).withPerson(BENSON).build();
         Henri differentHenri = new Henri();
         UserPrefs userPrefs = new UserPrefs();
 
@@ -192,7 +192,7 @@ public class ModelManagerTest {
         // different types -> returns false
         assertFalse(modelManager.equals(5));
 
-        // different addressBook -> returns false
+        // different henri -> returns false
         assertFalse(modelManager.equals(new ModelManager(differentHenri, userPrefs)));
 
         // different filteredList -> returns false
@@ -205,7 +205,7 @@ public class ModelManagerTest {
 
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
-        differentUserPrefs.setAddressBookFilePath(Paths.get("differentFilePath"));
+        differentUserPrefs.setHenriFilePath(Paths.get("differentFilePath"));
         assertFalse(modelManager.equals(new ModelManager(henri, differentUserPrefs)));
     }
 
@@ -233,7 +233,7 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void getAuditLog_returnsAddressBookAuditLog() {
+    public void getAuditLog_returnsHenriAuditLog() {
         ModelManager modelManager = new ModelManager();
         modelManager.addAuditEntry("TEST", "Test entry");
 

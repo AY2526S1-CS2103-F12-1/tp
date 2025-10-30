@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.henri.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.henri.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.henri.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.henri.testutil.TypicalPersons.getTypicalHenri;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ import seedu.henri.model.person.Person;
  */
 public class DeleteCommandTest {
     private static final int INDEX_FIRST_PERSON = 0;
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalHenri(), new UserPrefs());
 
     @Test
     public void execute_validEmployeeIdUnfilteredList_success() {
@@ -32,7 +32,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        ModelManager expectedModel = new ModelManager(model.getHenri(), new UserPrefs());
         expectedModel.deletePerson(personToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
@@ -58,7 +58,7 @@ public class DeleteCommandTest {
         String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS,
                 Messages.format(personToDelete));
 
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getHenri(), new UserPrefs());
         expectedModel.deletePerson(personToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);

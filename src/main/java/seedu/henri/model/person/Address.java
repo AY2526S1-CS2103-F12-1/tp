@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.henri.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Person's address in the address book.
+ * Represents a Person's address in Henri.
  * Guarantees: immutable; is valid as declared in {@link #isValidAddress(String)}
  */
 public record Address(String value) {

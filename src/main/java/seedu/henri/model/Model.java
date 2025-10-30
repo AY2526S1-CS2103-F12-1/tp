@@ -38,46 +38,46 @@ public interface Model {
     void setGuiSettings(GuiSettings guiSettings);
 
     /**
-     * Returns the user prefs' address book file path.
+     * Returns the user prefs' henri file path.
      */
-    Path getAddressBookFilePath();
+    Path getHenriFilePath();
 
     /**
-     * Sets the user prefs' address book file path.
+     * Sets the user prefs' henri file path.
      */
-    void setAddressBookFilePath(Path addressBookFilePath);
+    void setHenriFilePath(Path henriFilePath);
 
     /**
-     * Replaces address book data with the data in {@code addressBook}.
+     * Replaces henri data with the data in {@code henri}.
      */
-    void setAddressBook(ReadOnlyHenri addressBook);
+    void setHenri(ReadOnlyHenri henri);
 
-    /** Returns the AddressBook */
-    ReadOnlyHenri getAddressBook();
+    /** Returns Henri */
+    ReadOnlyHenri getHenri();
 
     /**
-     * Returns true if a person with the same identity as {@code person} exists in the address book.
+     * Returns true if a person with the same identity as {@code person} exists in the henri.
      */
     boolean hasPerson(Person person);
 
     /**
      * Deletes the given person.
-     * The person must exist in the address book.
+     * The person must exist in the henri.
      */
     void deletePerson(Person target);
 
 
     /**
      * Adds the given person.
-     * {@code person} must not already exist in the address book.
+     * {@code person} must not already exist in the henri.
      */
     void addPerson(Person person);
 
 
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
-     * {@code target} must exist in the address book.
-     * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
+     * {@code target} must exist in the henri.
+     * The person identity of {@code editedPerson} must not be the same as another existing person in the henri.
      */
     void setPerson(Person target, Person editedPerson);
 
@@ -108,22 +108,22 @@ public interface Model {
     AuditLog getAuditLog();
 
     /**
-     * Returns true if a team with the same identity as {@code team} exists in the address book.
+     * Returns true if a team with the same identity as {@code team} exists in the henri.
      */
     boolean hasTeam(Team team);
 
     /**
-     * Adds a team to the address book.
+     * Adds a team to the henri.
      */
     void addTeam(Team team);
 
     /**
-     * Replaces the given team {@code target} in the address book with {@code editedTeam}.
+     * Replaces the given team {@code target} in the henri with {@code editedTeam}.
      */
     void setTeam(Team target, Team editedTeam);
 
     /**
-     * Removes the given team from the address book.
+     * Removes the given team from the henri.
      */
     void removeTeam(Team team);
 

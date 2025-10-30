@@ -3,7 +3,7 @@ package seedu.henri.model.person;
 import static seedu.henri.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Person's salary in the address book, rounded to 2 decimal places.
+ * Represents a Person's salary in Henri, rounded to 2 decimal places.
  * @param integerPart The integer part of the salary.
  * @param decimalPart The decimal part of the salary.
  */

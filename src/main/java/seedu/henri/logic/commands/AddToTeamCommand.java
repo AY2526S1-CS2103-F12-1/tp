@@ -92,7 +92,7 @@ public class AddToTeamCommand extends Command {
     }
 
     private Team getTeam(Model model) throws CommandException {
-        ReadOnlyHenri ab = model.getAddressBook();
+        ReadOnlyHenri ab = model.getHenri();
         Team team = ab.getTeamList().stream()
                 .filter(t -> Objects.equals(t.getId(), teamId))
                 .findFirst()

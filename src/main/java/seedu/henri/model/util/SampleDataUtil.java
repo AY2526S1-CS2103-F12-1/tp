@@ -15,7 +15,7 @@ import seedu.henri.model.person.Phone;
 import seedu.henri.model.tag.Tag;
 
 /**
- * Contains utility methods for populating {@code AddressBook} with sample data.
+ * Contains utility methods for populating {@code Henri} with sample data.
  */
 public class SampleDataUtil {
     public static Person[] getSamplePersons() {
@@ -45,7 +45,7 @@ public class SampleDataUtil {
         };
     }
 
-    public static ReadOnlyHenri getSampleAddressBook() {
+    public static ReadOnlyHenri getSampleHenri() {
         Henri sampleAb = new Henri();
         for (Person samplePerson : getSamplePersons()) {
             sampleAb.addPerson(samplePerson);

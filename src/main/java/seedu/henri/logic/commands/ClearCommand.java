@@ -6,19 +6,19 @@ import seedu.henri.model.Henri;
 import seedu.henri.model.Model;
 
 /**
- * Clears the address book.
+ * Clears the henri.
  */
 public class ClearCommand extends Command {
 
     public static final String COMMAND_WORD = "clear";
-    public static final String MESSAGE_SUCCESS = "Address book has been cleared!";
+    public static final String MESSAGE_SUCCESS = "Henri has been cleared!";
 
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        int personCount = model.getAddressBook().getPersonList().size();
-        model.setAddressBook(new Henri());
+        int personCount = model.getHenri().getPersonList().size();
+        model.setHenri(new Henri());
         model.addAuditEntry("CLEAR", String.format("Cleared all data (%d persons)", personCount));
         return new CommandResult(MESSAGE_SUCCESS);
     }

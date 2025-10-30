@@ -17,7 +17,7 @@ import seedu.henri.model.person.Person;
 import seedu.henri.model.team.Team;
 
 /**
- * Represents the in-memory model of the address book data.
+ * Represents the in-memory model of Henri data.
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
@@ -27,14 +27,14 @@ public class ModelManager implements Model {
     private final FilteredList<Person> filteredPersons;
 
     /**
-     * Initializes a ModelManager with the given addressBook and userPrefs.
+     * Initializes a ModelManager with the given henri and userPrefs.
      */
-    public ModelManager(ReadOnlyHenri addressBook, ReadOnlyUserPrefs userPrefs) {
-        requireAllNonNull(addressBook, userPrefs);
+    public ModelManager(ReadOnlyHenri henri, ReadOnlyUserPrefs userPrefs) {
+        requireAllNonNull(henri, userPrefs);
 
-        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with henri: " + henri + " and user prefs " + userPrefs);
 
-        this.henri = new Henri(addressBook);
+        this.henri = new Henri(henri);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.henri.getPersonList());
     }
@@ -68,25 +68,25 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public Path getAddressBookFilePath() {
-        return userPrefs.getAddressBookFilePath();
+    public Path getHenriFilePath() {
+        return userPrefs.getHenriFilePath();
     }
 
     @Override
-    public void setAddressBookFilePath(Path addressBookFilePath) {
-        requireNonNull(addressBookFilePath);
-        userPrefs.setAddressBookFilePath(addressBookFilePath);
+    public void setHenriFilePath(Path henriFilePath) {
+        requireNonNull(henriFilePath);
+        userPrefs.setHenriFilePath(henriFilePath);
     }
 
-    //=========== AddressBook ================================================================================
+    //=========== Henri ================================================================================
 
     @Override
-    public void setAddressBook(ReadOnlyHenri addressBook) {
-        this.henri.resetData(addressBook);
+    public void setHenri(ReadOnlyHenri henri) {
+        this.henri.resetData(henri);
     }
 
     @Override
-    public ReadOnlyHenri getAddressBook() {
+    public ReadOnlyHenri getHenri() {
         return henri;
     }
 
@@ -136,7 +136,7 @@ public class ModelManager implements Model {
 
     /**
      * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
-     * {@code versionedAddressBook}
+     * {@code versionedHenri}
      */
     @Override
     public ObservableList<Person> getFilteredPersonList() {
@@ -160,7 +160,7 @@ public class ModelManager implements Model {
             return false;
         }
 
-        boolean isSameAddressBook = henri.equals(otherModelManager.henri);
+        boolean isSameHenri = henri.equals(otherModelManager.henri);
         boolean isSameUserPrefs = userPrefs.equals(otherModelManager.userPrefs);
         boolean isSameFilteredPersons = filteredPersons.equals(otherModelManager.filteredPersons);
 

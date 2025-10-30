@@ -6,7 +6,7 @@ import seedu.henri.model.person.Person;
 import seedu.henri.model.team.Team;
 
 /**
- * Unmodifiable view of an address book
+ * Unmodifiable view of Henri
  */
 public interface ReadOnlyHenri {
 

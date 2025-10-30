@@ -19,7 +19,7 @@ import seedu.henri.storage.JsonHenriStorage;
 import seedu.henri.storage.StorageManager;
 
 /**
- * Imports a custom set of contacts stored in JSON format into the current address book.
+ * Imports a custom set of contacts stored in JSON format into the current Henri
  */
 public class ImportCommand extends Command {
 
@@ -27,7 +27,7 @@ public class ImportCommand extends Command {
     public static final String MESSAGE_IMPORT_SUCCESS = "Imported contacts from JSON file";
     public static final String MESSAGE_INVALID_PATH = "Invalid file path provided";
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Imports contact data from a specific JSON file from the data folder into the main address book.\n"
+            + ": Imports contact data from a specific JSON file from the data folder into the main Henri.\n"
             + "Parameters: FILENAME (must be a valid file with .json extension)\n"
             + "Example: " + COMMAND_WORD + " friends.json";
     private static final Logger storageLogger = LogsCenter.getLogger(StorageManager.class);
@@ -39,7 +39,7 @@ public class ImportCommand extends Command {
     }
 
     /**
-     * Copies the data from the given path as Person objects into main address book
+     * Copies the data from the given path as Person objects into main Henri
      * @param model {@code Model} which the command should operate on.
      * @return the status message of the operation
      */
@@ -48,9 +48,9 @@ public class ImportCommand extends Command {
         requireNonNull(model);
         JsonHenriStorage tempBookStorage = new JsonHenriStorage(filePath);
         try {
-            Optional<ReadOnlyHenri> importedAddressBookOptional = tempBookStorage.readAddressBook();
-            ReadOnlyHenri importedData = importedAddressBookOptional
-                    .orElseGet(SampleDataUtil::getSampleAddressBook);
+            Optional<ReadOnlyHenri> importedHenriOptional = tempBookStorage.readHenri();
+            ReadOnlyHenri importedData = importedHenriOptional
+                    .orElseGet(SampleDataUtil::getSampleHenri);
             List<Person> importedPersons = importedData.getPersonList();
             this.addImportedPersons(model, importedPersons);
         } catch (DataLoadingException e) {

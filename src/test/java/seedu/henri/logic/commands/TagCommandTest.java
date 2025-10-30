@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.henri.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.henri.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.henri.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.henri.testutil.TypicalPersons.getTypicalHenri;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +27,7 @@ import seedu.henri.testutil.PersonBuilder;
  */
 public class TagCommandTest {
     private static final int INDEX_FIRST_PERSON = 0;
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalHenri(), new UserPrefs());
 
     @Test
     public void execute_addSingleTagUnfilteredList_success() throws Exception {
@@ -45,7 +45,7 @@ public class TagCommandTest {
 
         String expectedMessage = String.format(TagCommand.MESSAGE_TAG_SUCCESS, Messages.format(taggedPerson));
 
-        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getHenri()), new UserPrefs());
         expectedModel.setPerson(personToTag, taggedPerson);
 
         assertCommandSuccess(tagCommand, model, expectedMessage, expectedModel);
@@ -69,7 +69,7 @@ public class TagCommandTest {
 
         String expectedMessage = String.format(TagCommand.MESSAGE_TAG_SUCCESS, Messages.format(taggedPerson));
 
-        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getHenri()), new UserPrefs());
         expectedModel.setPerson(personToTag, taggedPerson);
 
         assertCommandSuccess(tagCommand, model, expectedMessage, expectedModel);
@@ -100,7 +100,7 @@ public class TagCommandTest {
         // Should succeed without error (idempotent operation)
         String expectedMessage = String.format(TagCommand.MESSAGE_TAG_SUCCESS, Messages.format(personToTag));
 
-        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getHenri()), new UserPrefs());
 
         assertCommandSuccess(tagCommand, model, expectedMessage, expectedModel);
     }

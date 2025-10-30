@@ -16,7 +16,7 @@ import seedu.henri.model.team.Team;
 import seedu.henri.model.team.UniqueTeamList;
 
 /**
- * Represents an in-memory address book containing persons and teams.
+ * Represents an in-memory Henri containing persons and teams.
  */
 public class Henri implements ReadOnlyHenri {
 
@@ -28,7 +28,7 @@ public class Henri implements ReadOnlyHenri {
     public Henri() {}
 
     /**
-     * Creates an AddressBook using the Persons and Teams in the {@code toBeCopied}.
+     * Creates Henri using the Persons and Teams in the {@code toBeCopied}.
      */
     public Henri(ReadOnlyHenri toBeCopied) {
         this();
@@ -54,7 +54,7 @@ public class Henri implements ReadOnlyHenri {
     }
 
     /**
-     * Replaces this address book's data with the provided {@code newData}.
+     * Replaces this Henri's data with the provided {@code newData}.
      * Persons are always replaced. Teams are replaced only if {@code newData}
      * exposes a team list; otherwise team data is left unchanged. (to be cleaned further later)
      *
@@ -70,12 +70,12 @@ public class Henri implements ReadOnlyHenri {
         for (var entry : newData.getAuditLog().getEntries()) {
             auditLog.addEntry(entry.getAction(), entry.getDetails(), entry.getTimestamp());
         }
-        // ReadOnlyAddressBook is expected to expose getTeamList()
+        // ReadOnlyHenri is expected to expose getTeamList()
         if (newData instanceof ReadOnlyHenri) {
             try {
                 setTeams(((ReadOnlyHenri) newData).getTeamList());
             } catch (UnsupportedOperationException | ClassCastException e) {
-                // If the provided ReadOnlyAddressBook does not expose teams yet, ignore.
+                // If the provided ReadOnlyHenri does not expose teams yet, ignore.
             }
         }
     }
@@ -83,7 +83,7 @@ public class Henri implements ReadOnlyHenri {
     //// person-level operations
 
     /**
-     * Returns true if a person with the same identity as {@code person} exists in the address book.
+     * Returns true if a person with the same identity as {@code person} exists in Henri.
      */
     public boolean hasPerson(Person person) {
         requireNonNull(person);
@@ -91,8 +91,8 @@ public class Henri implements ReadOnlyHenri {
     }
 
     /**
-     * Adds a person to the address book.
-     * The person must not already exist in the address book.
+     * Adds a person to Henri.
+     * The person must not already exist in Henri.
      */
     public void addPerson(Person p) {
         persons.add(p);
@@ -100,15 +100,15 @@ public class Henri implements ReadOnlyHenri {
 
     /**
      * Replaces the given person {@code target} in the list with {@code editedPerson}.
-     * {@code target} must exist in the address book.
+     * {@code target} must exist in Henri.
      */
     public void setPerson(Person target, Person editedPerson) {
         persons.setPerson(target, editedPerson);
     }
 
     /**
-     * Removes {@code key} from this {@code AddressBook}.
-     * {@code key} must exist in the address book.
+     * Removes {@code key} from this {@code Henri}.
+     * {@code key} must exist in Henri.
      */
     public void removePerson(Person key) {
         persons.remove(key);
@@ -126,7 +126,7 @@ public class Henri implements ReadOnlyHenri {
     //// team-level operations
 
     /**
-     * Returns true if a team with the same identity as {@code team} exists in the address book.
+     * Returns true if a team with the same identity as {@code team} exists in Henri.
      */
     public boolean hasTeam(Team team) {
         requireNonNull(team);
@@ -134,8 +134,8 @@ public class Henri implements ReadOnlyHenri {
     }
 
     /**
-     * Adds a team to the address book.
-     * The team must not already exist in the address book.
+     * Adds a team to Henri.
+     * The team must not already exist in Henri.
      */
     public void addTeam(Team team) {
         requireNonNull(team);
@@ -144,15 +144,15 @@ public class Henri implements ReadOnlyHenri {
 
     /**
      * Replaces the given team {@code target} in the list with {@code editedTeam}.
-     * {@code target} must exist in the address book.
+     * {@code target} must exist in Henri.
      */
     public void setTeam(Team target, Team editedTeam) {
         teams.setTeam(target, editedTeam);
     }
 
     /**
-     * Removes {@code toRemove} from this {@code AddressBook}.
-     * {@code toRemove} must exist in the address book.
+     * Removes {@code toRemove} from this {@code Henri}.
+     * {@code toRemove} must exist in Henri.
      */
     public void removeTeam(Team toRemove) {
         teams.remove(toRemove);

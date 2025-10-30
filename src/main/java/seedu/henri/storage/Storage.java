@@ -21,12 +21,12 @@ public interface Storage extends HenriStorage, UserPrefsStorage {
     void saveUserPrefs(ReadOnlyUserPrefs userPrefs) throws IOException;
 
     @Override
-    Path getAddressBookFilePath();
+    Path getHenriFilePath();
 
     @Override
-    Optional<ReadOnlyHenri> readAddressBook() throws DataLoadingException;
+    Optional<ReadOnlyHenri> readHenri() throws DataLoadingException;
 
     @Override
-    void saveAddressBook(ReadOnlyHenri addressBook) throws IOException;
+    void saveHenri(ReadOnlyHenri henri) throws IOException;
 
 }

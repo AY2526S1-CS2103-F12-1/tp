@@ -15,7 +15,7 @@ import seedu.henri.model.person.Person;
 import seedu.henri.model.tag.Tag;
 
 /**
- * Removes tags from an existing person in the address book.
+ * Removes tags from an existing person in Henri.
  */
 public class UntagCommand extends Command {
 

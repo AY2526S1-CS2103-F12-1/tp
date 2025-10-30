@@ -82,7 +82,7 @@ public class AddCommandParser implements Parser<AddCommand> {
     }
 
     /**
-     * Sets the next ID based on the highest existing ID in the address book.
+     * Sets the next ID based on the highest existing ID in Henri
      * Should be called when the application starts.
      */
     public static void setNextId(long id) {

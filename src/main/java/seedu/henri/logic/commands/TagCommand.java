@@ -15,7 +15,7 @@ import seedu.henri.model.person.Person;
 import seedu.henri.model.tag.Tag;
 
 /**
- * Adds tags to an existing person in the address book.
+ * Adds tags to an existing person in Henri
  */
 public class TagCommand extends Command {
 

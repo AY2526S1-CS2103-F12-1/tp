@@ -14,7 +14,7 @@ import seedu.henri.logic.commands.Command;
 import seedu.henri.logic.commands.CommandResult;
 import seedu.henri.logic.commands.exceptions.CommandException;
 import seedu.henri.logic.parser.AddCommandParser;
-import seedu.henri.logic.parser.AddressBookParser;
+import seedu.henri.logic.parser.HenriParser;
 import seedu.henri.logic.parser.exceptions.ParseException;
 import seedu.henri.model.Model;
 import seedu.henri.model.ReadOnlyHenri;
@@ -41,7 +41,7 @@ public class LogicManager implements Logic {
 
     private final Model model;
     private final Storage storage;
-    private final AddressBookParser addressBookParser;
+    private final HenriParser henriParser;
 
     /**
      * Constructs a {@code LogicManager} with the given {@code Model} and {@code Storage}.
@@ -49,10 +49,10 @@ public class LogicManager implements Logic {
     public LogicManager(Model model, Storage storage) {
         this.model = model;
         this.storage = storage;
-        addressBookParser = new AddressBookParser();
+        henriParser = new HenriParser();
 
         // In the LogicManager constructor, after model initialization
-        List<Person> persons = model.getAddressBook().getPersonList();
+        List<Person> persons = model.getHenri().getPersonList();
         if (!persons.isEmpty()) {
             long maxId = persons.stream()
                     .map(Person::id)
@@ -70,7 +70,7 @@ public class LogicManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
         CommandResult commandResult;
-        Command command = addressBookParser.parseCommand(commandText);
+        Command command = henriParser.parseCommand(commandText);
         commandResult = command.execute(model);
 
         // Only log commands that modify state
@@ -81,7 +81,7 @@ public class LogicManager implements Logic {
         }
 
         try {
-            storage.saveAddressBook(model.getAddressBook());
+            storage.saveHenri(model.getHenri());
         } catch (AccessDeniedException e) {
             throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
         } catch (IOException ioe) {
@@ -92,8 +92,8 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public ReadOnlyHenri getAddressBook() {
-        return model.getAddressBook();
+    public ReadOnlyHenri getHenri() {
+        return model.getHenri();
     }
 
     @Override
@@ -102,8 +102,8 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public Path getAddressBookFilePath() {
-        return model.getAddressBookFilePath();
+    public Path getHenriFilePath() {
+        return model.getHenriFilePath();
     }
 
     @Override

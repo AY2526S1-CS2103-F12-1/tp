@@ -12,7 +12,7 @@ import seedu.henri.model.ReadOnlyUserPrefs;
 import seedu.henri.model.UserPrefs;
 
 /**
- * Manages storage of AddressBook data in local storage.
+ * Manages storage of Henri data in local storage.
  */
 public class StorageManager implements Storage {
 
@@ -21,7 +21,7 @@ public class StorageManager implements Storage {
     private UserPrefsStorage userPrefsStorage;
 
     /**
-     * Creates a {@code StorageManager} with the given {@code AddressBookStorage} and {@code UserPrefStorage}.
+     * Creates a {@code StorageManager} with the given {@code HenriStorage} and {@code UserPrefStorage}.
      */
     public StorageManager(HenriStorage henriStorage, UserPrefsStorage userPrefsStorage) {
         this.henriStorage = henriStorage;
@@ -46,33 +46,33 @@ public class StorageManager implements Storage {
     }
 
 
-    // ================ AddressBook methods ==============================
+    // ================ Henri methods ==============================
 
     @Override
-    public Path getAddressBookFilePath() {
-        return henriStorage.getAddressBookFilePath();
+    public Path getHenriFilePath() {
+        return henriStorage.getHenriFilePath();
     }
 
     @Override
-    public Optional<ReadOnlyHenri> readAddressBook() throws DataLoadingException {
-        return readAddressBook(henriStorage.getAddressBookFilePath());
+    public Optional<ReadOnlyHenri> readHenri() throws DataLoadingException {
+        return readHenri(henriStorage.getHenriFilePath());
     }
 
     @Override
-    public Optional<ReadOnlyHenri> readAddressBook(Path filePath) throws DataLoadingException {
+    public Optional<ReadOnlyHenri> readHenri(Path filePath) throws DataLoadingException {
         logger.fine("Attempting to read data from file: " + filePath);
-        return henriStorage.readAddressBook(filePath);
+        return henriStorage.readHenri(filePath);
     }
 
     @Override
-    public void saveAddressBook(ReadOnlyHenri addressBook) throws IOException {
-        saveAddressBook(addressBook, henriStorage.getAddressBookFilePath());
+    public void saveHenri(ReadOnlyHenri henri) throws IOException {
+        saveHenri(henri, henriStorage.getHenriFilePath());
     }
 
     @Override
-    public void saveAddressBook(ReadOnlyHenri addressBook, Path filePath) throws IOException {
+    public void saveHenri(ReadOnlyHenri henri, Path filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
-        henriStorage.saveAddressBook(addressBook, filePath);
+        henriStorage.saveHenri(henri, filePath);
     }
 
 }

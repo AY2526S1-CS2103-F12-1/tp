@@ -11,7 +11,7 @@ import seedu.henri.model.Model;
 import seedu.henri.model.person.Person;
 
 /**
- * Deletes a person identified using their employee ID from the address book.
+ * Deletes a person identified using their employee ID from Henri
  */
 public class DeleteCommand extends Command {
 

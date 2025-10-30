@@ -24,19 +24,19 @@ public interface Logic {
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
     /**
-     * Returns the AddressBook.
+     * Returns the Henri.
      *
-     * @see seedu.henri.model.Model#getAddressBook()
+     * @see seedu.henri.model.Model#getHenri()
      */
-    ReadOnlyHenri getAddressBook();
+    ReadOnlyHenri getHenri();
 
     /** Returns an unmodifiable view of the filtered list of persons */
     ObservableList<Person> getFilteredPersonList();
 
     /**
-     * Returns the user prefs' address book file path.
+     * Returns the user prefs' Henri file path.
      */
-    Path getAddressBookFilePath();
+    Path getHenriFilePath();
 
     /**
      * Returns the user prefs' GUI settings.

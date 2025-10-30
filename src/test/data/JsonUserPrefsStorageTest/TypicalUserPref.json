@@ -7,5 +7,5 @@
       "y" : 100
     }
   },
-  "addressBookFilePath" : "henri.json"
+  "henriFilePath" : "data/henri.json"
 }

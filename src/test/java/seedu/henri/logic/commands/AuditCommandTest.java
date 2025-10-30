@@ -3,7 +3,7 @@ package seedu.henri.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.henri.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.henri.testutil.TypicalPersons.getTypicalHenri;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,8 +22,8 @@ public class AuditCommandTest {
 
     @BeforeEach
     public void setUp() {
-        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        model = new ModelManager(getTypicalHenri(), new UserPrefs());
+        expectedModel = new ModelManager(model.getHenri(), new UserPrefs());
     }
 
     @Test

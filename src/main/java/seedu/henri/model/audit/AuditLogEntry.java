@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Represents an audit log entry in the address book.
+ * Represents an audit log entry in Henri
  * Each entry contains a timestamp, an action performed, and details about that action.
  * Audit log entries are immutable once created.
  */

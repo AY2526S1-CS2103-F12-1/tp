@@ -40,7 +40,7 @@ import seedu.henri.testutil.PersonUtil;
 
 public class HenriParserTest {
 
-    private final AddressBookParser parser = new AddressBookParser();
+    private final HenriParser parser = new HenriParser();
 
     @Test
     public void parseCommand_add() throws Exception {

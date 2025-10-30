@@ -10,7 +10,7 @@ import static seedu.henri.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.henri.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.henri.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.henri.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.henri.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.henri.testutil.TypicalPersons.getTypicalHenri;
 
 import java.lang.reflect.Field;
 
@@ -36,7 +36,7 @@ public class EditCommandTest {
     private static final int INDEX_SECOND_PERSON = 1;
     private static final String INVALID_EMPLOYEE_ID = "E9999";
 
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalHenri(), new UserPrefs());
 
     @BeforeAll
     public static void setupOnce() {
@@ -64,7 +64,7 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getHenri()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -85,7 +85,7 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getHenri()), new UserPrefs());
         expectedModel.setPerson(lastPerson, editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
@@ -99,7 +99,7 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getHenri()), new UserPrefs());
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
     }
@@ -113,7 +113,7 @@ public class EditCommandTest {
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
-        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getHenri()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);

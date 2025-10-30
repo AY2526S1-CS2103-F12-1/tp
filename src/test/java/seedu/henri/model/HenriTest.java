@@ -7,7 +7,7 @@ import static seedu.henri.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.henri.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.henri.testutil.Assert.assertThrows;
 import static seedu.henri.testutil.TypicalPersons.ALICE;
-import static seedu.henri.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.henri.testutil.TypicalPersons.getTypicalHenri;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,8 +39,8 @@ public class HenriTest {
     }
 
     @Test
-    public void resetData_withValidReadOnlyAddressBook_replacesData() {
-        Henri newData = getTypicalAddressBook();
+    public void resetData_withValidReadOnlyHenri_replacesData() {
+        Henri newData = getTypicalHenri();
         henri.resetData(newData);
         assertEquals(newData, henri);
     }
@@ -58,13 +58,13 @@ public class HenriTest {
 
     @Test
     public void resetData_withAuditLog_restoresAuditLog() {
-        // Create an address book with audit log entries
+        // Create Henri with audit log entries
         Henri sourceHenri = new Henri();
         sourceHenri.addPerson(ALICE);
         sourceHenri.addAuditEntry("ADD", "Added Alice");
         sourceHenri.addAuditEntry("EDIT", "Edited Alice");
 
-        // Reset data to a new address book
+        // Reset data to a new Henri
         Henri targetHenri = new Henri();
         targetHenri.resetData(sourceHenri);
 
@@ -78,11 +78,11 @@ public class HenriTest {
 
     @Test
     public void resetData_withExistingAuditLog_clearsAndRestores() {
-        // Create target address book with existing audit log
+        // Create target Henri with existing audit log
         Henri targetHenri = new Henri();
         targetHenri.addAuditEntry("DELETE", "Old entry");
 
-        // Create source address book with different audit log
+        // Create source Henri with different audit log
         Henri sourceHenri = new Henri();
         sourceHenri.addAuditEntry("ADD", "New entry");
 
@@ -102,18 +102,18 @@ public class HenriTest {
     }
 
     @Test
-    public void hasPerson_personNotInAddressBook_returnsFalse() {
+    public void hasPerson_personNotInHenri_returnsFalse() {
         assertFalse(henri.hasPerson(ALICE));
     }
 
     @Test
-    public void hasPerson_personInAddressBook_returnsTrue() {
+    public void hasPerson_personInHenri_returnsTrue() {
         henri.addPerson(ALICE);
         assertTrue(henri.hasPerson(ALICE));
     }
 
     @Test
-    public void hasPerson_personWithSameIdentityFieldsInAddressBook_returnsTrue() {
+    public void hasPerson_personWithSameIdentityFieldsInHenri_returnsTrue() {
         henri.addPerson(ALICE);
         Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
                 .build();
@@ -134,7 +134,7 @@ public class HenriTest {
     }
 
     /**
-     * A stub ReadOnlyAddressBook whose persons list can violate interface constraints.
+     * A stub ReadOnlyHenri whose persons list can violate interface constraints.
      */
     private static class HenriStub implements ReadOnlyHenri {
         private final ObservableList<Person> persons = FXCollections.observableArrayList();

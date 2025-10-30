@@ -14,10 +14,10 @@ import seedu.henri.model.audit.AuditLogEntry;
 import seedu.henri.model.person.Person;
 
 /**
- * An Immutable AddressBook that is serializable to JSON format.
+ * An Immutable Henri that is serializable to JSON format.
  */
-@JsonRootName(value = "addressbook")
-class JsonSerializableAddressBook {
+@JsonRootName(value = "henri")
+class JsonSerializableHenri {
 
     private final List<JsonAdaptedPerson> persons = new ArrayList<>();
 
@@ -25,11 +25,11 @@ class JsonSerializableAddressBook {
     private final List<JsonAdaptedAuditLogEntry> auditLogEntries = new ArrayList<>();
 
     /**
-     * Constructs a {@code JsonSerializableAddressBook} with the given persons.
+     * Constructs a {@code JsonSerializableHenri} with the given persons.
      */
     @JsonCreator
-    public JsonSerializableAddressBook(@JsonProperty("persons") List<JsonAdaptedPerson> persons,
-                                       @JsonProperty("auditLog") List<JsonAdaptedAuditLogEntry> auditLogEntries) {
+    public JsonSerializableHenri(@JsonProperty("persons") List<JsonAdaptedPerson> persons,
+                                 @JsonProperty("auditLog") List<JsonAdaptedAuditLogEntry> auditLogEntries) {
         this.persons.addAll(persons);
         if (auditLogEntries != null) {
             this.auditLogEntries.addAll(auditLogEntries);
@@ -37,18 +37,18 @@ class JsonSerializableAddressBook {
     }
 
     /**
-     * Converts a given {@code ReadOnlyAddressBook} into this class for Jackson use.
+     * Converts a given {@code ReadOnlyHenri} into this class for Jackson use.
      *
-     * @param source future changes to this will not affect the created {@code JsonSerializableAddressBook}.
+     * @param source future changes to this will not affect the created {@code JsonSerializableHenri}.
      */
-    public JsonSerializableAddressBook(ReadOnlyHenri source) {
+    public JsonSerializableHenri(ReadOnlyHenri source) {
         persons.addAll(source.getPersonList().stream().map(JsonAdaptedPerson::new).toList());
         auditLogEntries.addAll(source.getAuditLog().getEntries().stream()
                 .map(JsonAdaptedAuditLogEntry::new).toList());
     }
 
     /**
-     * Converts this address book into the model's {@code AddressBook} object.
+     * Converts this Henri into the model's {@code Henri} object.
      *
      * @throws IllegalValueException if there were any data constraints violated.
      */

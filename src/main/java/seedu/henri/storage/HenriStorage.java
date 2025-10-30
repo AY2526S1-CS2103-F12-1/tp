@@ -16,31 +16,31 @@ public interface HenriStorage {
     /**
      * Returns the file path of the data file.
      */
-    Path getAddressBookFilePath();
+    Path getHenriFilePath();
 
     /**
-     * Returns AddressBook data as a {@link ReadOnlyHenri}.
+     * Returns Henri data as a {@link ReadOnlyHenri}.
      * Returns {@code Optional.empty()} if storage file is not found.
      *
      * @throws DataLoadingException if loading the data from storage failed.
      */
-    Optional<ReadOnlyHenri> readAddressBook() throws DataLoadingException;
+    Optional<ReadOnlyHenri> readHenri() throws DataLoadingException;
 
     /**
-     * @see #getAddressBookFilePath()
+     * @see #getHenriFilePath()
      */
-    Optional<ReadOnlyHenri> readAddressBook(Path filePath) throws DataLoadingException;
+    Optional<ReadOnlyHenri> readHenri(Path filePath) throws DataLoadingException;
 
     /**
      * Saves the given {@link ReadOnlyHenri} to the storage.
-     * @param addressBook cannot be null.
+     * @param henri cannot be null.
      * @throws IOException if there was any problem writing to the file.
      */
-    void saveAddressBook(ReadOnlyHenri addressBook) throws IOException;
+    void saveHenri(ReadOnlyHenri henri) throws IOException;
 
     /**
-     * @see #saveAddressBook(ReadOnlyHenri)
+     * @see #saveHenri(ReadOnlyHenri)
      */
-    void saveAddressBook(ReadOnlyHenri addressBook, Path filePath) throws IOException;
+    void saveHenri(ReadOnlyHenri henri, Path filePath) throws IOException;
 
 }

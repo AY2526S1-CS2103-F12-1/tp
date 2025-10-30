@@ -72,10 +72,10 @@ public class LogicManagerTest {
 
     @BeforeEach
     public void setUp() {
-        JsonHenriStorage addressBookStorage =
-                new JsonHenriStorage(temporaryFolder.resolve("addressBook.json"));
+        JsonHenriStorage henriStorage =
+                new JsonHenriStorage(temporaryFolder.resolve("henri.json"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        StorageManager storage = new StorageManager(henriStorage, userPrefsStorage);
         logic = new LogicManager(model, storage);
     }
 
@@ -150,7 +150,7 @@ public class LogicManagerTest {
      */
     private void assertCommandFailure(String inputCommand, Class<? extends Throwable> expectedException,
             String expectedMessage) {
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(model.getHenri(), new UserPrefs());
         assertCommandFailure(inputCommand, expectedException, expectedMessage, expectedModel);
     }
 
@@ -176,10 +176,10 @@ public class LogicManagerTest {
     private void assertCommandFailureForExceptionFromStorage(IOException e, String expectedMessage) {
         Path prefPath = temporaryFolder.resolve("ExceptionUserPrefs.json");
 
-        // Inject LogicManager with an AddressBookStorage that throws the IOException e when saving
-        JsonHenriStorage addressBookStorage = new JsonHenriStorage(prefPath) {
+        // Inject LogicManager with an HenriStorage that throws the IOException e when saving
+        JsonHenriStorage henriStorage = new JsonHenriStorage(prefPath) {
             @Override
-            public void saveAddressBook(ReadOnlyHenri addressBook, Path filePath)
+            public void saveHenri(ReadOnlyHenri henri, Path filePath)
                     throws IOException {
                 throw e;
             }
@@ -187,11 +187,11 @@ public class LogicManagerTest {
 
         JsonUserPrefsStorage userPrefsStorage =
                 new JsonUserPrefsStorage(temporaryFolder.resolve("ExceptionUserPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        StorageManager storage = new StorageManager(henriStorage, userPrefsStorage);
 
         logic = new LogicManager(model, storage);
 
-        // Triggers the saveAddressBook method by executing an add command
+        // Triggers the saveHenri method by executing an add command
         String addCommand = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
                 + EMAIL_DESC_AMY + ADDRESS_DESC_AMY + GITHUBUSERNAME_DESC_AMY;
 
@@ -242,7 +242,7 @@ public class LogicManagerTest {
         logic.execute(addCommand);
 
         // Delete the person
-        logic.execute("delete E5003");
+        logic.execute("delete E7126");
 
         // Verify delete action in audit log
         AuditLog auditLog = model.getAuditLog();
@@ -319,7 +319,7 @@ public class LogicManagerTest {
 
 
     @Test
-    public void execute_emptyAddressBook_nextIdRemainsUnchanged() throws Exception {
+    public void execute_emptyHenri_nextIdRemainsUnchanged() throws Exception {
         // Setup empty model
         Model emptyModel = new ModelManager(new Henri(), new UserPrefs());
 
@@ -329,11 +329,11 @@ public class LogicManagerTest {
         long initialNextId = field.getLong(null);
 
         // Create LogicManager with empty model (should not update nextId)
-        JsonHenriStorage addressBookStorage =
-                new JsonHenriStorage(temporaryFolder.resolve("addressBook.json"));
+        JsonHenriStorage henriStorage =
+                new JsonHenriStorage(temporaryFolder.resolve("henri.json"));
         JsonUserPrefsStorage userPrefsStorage =
                 new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        StorageManager storage = new StorageManager(henriStorage, userPrefsStorage);
         Logic logic = new LogicManager(emptyModel, storage);
 
         // Verify nextId hasn't changed
@@ -342,7 +342,7 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_addressBookWithPersons_nextIdUpdatedCorrectly() throws Exception {
+    public void execute_henriWithPersons_nextIdUpdatedCorrectly() throws Exception {
         // Setup model with persons having different IDs
         Henri ab = new Henri();
         ab.addPerson(new PersonBuilder().withName("Alice").withId(5000).build());
@@ -350,11 +350,11 @@ public class LogicManagerTest {
         ab.addPerson(new PersonBuilder().withName("Charlie").withId(5002).build());
         Model modelWithPersons = new ModelManager(ab, new UserPrefs());
 
-        JsonHenriStorage addressBookStorage =
-                new JsonHenriStorage(temporaryFolder.resolve("addressBook.json"));
+        JsonHenriStorage henriStorage =
+                new JsonHenriStorage(temporaryFolder.resolve("henri.json"));
         JsonUserPrefsStorage userPrefsStorage =
                 new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        StorageManager storage = new StorageManager(henriStorage, userPrefsStorage);
         Logic logic = new LogicManager(modelWithPersons, storage);
 
         Field field = AddCommandParser.class.getDeclaredField("nextId");
@@ -364,7 +364,7 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_addressBookWithMixedIds_ignoresNonEPrefixedIds() throws Exception {
+    public void execute_henriWithMixedIds_ignoresNonEPrefixedIds() throws Exception {
         // Setup with mixed IDs
         Henri ab = new Henri();
         ab.addPerson(new PersonBuilder().withName("David").withId(7123).build());
@@ -372,11 +372,11 @@ public class LogicManagerTest {
         ab.addPerson(new PersonBuilder().withName("Frank").withId(1225).build());
         Model modelWithPersons = new ModelManager(ab, new UserPrefs());
 
-        JsonHenriStorage addressBookStorage =
-                new JsonHenriStorage(temporaryFolder.resolve("addressBook.json"));
+        JsonHenriStorage henriStorage =
+                new JsonHenriStorage(temporaryFolder.resolve("henri.json"));
         JsonUserPrefsStorage userPrefsStorage =
                 new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        StorageManager storage = new StorageManager(henriStorage, userPrefsStorage);
         Logic logic = new LogicManager(modelWithPersons, storage);
 
         Field field = AddCommandParser.class.getDeclaredField("nextId");

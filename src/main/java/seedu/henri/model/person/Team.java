@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.henri.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Person's Team in the address book.
+ * Represents a Person's Team in Henri
  * Guarantees: immutable; is valid as declared in {@link #isValidTeamName(String)}
  */
 public record Team(String name, String id) {

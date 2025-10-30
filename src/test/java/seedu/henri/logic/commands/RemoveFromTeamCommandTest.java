@@ -37,7 +37,7 @@ public class RemoveFromTeamCommandTest {
                 result.getFeedbackToUser());
 
         // team no longer contains member
-        assertTrue(model.getAddressBook().getTeamList().stream()
+        assertTrue(model.getHenri().getTeamList().stream()
                 .filter(t -> "T0001".equals(t.getId()))
                 .findFirst()
                 .map(t -> !t.getMembers().contains("E0001"))

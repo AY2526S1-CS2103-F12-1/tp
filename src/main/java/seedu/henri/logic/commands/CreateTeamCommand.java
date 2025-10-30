@@ -14,7 +14,7 @@ import seedu.henri.model.team.Team;
 import seedu.henri.model.team.TeamName;
 
 /**
- * Creates a team in the address book.
+ * Creates a team in the Henri.
  */
 public class CreateTeamCommand extends Command {
 
@@ -25,7 +25,7 @@ public class CreateTeamCommand extends Command {
             + "Example: " + COMMAND_WORD + " Team Alpha E0001";
 
     public static final String MESSAGE_SUCCESS = "New team created: %1$s";
-    public static final String MESSAGE_DUPLICATE_TEAM = "This team already exists in the address book";
+    public static final String MESSAGE_DUPLICATE_TEAM = "This team already exists in Henri";
     public static final String MESSAGE_LEADER_NOT_FOUND = "No person with ID %1$s found";
 
     /**
@@ -70,7 +70,7 @@ public class CreateTeamCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_TEAM);
         }
 
-        ReadOnlyHenri ab = model.getAddressBook();
+        ReadOnlyHenri ab = model.getHenri();
         boolean nameDuplicate = ab.getTeamList().stream()
                 .anyMatch(t -> t.getTeamName().equals(toAdd.getTeamName()));
         if (nameDuplicate) {

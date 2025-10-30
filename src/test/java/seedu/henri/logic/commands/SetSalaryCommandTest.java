@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static seedu.henri.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.henri.logic.commands.SetSalaryCommand.MESSAGE_SUCCESS;
-import static seedu.henri.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.henri.testutil.TypicalPersons.getTypicalHenri;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ import seedu.henri.model.ModelManager;
 import seedu.henri.model.UserPrefs;
 
 class SetSalaryCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalHenri(), new UserPrefs());
 
     @Test
     void execute_validIdAndSalary_success() {
@@ -35,7 +35,7 @@ class SetSalaryCommandTest {
     @Test
     void toString_method() {
         SetSalaryCommand command = new SetSalaryCommand("E12345", 100);
-        assertEquals("seedu.address.logic.commands.SetSalaryCommand{toSet=E12345, salaryInCents=100}",
+        assertEquals("seedu.henri.logic.commands.SetSalaryCommand{toSet=E12345, salaryInCents=100}",
                      command.toString());
     }
 }

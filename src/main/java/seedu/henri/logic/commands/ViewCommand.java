@@ -8,7 +8,7 @@ import seedu.henri.model.Model;
 import seedu.henri.model.person.NameContainsKeywordsPredicate;
 
 /**
- * Filters and lists all persons in address book whose name contains any of the argument keywords.
+ * Filters and lists all persons in Henri whose name contains any of the argument keywords.
  * Keyword matching is case insensitive.
  */
 public class ViewCommand extends Command {

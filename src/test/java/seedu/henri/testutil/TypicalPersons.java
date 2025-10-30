@@ -121,9 +121,9 @@ public class TypicalPersons {
     private TypicalPersons() {} // prevents instantiation
 
     /**
-     * Returns an {@code AddressBook} with all the typical persons.
+     * Returns an {@code Henri} with all the typical persons.
      */
-    public static Henri getTypicalAddressBook() {
+    public static Henri getTypicalHenri() {
         Henri ab = new Henri();
         for (Person person : getTypicalPersons()) {
             ab.addPerson(person);

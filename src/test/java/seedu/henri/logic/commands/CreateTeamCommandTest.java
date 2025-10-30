@@ -31,7 +31,7 @@ public class CreateTeamCommandTest {
 
         assertEquals(String.format(CreateTeamCommand.MESSAGE_SUCCESS, "Team Alpha"),
                 result.getFeedbackToUser());
-        assertTrue(model.getAddressBook().getTeamList().stream()
+        assertTrue(model.getHenri().getTeamList().stream()
                 .anyMatch(t -> "Team Alpha".equals(t.getTeamName().teamName())
                         && "E0001".equals(t.getLeaderId())));
     }

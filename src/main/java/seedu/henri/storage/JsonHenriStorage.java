@@ -15,7 +15,7 @@ import seedu.henri.commons.util.JsonUtil;
 import seedu.henri.model.ReadOnlyHenri;
 
 /**
- * A class to access AddressBook data stored as a json file on the hard disk.
+ * A class to access Henri data stored as a json file on the hard disk.
  */
 public class JsonHenriStorage implements HenriStorage {
 
@@ -27,32 +27,32 @@ public class JsonHenriStorage implements HenriStorage {
         this.filePath = filePath;
     }
 
-    public Path getAddressBookFilePath() {
+    public Path getHenriFilePath() {
         return filePath;
     }
 
     @Override
-    public Optional<ReadOnlyHenri> readAddressBook() throws DataLoadingException {
-        return readAddressBook(filePath);
+    public Optional<ReadOnlyHenri> readHenri() throws DataLoadingException {
+        return readHenri(filePath);
     }
 
     /**
-     * Similar to {@link #readAddressBook()}.
+     * Similar to {@link #readHenri()}.
      *
      * @param filePath location of the data. Cannot be null.
      * @throws DataLoadingException if loading the data from storage failed.
      */
-    public Optional<ReadOnlyHenri> readAddressBook(Path filePath) throws DataLoadingException {
+    public Optional<ReadOnlyHenri> readHenri(Path filePath) throws DataLoadingException {
         requireNonNull(filePath);
 
-        Optional<JsonSerializableAddressBook> jsonAddressBook = JsonUtil.readJsonFile(
-                filePath, JsonSerializableAddressBook.class);
-        if (!jsonAddressBook.isPresent()) {
+        Optional<JsonSerializableHenri> jsonHenri = JsonUtil.readJsonFile(
+                filePath, JsonSerializableHenri.class);
+        if (!jsonHenri.isPresent()) {
             return Optional.empty();
         }
 
         try {
-            return Optional.of(jsonAddressBook.get().toModelType());
+            return Optional.of(jsonHenri.get().toModelType());
         } catch (IllegalValueException ive) {
             logger.info("Illegal values found in " + filePath + ": " + ive.getMessage());
             throw new DataLoadingException(ive);
@@ -60,21 +60,21 @@ public class JsonHenriStorage implements HenriStorage {
     }
 
     @Override
-    public void saveAddressBook(ReadOnlyHenri addressBook) throws IOException {
-        saveAddressBook(addressBook, filePath);
+    public void saveHenri(ReadOnlyHenri henri) throws IOException {
+        saveHenri(henri, filePath);
     }
 
     /**
-     * Similar to {@link #saveAddressBook(ReadOnlyHenri)}.
+     * Similar to {@link #saveHenri(ReadOnlyHenri)}.
      *
      * @param filePath location of the data. Cannot be null.
      */
-    public void saveAddressBook(ReadOnlyHenri addressBook, Path filePath) throws IOException {
-        requireNonNull(addressBook);
+    public void saveHenri(ReadOnlyHenri henri, Path filePath) throws IOException {
+        requireNonNull(henri);
         requireNonNull(filePath);
 
         FileUtil.createIfMissing(filePath);
-        JsonUtil.saveJsonFile(new JsonSerializableAddressBook(addressBook), filePath);
+        JsonUtil.saveJsonFile(new JsonSerializableHenri(henri), filePath);
     }
 
 }

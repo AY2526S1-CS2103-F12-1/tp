@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Manages audit log entries for the address book.
+ * Manages audit log entries for Henri.
  */
 public class AuditLog {
     private final List<AuditLogEntry> entries;

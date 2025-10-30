@@ -4,9 +4,9 @@
   pageNav: 3
 ---
 
-# AB-3 User Guide
+# Henri User Guide
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a  Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+Henri Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a  Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -18,11 +18,11 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+1. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103-F12-1/tp/releases).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+1. Copy the file to the folder you want to use as the _home folder_ for your Henri.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
+1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar henri.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
@@ -31,7 +31,7 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
    * `list` : Lists all contacts.
 
-   * `add -name John Doe -hp 98765432 -em johnd@example.com -addr John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * `add -name John Doe -hp 98765432 -em johnd@example.com -addr John street, block 123, #01-01` : Adds a contact named `John Doe` to Henri.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -78,12 +78,12 @@ Format: `help`
 
 ### Adding a person: `add`
 
-Adds a person to the address book.
+Adds a person to Henri.
 
 Format: `add -name NAME -hp PHONE_NUMBER -em EMAIL -addr ADDRESS [-tag TAG]…​`
 
 #### Required Parameters
-1. `-name` - name of the person being added to the address book
+1. `-name` - name of the person being added to Henri
 2. `-hp`   - numerical phone number of the person (minimum 3 digits)
 3. `-em`   - email address in the format 'user@domain'
 4. `-addr` - the address of the person in string format
@@ -103,13 +103,13 @@ Examples:
 
 ### Listing all persons : `list`
 
-Shows a list of all persons in the address book.
+Shows a list of all persons in Henri.
 
 Format: `list`
 
 ### Editing a person : `edit`
 
-Edits an existing person in the address book.
+Edits an existing person in Henri.
 
 Format: `edit INDEX [-name NAME] [-hp PHONE] [-em EMAIL] [-addr ADDRESS] [-tag TAG]…​`
 
@@ -121,7 +121,7 @@ Format: `edit INDEX [-name NAME] [-hp PHONE] [-em EMAIL] [-addr ADDRESS] [-tag T
     specifying any tags after it.
 
 #### Possible Parameters
-1. `-name` - name of the person being added to the address book
+1. `-name` - name of the person being added to Henri
 2. `-hp`   - numerical phone number of the person (minimum 3 digits)
 3. `-em`   - email address in the format 'user@domain'
 4. `-addr` - the address of the person in string format
@@ -152,7 +152,7 @@ Examples:
 
 ### Deleting a person : `delete`
 
-Deletes the specified person from the address book.
+Deletes the specified person from Henri.
 
 Format: `delete INDEX`
 
@@ -161,18 +161,18 @@ Format: `delete INDEX`
 * The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
+* `list` followed by `delete 2` deletes the 2nd person in Henri.
 * `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
 
 ### Clearing all entries : `clear`
 
-Clears all entries from the address book.
+Clears all entries from Henri.
 
 Format: `clear`
 
 ### Importing contacts from data file : `import`
 
-Imports contact data from a specific JSON file from the data folder into the main address book.
+Imports contact data from a specific JSON file from the data folder into the main Henri
 
 Format: `import FILENAME.json`
 
@@ -182,7 +182,7 @@ Format: `import FILENAME.json`
 - Duplicate contacts with the same employee ID will not be imported
 
 Example:
-- `import oldContacts.json` imports non-duplicate contacts from 'data/oldContacts.json' into the address book.
+- `import oldContacts.json` imports non-duplicate contacts from 'data/oldContacts.json' into Henri.
 
 ### Exiting the program : `exit`
 
@@ -192,17 +192,17 @@ Format: `exit`
 
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+Henri data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/dat-addr addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+Henri data are saved automatically as a JSON file `[JAR file location]/dat-addr henri.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <box type="warning" seamless>
 
 **Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+If your changes to the data file makes its format invalid, Henri will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
+Furthermore, certain edits can cause the Henri to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
 ### Archiving data files `[coming in v2.0]`
@@ -214,7 +214,7 @@ _Details coming soon ..._
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Henri home folder.
 
 --------------------------------------------------------------------------------------------------------------------
 

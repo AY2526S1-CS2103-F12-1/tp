@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.henri.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.henri.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.henri.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.henri.testutil.TypicalPersons.getTypicalHenri;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +26,7 @@ import seedu.henri.testutil.PersonBuilder;
  */
 public class UntagCommandTest {
 
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalHenri(), new UserPrefs());
 
     @Test
     public void execute_removeSingleTagUnfilteredList_success() throws Exception {
@@ -55,7 +55,7 @@ public class UntagCommandTest {
 
         String expectedMessage = String.format(UntagCommand.MESSAGE_UNTAG_SUCCESS, Messages.format(untaggedPerson));
 
-        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getHenri()), new UserPrefs());
         expectedModel.setPerson(personToUntag, untaggedPerson);
 
         assertCommandSuccess(untagCommand, model, expectedMessage, expectedModel);
@@ -85,7 +85,7 @@ public class UntagCommandTest {
 
         String expectedMessage = String.format(UntagCommand.MESSAGE_UNTAG_SUCCESS, Messages.format(untaggedPerson));
 
-        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getHenri()), new UserPrefs());
         expectedModel.setPerson(personToUntag, untaggedPerson);
 
         assertCommandSuccess(untagCommand, model, expectedMessage, expectedModel);

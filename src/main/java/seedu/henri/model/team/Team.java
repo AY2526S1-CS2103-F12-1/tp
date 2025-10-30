@@ -10,7 +10,7 @@ import java.util.Objects;
 import seedu.henri.commons.util.ToStringBuilder;
 
 /**
- * Represents a Team in the address book.
+ * Represents a Team in Henri.
  * Members are represented as a list of person IDs (String).
  * Leader is represented by a person ID (String).
  */

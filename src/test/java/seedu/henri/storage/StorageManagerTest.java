@@ -2,7 +2,7 @@ package seedu.henri.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static seedu.henri.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.henri.testutil.TypicalPersons.getTypicalHenri;
 
 import java.nio.file.Path;
 
@@ -24,9 +24,9 @@ public class StorageManagerTest {
 
     @BeforeEach
     public void setUp() {
-        JsonHenriStorage addressBookStorage = new JsonHenriStorage(getTempFilePath("ab"));
+        JsonHenriStorage henriStorage = new JsonHenriStorage(getTempFilePath("ab"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
-        storageManager = new StorageManager(addressBookStorage, userPrefsStorage);
+        storageManager = new StorageManager(henriStorage, userPrefsStorage);
     }
 
     private Path getTempFilePath(String fileName) {
@@ -48,21 +48,21 @@ public class StorageManagerTest {
     }
 
     @Test
-    public void addressBookReadSave() throws Exception {
+    public void henriReadSave() throws Exception {
         /*
          * Note: This is an integration test that verifies the StorageManager is properly wired to the
-         * {@link JsonAddressBookStorage} class.
-         * More extensive testing of UserPref saving/reading is done in {@link JsonAddressBookStorageTest} class.
+         * {@link JsonHenriStorage} class.
+         * More extensive testing of UserPref saving/reading is done in {@link JsonHenriStorageTest} class.
          */
-        Henri original = getTypicalAddressBook();
-        storageManager.saveAddressBook(original);
-        ReadOnlyHenri retrieved = storageManager.readAddressBook().get();
+        Henri original = getTypicalHenri();
+        storageManager.saveHenri(original);
+        ReadOnlyHenri retrieved = storageManager.readHenri().get();
         assertEquals(original, new Henri(retrieved));
     }
 
     @Test
-    public void getAddressBookFilePath() {
-        assertNotNull(storageManager.getAddressBookFilePath());
+    public void getHenriFilePath() {
+        assertNotNull(storageManager.getHenriFilePath());
     }
 
 }
