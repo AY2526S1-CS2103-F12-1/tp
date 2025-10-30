@@ -14,13 +14,13 @@ import org.junit.jupiter.api.Test;
 
 import seedu.henri.commons.exceptions.IllegalValueException;
 import seedu.henri.commons.util.JsonUtil;
-import seedu.henri.model.AddressBook;
+import seedu.henri.model.Henri;
 import seedu.henri.model.audit.AuditLog;
 import seedu.henri.model.person.exceptions.DuplicatePersonException;
 import seedu.henri.testutil.AddressBookBuilder;
 import seedu.henri.testutil.TypicalPersons;
 
-public class JsonSerializableAddressBookTest {
+public class JsonSerializableHenriTest {
 
     private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data", "JsonSerializableAddressBookTest");
     private static final Path TYPICAL_PERSONS_FILE = TEST_DATA_FOLDER.resolve("typicalPersonsAddressBook.json");
@@ -31,9 +31,9 @@ public class JsonSerializableAddressBookTest {
     public void toModelType_typicalPersonsFile_success() throws Exception {
         JsonSerializableAddressBook dataFromFile = JsonUtil.readJsonFile(TYPICAL_PERSONS_FILE,
                 JsonSerializableAddressBook.class).get();
-        AddressBook addressBookFromFile = dataFromFile.toModelType();
-        AddressBook typicalPersonsAddressBook = TypicalPersons.getTypicalAddressBook();
-        assertEquals(addressBookFromFile, typicalPersonsAddressBook);
+        Henri henriFromFile = dataFromFile.toModelType();
+        Henri typicalPersonsHenri = TypicalPersons.getTypicalAddressBook();
+        assertEquals(henriFromFile, typicalPersonsHenri);
     }
 
     @Test
@@ -53,12 +53,12 @@ public class JsonSerializableAddressBookTest {
 
     @Test
     public void toModelType_validAuditLog_success() throws Exception {
-        AddressBook original = TypicalPersons.getTypicalAddressBook();
+        Henri original = TypicalPersons.getTypicalAddressBook();
         original.addAuditEntry("ADD", "Added person: Alice");
         original.addAuditEntry("EDIT", "Edited person: Bob");
 
         JsonSerializableAddressBook jsonBook = new JsonSerializableAddressBook(original);
-        AddressBook converted = jsonBook.toModelType();
+        Henri converted = jsonBook.toModelType();
         AuditLog auditLog = converted.getAuditLog();
 
         assertEquals(2, auditLog.getEntries().size());
@@ -68,9 +68,9 @@ public class JsonSerializableAddressBookTest {
 
     @Test
     public void toModelType_emptyAuditLog_success() throws Exception {
-        AddressBook original = TypicalPersons.getTypicalAddressBook();
+        Henri original = TypicalPersons.getTypicalAddressBook();
         JsonSerializableAddressBook jsonBook = new JsonSerializableAddressBook(original);
-        AddressBook converted = jsonBook.toModelType();
+        Henri converted = jsonBook.toModelType();
         AuditLog auditLog = converted.getAuditLog();
 
         assertNotNull(auditLog);
@@ -79,12 +79,12 @@ public class JsonSerializableAddressBookTest {
 
     @Test
     public void toModelType_auditLogPersistence_success() throws Exception {
-        AddressBook original = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        Henri original = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
         original.addAuditEntry("TEST", "Test action");
         original.addAuditEntry("DELETE", "Deleted person");
 
         JsonSerializableAddressBook jsonBook = new JsonSerializableAddressBook(original);
-        AddressBook converted = jsonBook.toModelType();
+        Henri converted = jsonBook.toModelType();
 
         assertEquals(2, converted.getAuditLog().getEntries().size());
         assertEquals("TEST", converted.getAuditLog().getEntries().get(0).getAction());
@@ -93,13 +93,13 @@ public class JsonSerializableAddressBookTest {
 
     @Test
     public void toModelType_multipleAuditEntries_correctOrder() throws Exception {
-        AddressBook original = new AddressBook();
+        Henri original = new Henri();
         original.addAuditEntry("FIRST", "First entry");
         original.addAuditEntry("SECOND", "Second entry");
         original.addAuditEntry("THIRD", "Third entry");
 
         JsonSerializableAddressBook jsonBook = new JsonSerializableAddressBook(original);
-        AddressBook converted = jsonBook.toModelType();
+        Henri converted = jsonBook.toModelType();
 
         assertEquals(3, converted.getAuditLog().getEntries().size());
         assertEquals("FIRST", converted.getAuditLog().getEntries().get(0).getAction());

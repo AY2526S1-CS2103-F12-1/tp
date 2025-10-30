@@ -38,7 +38,7 @@ import seedu.henri.testutil.EditPersonDescriptorBuilder;
 import seedu.henri.testutil.PersonBuilder;
 import seedu.henri.testutil.PersonUtil;
 
-public class AddressBookParserTest {
+public class HenriParserTest {
 
     private final AddressBookParser parser = new AddressBookParser();
 

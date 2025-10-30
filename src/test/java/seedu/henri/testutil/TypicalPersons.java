@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import seedu.henri.model.AddressBook;
+import seedu.henri.model.Henri;
 import seedu.henri.model.person.Person;
 
 /**
@@ -123,8 +123,8 @@ public class TypicalPersons {
     /**
      * Returns an {@code AddressBook} with all the typical persons.
      */
-    public static AddressBook getTypicalAddressBook() {
-        AddressBook ab = new AddressBook();
+    public static Henri getTypicalAddressBook() {
+        Henri ab = new Henri();
         for (Person person : getTypicalPersons()) {
             ab.addPerson(person);
         }

@@ -16,7 +16,7 @@ import java.util.List;
 
 import seedu.henri.commons.core.index.Index;
 import seedu.henri.logic.commands.exceptions.CommandException;
-import seedu.henri.model.AddressBook;
+import seedu.henri.model.Henri;
 import seedu.henri.model.Model;
 import seedu.henri.model.person.NameContainsKeywordsPredicate;
 import seedu.henri.model.person.Person;
@@ -113,11 +113,11 @@ public class CommandTestUtil {
     public static void assertCommandFailure(Command command, Model actualModel, String expectedMessage) {
         // we are unable to defensively copy the model for comparison later, so we can
         // only do so by copying its components.
-        AddressBook expectedAddressBook = new AddressBook(actualModel.getAddressBook());
+        Henri expectedHenri = new Henri(actualModel.getAddressBook());
         List<Person> expectedFilteredList = new ArrayList<>(actualModel.getFilteredPersonList());
 
         assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
-        assertEquals(expectedAddressBook, actualModel.getAddressBook());
+        assertEquals(expectedHenri, actualModel.getAddressBook());
         assertEquals(expectedFilteredList, actualModel.getFilteredPersonList());
     }
     /**

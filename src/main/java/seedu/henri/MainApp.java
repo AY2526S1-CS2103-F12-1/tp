@@ -15,15 +15,15 @@ import seedu.henri.commons.util.ConfigUtil;
 import seedu.henri.commons.util.StringUtil;
 import seedu.henri.logic.Logic;
 import seedu.henri.logic.LogicManager;
-import seedu.henri.model.AddressBook;
+import seedu.henri.model.Henri;
 import seedu.henri.model.Model;
 import seedu.henri.model.ModelManager;
-import seedu.henri.model.ReadOnlyAddressBook;
+import seedu.henri.model.ReadOnlyHenri;
 import seedu.henri.model.ReadOnlyUserPrefs;
 import seedu.henri.model.UserPrefs;
 import seedu.henri.model.util.SampleDataUtil;
-import seedu.henri.storage.AddressBookStorage;
-import seedu.henri.storage.JsonAddressBookStorage;
+import seedu.henri.storage.HenriStorage;
+import seedu.henri.storage.JsonHenriStorage;
 import seedu.henri.storage.JsonUserPrefsStorage;
 import seedu.henri.storage.Storage;
 import seedu.henri.storage.StorageManager;
@@ -57,8 +57,8 @@ public class MainApp extends Application {
 
         UserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(config.getUserPrefsFilePath());
         UserPrefs userPrefs = initPrefs(userPrefsStorage);
-        AddressBookStorage addressBookStorage = new JsonAddressBookStorage(userPrefs.getAddressBookFilePath());
-        storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        HenriStorage henriStorage = new JsonHenriStorage(userPrefs.getAddressBookFilePath());
+        storage = new StorageManager(henriStorage, userPrefsStorage);
 
         model = initModelManager(storage, userPrefs);
 
@@ -75,8 +75,8 @@ public class MainApp extends Application {
     private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
         logger.info("Using data file : " + storage.getAddressBookFilePath());
 
-        Optional<ReadOnlyAddressBook> addressBookOptional;
-        ReadOnlyAddressBook initialData;
+        Optional<ReadOnlyHenri> addressBookOptional;
+        ReadOnlyHenri initialData;
         try {
             addressBookOptional = storage.readAddressBook();
             if (!addressBookOptional.isPresent()) {
@@ -87,7 +87,7 @@ public class MainApp extends Application {
         } catch (DataLoadingException e) {
             logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
                     + " Will be starting with an empty AddressBook.");
-            initialData = new AddressBook();
+            initialData = new Henri();
         }
 
         return new ModelManager(initialData, userPrefs);

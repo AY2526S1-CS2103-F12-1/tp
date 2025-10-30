@@ -8,7 +8,7 @@ import java.util.Optional;
 import seedu.henri.commons.util.ToStringBuilder;
 import seedu.henri.logic.commands.exceptions.CommandException;
 import seedu.henri.model.Model;
-import seedu.henri.model.ReadOnlyAddressBook;
+import seedu.henri.model.ReadOnlyHenri;
 import seedu.henri.model.person.Person;
 import seedu.henri.model.team.Team;
 import seedu.henri.model.team.TeamName;
@@ -70,7 +70,7 @@ public class CreateTeamCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_TEAM);
         }
 
-        ReadOnlyAddressBook ab = model.getAddressBook();
+        ReadOnlyHenri ab = model.getAddressBook();
         boolean nameDuplicate = ab.getTeamList().stream()
                 .anyMatch(t -> t.getTeamName().equals(toAdd.getTeamName()));
         if (nameDuplicate) {

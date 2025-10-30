@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import seedu.henri.model.AddressBook;
-import seedu.henri.model.ReadOnlyAddressBook;
+import seedu.henri.model.Henri;
+import seedu.henri.model.ReadOnlyHenri;
 import seedu.henri.model.person.Address;
 import seedu.henri.model.person.Email;
 import seedu.henri.model.person.GitHubUsername;
@@ -45,8 +45,8 @@ public class SampleDataUtil {
         };
     }
 
-    public static ReadOnlyAddressBook getSampleAddressBook() {
-        AddressBook sampleAb = new AddressBook();
+    public static ReadOnlyHenri getSampleAddressBook() {
+        Henri sampleAb = new Henri();
         for (Person samplePerson : getSamplePersons()) {
             sampleAb.addPerson(samplePerson);
         }

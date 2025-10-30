@@ -12,10 +12,10 @@ import seedu.henri.commons.exceptions.DataLoadingException;
 import seedu.henri.commons.util.ToStringBuilder;
 import seedu.henri.logic.commands.exceptions.CommandException;
 import seedu.henri.model.Model;
-import seedu.henri.model.ReadOnlyAddressBook;
+import seedu.henri.model.ReadOnlyHenri;
 import seedu.henri.model.person.Person;
 import seedu.henri.model.util.SampleDataUtil;
-import seedu.henri.storage.JsonAddressBookStorage;
+import seedu.henri.storage.JsonHenriStorage;
 import seedu.henri.storage.StorageManager;
 
 /**
@@ -46,10 +46,10 @@ public class ImportCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        JsonAddressBookStorage tempBookStorage = new JsonAddressBookStorage(filePath);
+        JsonHenriStorage tempBookStorage = new JsonHenriStorage(filePath);
         try {
-            Optional<ReadOnlyAddressBook> importedAddressBookOptional = tempBookStorage.readAddressBook();
-            ReadOnlyAddressBook importedData = importedAddressBookOptional
+            Optional<ReadOnlyHenri> importedAddressBookOptional = tempBookStorage.readAddressBook();
+            ReadOnlyHenri importedData = importedAddressBookOptional
                     .orElseGet(SampleDataUtil::getSampleAddressBook);
             List<Person> importedPersons = importedData.getPersonList();
             this.addImportedPersons(model, importedPersons);

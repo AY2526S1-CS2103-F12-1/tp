@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import seedu.henri.logic.commands.exceptions.CommandException;
-import seedu.henri.model.AddressBook;
+import seedu.henri.model.Henri;
 import seedu.henri.model.Model;
 import seedu.henri.model.ModelManager;
 import seedu.henri.model.UserPrefs;
@@ -23,7 +23,7 @@ public class RemoveFromTeamCommandTest {
 
     @Test
     public void execute_removesMemberAndUpdatesPerson() throws Exception {
-        Model model = new ModelManager(new AddressBook(), new UserPrefs());
+        Model model = new ModelManager(new Henri(), new UserPrefs());
         Person p = new PersonBuilder().withId(1).build();
         model.addPerson(p);
 
@@ -50,7 +50,7 @@ public class RemoveFromTeamCommandTest {
 
     @Test
     public void execute_personNotFound_throwsCommandException() {
-        Model model = new ModelManager(new AddressBook(), new UserPrefs());
+        Model model = new ModelManager(new Henri(), new UserPrefs());
         model.addTeam(new TeamBuilder().withId("T0001").withMembers("E0001").build());
 
         RemoveFromTeamCommand cmd = new RemoveFromTeamCommand("T0001", "E9999");
@@ -60,7 +60,7 @@ public class RemoveFromTeamCommandTest {
 
     @Test
     public void execute_teamNotFound_throwsCommandException() {
-        Model model = new ModelManager(new AddressBook(), new UserPrefs());
+        Model model = new ModelManager(new Henri(), new UserPrefs());
         Person p = new PersonBuilder().withId(1).build();
         model.addPerson(p);
 
@@ -71,7 +71,7 @@ public class RemoveFromTeamCommandTest {
 
     @Test
     public void execute_notMember_throwsCommandException() {
-        Model model = new ModelManager(new AddressBook(), new UserPrefs());
+        Model model = new ModelManager(new Henri(), new UserPrefs());
         Person p = new PersonBuilder().withId(1).build();
         model.addPerson(p);
 

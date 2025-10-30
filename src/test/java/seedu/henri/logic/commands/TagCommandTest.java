@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.henri.logic.Messages;
 import seedu.henri.logic.commands.exceptions.CommandException;
-import seedu.henri.model.AddressBook;
+import seedu.henri.model.Henri;
 import seedu.henri.model.Model;
 import seedu.henri.model.ModelManager;
 import seedu.henri.model.UserPrefs;
@@ -45,7 +45,7 @@ public class TagCommandTest {
 
         String expectedMessage = String.format(TagCommand.MESSAGE_TAG_SUCCESS, Messages.format(taggedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToTag, taggedPerson);
 
         assertCommandSuccess(tagCommand, model, expectedMessage, expectedModel);
@@ -69,7 +69,7 @@ public class TagCommandTest {
 
         String expectedMessage = String.format(TagCommand.MESSAGE_TAG_SUCCESS, Messages.format(taggedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToTag, taggedPerson);
 
         assertCommandSuccess(tagCommand, model, expectedMessage, expectedModel);
@@ -100,7 +100,7 @@ public class TagCommandTest {
         // Should succeed without error (idempotent operation)
         String expectedMessage = String.format(TagCommand.MESSAGE_TAG_SUCCESS, Messages.format(personToTag));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
 
         assertCommandSuccess(tagCommand, model, expectedMessage, expectedModel);
     }

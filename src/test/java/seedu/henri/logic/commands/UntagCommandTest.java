@@ -13,7 +13,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import seedu.henri.logic.Messages;
-import seedu.henri.model.AddressBook;
+import seedu.henri.model.Henri;
 import seedu.henri.model.Model;
 import seedu.henri.model.ModelManager;
 import seedu.henri.model.UserPrefs;
@@ -55,7 +55,7 @@ public class UntagCommandTest {
 
         String expectedMessage = String.format(UntagCommand.MESSAGE_UNTAG_SUCCESS, Messages.format(untaggedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToUntag, untaggedPerson);
 
         assertCommandSuccess(untagCommand, model, expectedMessage, expectedModel);
@@ -85,7 +85,7 @@ public class UntagCommandTest {
 
         String expectedMessage = String.format(UntagCommand.MESSAGE_UNTAG_SUCCESS, Messages.format(untaggedPerson));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new Henri(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToUntag, untaggedPerson);
 
         assertCommandSuccess(untagCommand, model, expectedMessage, expectedModel);

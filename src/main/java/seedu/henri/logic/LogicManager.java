@@ -17,7 +17,7 @@ import seedu.henri.logic.parser.AddCommandParser;
 import seedu.henri.logic.parser.AddressBookParser;
 import seedu.henri.logic.parser.exceptions.ParseException;
 import seedu.henri.model.Model;
-import seedu.henri.model.ReadOnlyAddressBook;
+import seedu.henri.model.ReadOnlyHenri;
 import seedu.henri.model.person.Person;
 import seedu.henri.storage.Storage;
 
@@ -92,7 +92,7 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public ReadOnlyAddressBook getAddressBook() {
+    public ReadOnlyHenri getAddressBook() {
         return model.getAddressBook();
     }
 

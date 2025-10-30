@@ -2,7 +2,7 @@ package seedu.henri.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import seedu.henri.model.AddressBook;
+import seedu.henri.model.Henri;
 import seedu.henri.model.Model;
 
 /**
@@ -18,7 +18,7 @@ public class ClearCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         int personCount = model.getAddressBook().getPersonList().size();
-        model.setAddressBook(new AddressBook());
+        model.setAddressBook(new Henri());
         model.addAuditEntry("CLEAR", String.format("Cleared all data (%d persons)", personCount));
         return new CommandResult(MESSAGE_SUCCESS);
     }

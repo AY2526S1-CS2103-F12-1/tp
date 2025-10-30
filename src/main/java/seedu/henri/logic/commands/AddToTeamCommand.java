@@ -9,7 +9,7 @@ import java.util.Objects;
 import seedu.henri.commons.util.ToStringBuilder;
 import seedu.henri.logic.commands.exceptions.CommandException;
 import seedu.henri.model.Model;
-import seedu.henri.model.ReadOnlyAddressBook;
+import seedu.henri.model.ReadOnlyHenri;
 import seedu.henri.model.person.Person;
 import seedu.henri.model.person.exceptions.DuplicatePersonException;
 import seedu.henri.model.person.exceptions.PersonNotFoundException;
@@ -92,7 +92,7 @@ public class AddToTeamCommand extends Command {
     }
 
     private Team getTeam(Model model) throws CommandException {
-        ReadOnlyAddressBook ab = model.getAddressBook();
+        ReadOnlyHenri ab = model.getAddressBook();
         Team team = ab.getTeamList().stream()
                 .filter(t -> Objects.equals(t.getId(), teamId))
                 .findFirst()

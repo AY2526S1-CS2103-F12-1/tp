@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import seedu.henri.logic.commands.exceptions.CommandException;
-import seedu.henri.model.AddressBook;
+import seedu.henri.model.Henri;
 import seedu.henri.model.Model;
 import seedu.henri.model.ModelManager;
 import seedu.henri.model.UserPrefs;
@@ -22,7 +22,7 @@ public class CreateTeamCommandTest {
 
     @Test
     public void execute_validLeader_createsTeam() throws Exception {
-        Model model = new ModelManager(new AddressBook(), new UserPrefs());
+        Model model = new ModelManager(new Henri(), new UserPrefs());
         Person leader = new PersonBuilder().withId(1).build();
         model.addPerson(leader);
 
@@ -38,7 +38,7 @@ public class CreateTeamCommandTest {
 
     @Test
     public void execute_leaderNotFound_throwsCommandException() {
-        Model model = new ModelManager(new AddressBook(), new UserPrefs());
+        Model model = new ModelManager(new Henri(), new UserPrefs());
 
         CreateTeamCommand cmd = new CreateTeamCommand("Team Alpha", "E9999");
         CommandException ex = assertThrows(CommandException.class, () -> cmd.execute(model));
@@ -47,7 +47,7 @@ public class CreateTeamCommandTest {
 
     @Test
     public void execute_duplicateTeam_throwsCommandException() throws Exception {
-        Model model = new ModelManager(new AddressBook(), new UserPrefs());
+        Model model = new ModelManager(new Henri(), new UserPrefs());
         Person leader = new PersonBuilder().withId(1).build();
         model.addPerson(leader);
 

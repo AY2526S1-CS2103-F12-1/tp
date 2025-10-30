@@ -22,25 +22,25 @@ import seedu.henri.model.team.Team;
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final AddressBook addressBook;
+    private final Henri henri;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUserPrefs userPrefs) {
+    public ModelManager(ReadOnlyHenri addressBook, ReadOnlyUserPrefs userPrefs) {
         requireAllNonNull(addressBook, userPrefs);
 
         logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
 
-        this.addressBook = new AddressBook(addressBook);
+        this.henri = new Henri(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
-        filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredPersons = new FilteredList<>(this.henri.getPersonList());
     }
 
     public ModelManager() {
-        this(new AddressBook(), new UserPrefs());
+        this(new Henri(), new UserPrefs());
     }
 
     //=========== UserPrefs ==================================================================================
@@ -81,55 +81,55 @@ public class ModelManager implements Model {
     //=========== AddressBook ================================================================================
 
     @Override
-    public void setAddressBook(ReadOnlyAddressBook addressBook) {
-        this.addressBook.resetData(addressBook);
+    public void setAddressBook(ReadOnlyHenri addressBook) {
+        this.henri.resetData(addressBook);
     }
 
     @Override
-    public ReadOnlyAddressBook getAddressBook() {
-        return addressBook;
+    public ReadOnlyHenri getAddressBook() {
+        return henri;
     }
 
     @Override
     public boolean hasPerson(Person person) {
         requireNonNull(person);
-        return addressBook.hasPerson(person);
+        return henri.hasPerson(person);
     }
 
     @Override
     public boolean hasTeam(Team team) {
         requireNonNull(team);
-        return addressBook.hasTeam(team);
+        return henri.hasTeam(team);
     }
 
     @Override
     public void deletePerson(Person target) {
-        addressBook.removePerson(target);
+        henri.removePerson(target);
     }
 
     @Override
     public void addPerson(Person person) {
-        addressBook.addPerson(person);
+        henri.addPerson(person);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
     }
 
     @Override
     public void addTeam(Team team) {
         requireNonNull(team);
-        addressBook.addTeam(team);
+        henri.addTeam(team);
     }
 
     @Override
     public void setPerson(Person target, Person editedPerson) {
         requireAllNonNull(target, editedPerson);
 
-        addressBook.setPerson(target, editedPerson);
+        henri.setPerson(target, editedPerson);
     }
 
     @Override
     public Person find(Predicate<Person> predicate) {
         requireNonNull(predicate);
-        return addressBook.getPersonList().stream().filter(predicate).findFirst().orElse(null);
+        return henri.getPersonList().stream().filter(predicate).findFirst().orElse(null);
     }
 
     //=========== Filtered Person List Accessors =============================================================
@@ -160,11 +160,11 @@ public class ModelManager implements Model {
             return false;
         }
 
-        boolean isSameAddressBook = addressBook.equals(otherModelManager.addressBook);
+        boolean isSameAddressBook = henri.equals(otherModelManager.henri);
         boolean isSameUserPrefs = userPrefs.equals(otherModelManager.userPrefs);
         boolean isSameFilteredPersons = filteredPersons.equals(otherModelManager.filteredPersons);
 
-        return addressBook.equals(otherModelManager.addressBook)
+        return henri.equals(otherModelManager.henri)
                 && userPrefs.equals(otherModelManager.userPrefs)
                 && filteredPersons.equals(otherModelManager.filteredPersons);
     }
@@ -172,12 +172,12 @@ public class ModelManager implements Model {
     //=========== Audit Log Entry  =============================================================
     @Override
     public void addAuditEntry(String action, String details) {
-        addressBook.addAuditEntry(action, details);
+        henri.addAuditEntry(action, details);
     }
 
     @Override
     public AuditLog getAuditLog() {
-        return addressBook.getAuditLog();
+        return henri.getAuditLog();
     }
 
     //=========== Organization Hierarchy Accessors =============================================================
@@ -201,18 +201,18 @@ public class ModelManager implements Model {
     @Override
     public void removeTeam(Team team) {
         requireNonNull(team);
-        addressBook.removeTeam(team);
+        henri.removeTeam(team);
     }
 
     @Override
     public void sortPersons(Comparator<Person> comparator) {
         requireNonNull(comparator);
-        addressBook.sortPersons(comparator);
+        henri.sortPersons(comparator);
     }
 
     @Override
     public void setTeam(Team target, Team editedTeam) {
         requireAllNonNull(target, editedTeam);
-        addressBook.setTeam(target, editedTeam);
+        henri.setTeam(target, editedTeam);
     }
 }

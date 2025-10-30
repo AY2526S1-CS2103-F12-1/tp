@@ -8,7 +8,7 @@ import seedu.henri.model.team.Team;
 /**
  * Unmodifiable view of an address book
  */
-public interface ReadOnlyAddressBook {
+public interface ReadOnlyHenri {
 
     /**
      * Returns an unmodifiable view of the persons list.

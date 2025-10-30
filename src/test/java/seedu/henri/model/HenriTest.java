@@ -24,25 +24,25 @@ import seedu.henri.model.person.exceptions.DuplicatePersonException;
 import seedu.henri.model.team.Team;
 import seedu.henri.testutil.PersonBuilder;
 
-public class AddressBookTest {
+public class HenriTest {
 
-    private final AddressBook addressBook = new AddressBook();
+    private final Henri henri = new Henri();
 
     @Test
     public void constructor() {
-        assertEquals(Collections.emptyList(), addressBook.getPersonList());
+        assertEquals(Collections.emptyList(), henri.getPersonList());
     }
 
     @Test
     public void resetData_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> addressBook.resetData(null));
+        assertThrows(NullPointerException.class, () -> henri.resetData(null));
     }
 
     @Test
     public void resetData_withValidReadOnlyAddressBook_replacesData() {
-        AddressBook newData = getTypicalAddressBook();
-        addressBook.resetData(newData);
-        assertEquals(newData, addressBook);
+        Henri newData = getTypicalAddressBook();
+        henri.resetData(newData);
+        assertEquals(newData, henri);
     }
 
     @Test
@@ -51,95 +51,95 @@ public class AddressBookTest {
         Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
                 .build();
         List<Person> newPersons = Arrays.asList(ALICE, editedAlice);
-        AddressBookStub newData = new AddressBookStub(newPersons);
+        HenriStub newData = new HenriStub(newPersons);
 
-        assertThrows(DuplicatePersonException.class, () -> addressBook.resetData(newData));
+        assertThrows(DuplicatePersonException.class, () -> henri.resetData(newData));
     }
 
     @Test
     public void resetData_withAuditLog_restoresAuditLog() {
         // Create an address book with audit log entries
-        AddressBook sourceAddressBook = new AddressBook();
-        sourceAddressBook.addPerson(ALICE);
-        sourceAddressBook.addAuditEntry("ADD", "Added Alice");
-        sourceAddressBook.addAuditEntry("EDIT", "Edited Alice");
+        Henri sourceHenri = new Henri();
+        sourceHenri.addPerson(ALICE);
+        sourceHenri.addAuditEntry("ADD", "Added Alice");
+        sourceHenri.addAuditEntry("EDIT", "Edited Alice");
 
         // Reset data to a new address book
-        AddressBook targetAddressBook = new AddressBook();
-        targetAddressBook.resetData(sourceAddressBook);
+        Henri targetHenri = new Henri();
+        targetHenri.resetData(sourceHenri);
 
         // Verify audit log is restored
-        assertEquals(2, targetAddressBook.getAuditLog().getEntries().size());
-        assertEquals("ADD", targetAddressBook.getAuditLog().getEntries().get(0).getAction());
-        assertEquals("Added Alice", targetAddressBook.getAuditLog().getEntries().get(0).getDetails());
-        assertEquals("EDIT", targetAddressBook.getAuditLog().getEntries().get(1).getAction());
-        assertEquals("Edited Alice", targetAddressBook.getAuditLog().getEntries().get(1).getDetails());
+        assertEquals(2, targetHenri.getAuditLog().getEntries().size());
+        assertEquals("ADD", targetHenri.getAuditLog().getEntries().get(0).getAction());
+        assertEquals("Added Alice", targetHenri.getAuditLog().getEntries().get(0).getDetails());
+        assertEquals("EDIT", targetHenri.getAuditLog().getEntries().get(1).getAction());
+        assertEquals("Edited Alice", targetHenri.getAuditLog().getEntries().get(1).getDetails());
     }
 
     @Test
     public void resetData_withExistingAuditLog_clearsAndRestores() {
         // Create target address book with existing audit log
-        AddressBook targetAddressBook = new AddressBook();
-        targetAddressBook.addAuditEntry("DELETE", "Old entry");
+        Henri targetHenri = new Henri();
+        targetHenri.addAuditEntry("DELETE", "Old entry");
 
         // Create source address book with different audit log
-        AddressBook sourceAddressBook = new AddressBook();
-        sourceAddressBook.addAuditEntry("ADD", "New entry");
+        Henri sourceHenri = new Henri();
+        sourceHenri.addAuditEntry("ADD", "New entry");
 
         // Reset data
-        targetAddressBook.resetData(sourceAddressBook);
+        targetHenri.resetData(sourceHenri);
 
         // Verify old audit log is cleared and new one is restored
-        assertEquals(1, targetAddressBook.getAuditLog().getEntries().size());
-        assertEquals("ADD", targetAddressBook.getAuditLog().getEntries().get(0).getAction());
-        assertEquals("New entry", targetAddressBook.getAuditLog().getEntries().get(0).getDetails());
+        assertEquals(1, targetHenri.getAuditLog().getEntries().size());
+        assertEquals("ADD", targetHenri.getAuditLog().getEntries().get(0).getAction());
+        assertEquals("New entry", targetHenri.getAuditLog().getEntries().get(0).getDetails());
     }
 
 
     @Test
     public void hasPerson_nullPerson_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> addressBook.hasPerson(null));
+        assertThrows(NullPointerException.class, () -> henri.hasPerson(null));
     }
 
     @Test
     public void hasPerson_personNotInAddressBook_returnsFalse() {
-        assertFalse(addressBook.hasPerson(ALICE));
+        assertFalse(henri.hasPerson(ALICE));
     }
 
     @Test
     public void hasPerson_personInAddressBook_returnsTrue() {
-        addressBook.addPerson(ALICE);
-        assertTrue(addressBook.hasPerson(ALICE));
+        henri.addPerson(ALICE);
+        assertTrue(henri.hasPerson(ALICE));
     }
 
     @Test
     public void hasPerson_personWithSameIdentityFieldsInAddressBook_returnsTrue() {
-        addressBook.addPerson(ALICE);
+        henri.addPerson(ALICE);
         Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_HUSBAND)
                 .build();
-        assertTrue(addressBook.hasPerson(editedAlice));
+        assertTrue(henri.hasPerson(editedAlice));
     }
 
     @Test
     public void getPersonList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, () -> addressBook.getPersonList().remove(0));
+        assertThrows(UnsupportedOperationException.class, () -> henri.getPersonList().remove(0));
     }
 
     @Test
     public void toStringMethod() {
-        String expected = AddressBook.class.getCanonicalName()
-                + "{persons=" + addressBook.getPersonList()
-                + ", teams=" + addressBook.getTeamList() + "}";
-        assertEquals(expected, addressBook.toString());
+        String expected = Henri.class.getCanonicalName()
+                + "{persons=" + henri.getPersonList()
+                + ", teams=" + henri.getTeamList() + "}";
+        assertEquals(expected, henri.toString());
     }
 
     /**
      * A stub ReadOnlyAddressBook whose persons list can violate interface constraints.
      */
-    private static class AddressBookStub implements ReadOnlyAddressBook {
+    private static class HenriStub implements ReadOnlyHenri {
         private final ObservableList<Person> persons = FXCollections.observableArrayList();
 
-        AddressBookStub(Collection<Person> persons) {
+        HenriStub(Collection<Person> persons) {
             this.persons.setAll(persons);
         }
 

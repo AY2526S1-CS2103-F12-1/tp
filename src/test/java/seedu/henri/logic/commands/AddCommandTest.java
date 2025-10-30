@@ -19,9 +19,9 @@ import javafx.collections.ObservableList;
 import seedu.henri.commons.core.GuiSettings;
 import seedu.henri.logic.Messages;
 import seedu.henri.logic.commands.exceptions.CommandException;
-import seedu.henri.model.AddressBook;
+import seedu.henri.model.Henri;
 import seedu.henri.model.Model;
-import seedu.henri.model.ReadOnlyAddressBook;
+import seedu.henri.model.ReadOnlyHenri;
 import seedu.henri.model.ReadOnlyUserPrefs;
 import seedu.henri.model.audit.AuditLog;
 import seedu.henri.model.person.Person;
@@ -127,12 +127,12 @@ public class AddCommandTest {
         }
 
         @Override
-        public void setAddressBook(ReadOnlyAddressBook newData) {
+        public void setAddressBook(ReadOnlyHenri newData) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public ReadOnlyAddressBook getAddressBook() {
+        public ReadOnlyHenri getAddressBook() {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -243,8 +243,8 @@ public class AddCommandTest {
         }
 
         @Override
-        public ReadOnlyAddressBook getAddressBook() {
-            return new AddressBook();
+        public ReadOnlyHenri getAddressBook() {
+            return new Henri();
         }
     }
 }

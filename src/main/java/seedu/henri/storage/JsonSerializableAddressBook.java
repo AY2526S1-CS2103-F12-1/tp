@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import seedu.henri.commons.exceptions.IllegalValueException;
-import seedu.henri.model.AddressBook;
-import seedu.henri.model.ReadOnlyAddressBook;
+import seedu.henri.model.Henri;
+import seedu.henri.model.ReadOnlyHenri;
 import seedu.henri.model.audit.AuditLogEntry;
 import seedu.henri.model.person.Person;
 
@@ -41,7 +41,7 @@ class JsonSerializableAddressBook {
      *
      * @param source future changes to this will not affect the created {@code JsonSerializableAddressBook}.
      */
-    public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
+    public JsonSerializableAddressBook(ReadOnlyHenri source) {
         persons.addAll(source.getPersonList().stream().map(JsonAdaptedPerson::new).toList());
         auditLogEntries.addAll(source.getAuditLog().getEntries().stream()
                 .map(JsonAdaptedAuditLogEntry::new).toList());
@@ -52,17 +52,17 @@ class JsonSerializableAddressBook {
      *
      * @throws IllegalValueException if there were any data constraints violated.
      */
-    public AddressBook toModelType() throws IllegalValueException {
-        AddressBook addressBook = new AddressBook();
+    public Henri toModelType() throws IllegalValueException {
+        Henri henri = new Henri();
         for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
             Person person = jsonAdaptedPerson.toModelType();
-            addressBook.addPerson(person);
+            henri.addPerson(person);
         }
         for (JsonAdaptedAuditLogEntry jsonAdaptedEntry : auditLogEntries) {
             AuditLogEntry entry = jsonAdaptedEntry.toModelType();
-            addressBook.getAuditLog().addEntry(entry.getAction(), entry.getDetails(), entry.getTimestamp());
+            henri.getAuditLog().addEntry(entry.getAction(), entry.getDetails(), entry.getTimestamp());
         }
-        return addressBook;
+        return henri;
     }
 
 }

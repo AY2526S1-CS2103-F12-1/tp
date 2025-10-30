@@ -18,19 +18,19 @@ import seedu.henri.model.team.UniqueTeamList;
 /**
  * Represents an in-memory address book containing persons and teams.
  */
-public class AddressBook implements ReadOnlyAddressBook {
+public class Henri implements ReadOnlyHenri {
 
     private final UniquePersonList persons = new UniquePersonList();
     private final UniqueTeamList teams = new UniqueTeamList();
     private final AuditLog auditLog = new AuditLog();
 
 
-    public AddressBook() {}
+    public Henri() {}
 
     /**
      * Creates an AddressBook using the Persons and Teams in the {@code toBeCopied}.
      */
-    public AddressBook(ReadOnlyAddressBook toBeCopied) {
+    public Henri(ReadOnlyHenri toBeCopied) {
         this();
         resetData(toBeCopied);
     }
@@ -61,7 +61,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * @param newData the source data to copy; must not be null
      * @throws NullPointerException if {@code newData} is null
      */
-    public void resetData(ReadOnlyAddressBook newData) {
+    public void resetData(ReadOnlyHenri newData) {
         requireNonNull(newData);
         setPersons(newData.getPersonList());
 
@@ -71,9 +71,9 @@ public class AddressBook implements ReadOnlyAddressBook {
             auditLog.addEntry(entry.getAction(), entry.getDetails(), entry.getTimestamp());
         }
         // ReadOnlyAddressBook is expected to expose getTeamList()
-        if (newData instanceof ReadOnlyAddressBook) {
+        if (newData instanceof ReadOnlyHenri) {
             try {
-                setTeams(((ReadOnlyAddressBook) newData).getTeamList());
+                setTeams(((ReadOnlyHenri) newData).getTeamList());
             } catch (UnsupportedOperationException | ClassCastException e) {
                 // If the provided ReadOnlyAddressBook does not expose teams yet, ignore.
             }
@@ -200,11 +200,11 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof AddressBook otherAddressBook)) {
+        if (!(other instanceof Henri otherHenri)) {
             return false;
         }
 
-        AddressBook otherAb = (AddressBook) other;
+        Henri otherAb = (Henri) other;
         return persons.equals(otherAb.persons) && teams.equals(otherAb.teams);
     }
 

@@ -7,7 +7,7 @@ import seedu.henri.commons.core.GuiSettings;
 import seedu.henri.logic.commands.CommandResult;
 import seedu.henri.logic.commands.exceptions.CommandException;
 import seedu.henri.logic.parser.exceptions.ParseException;
-import seedu.henri.model.ReadOnlyAddressBook;
+import seedu.henri.model.ReadOnlyHenri;
 import seedu.henri.model.person.Person;
 
 /**
@@ -28,7 +28,7 @@ public interface Logic {
      *
      * @see seedu.henri.model.Model#getAddressBook()
      */
-    ReadOnlyAddressBook getAddressBook();
+    ReadOnlyHenri getAddressBook();
 
     /** Returns an unmodifiable view of the filtered list of persons */
     ObservableList<Person> getFilteredPersonList();
