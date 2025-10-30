@@ -107,7 +107,7 @@
       "src": "UserGuide.md",
       "title": "User Guide",
       "headings": {
-        "ab-3-user-guide": "AB-3 User Guide",
+        "henri-user-guide": "Henri User Guide",
         "quick-start": "Quick start",
         "features": "Features",
         "viewing-help-help": "Viewing help : help",
@@ -118,7 +118,8 @@
         "adding-members-to-a-team-add-to-team": "Adding members to a team: add-to-team",
         "removing-members-from-a-team-remove-from-team": "Removing members from a team: remove-from-team",
         "set-a-team-as-a-subteam-of-another-team-set-subteam": "Set a team as a subteam of another team: set-subteam",
-        "locating-persons-by-name-find": "Locating persons by name: find",
+        "deleting-a-team-delete-team": "Deleting a team delete-team",
+        "locating-persons-by-name-view": "Locating persons by name: view",
         "deleting-a-person-delete": "Deleting a person : delete",
         "clearing-all-entries-clear": "Clearing all entries : clear",
         "importing-contacts-from-data-file-import": "Importing contacts from data file : import",
