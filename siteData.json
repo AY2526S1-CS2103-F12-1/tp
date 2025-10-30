@@ -114,6 +114,8 @@
         "adding-a-person-add": "Adding a person: add",
         "listing-all-persons-list": "Listing all persons : list",
         "editing-a-person-edit": "Editing a person : edit",
+        "adding-a-tag-tag": "Adding a tag: tag",
+        "removing-a-tag-untag": "Removing a tag: untag",
         "creating-a-team-create-team": "Creating a team: create-team",
         "adding-members-to-a-team-add-to-team": "Adding members to a team: add-to-team",
         "removing-members-from-a-team-remove-from-team": "Removing members from a team: remove-from-team",
