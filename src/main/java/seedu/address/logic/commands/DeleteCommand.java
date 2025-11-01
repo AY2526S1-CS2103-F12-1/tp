@@ -24,6 +24,8 @@ public class DeleteCommand extends Command {
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person:\n%1$s";
     public static final String MESSAGE_PERSON_NOT_FOUND = "No person found with employee ID: %1$s";
+    public static final String MESSAGE_PERSON_IN_TEAM =
+            "Cannot delete person %1$s because they are a member of one or more teams. Member of teams: %2$s";
 
     private final String employeeId;
 
@@ -40,6 +42,11 @@ public class DeleteCommand extends Command {
                 .filter(person -> person.id().equals(employeeId))
                 .findFirst()
                 .orElseThrow(() -> new CommandException(String.format(MESSAGE_PERSON_NOT_FOUND, employeeId)));
+
+        if (!personToDelete.teamIds().isEmpty()) {
+            String teamList = "[" + String.join(", ", personToDelete.teamIds()) + "]";
+            throw new CommandException(String.format(MESSAGE_PERSON_IN_TEAM, personToDelete.id(), teamList));
+        }
 
         model.deletePerson(personToDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
