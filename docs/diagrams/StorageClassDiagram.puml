@@ -20,6 +20,8 @@ Class JsonAddressBookStorage
 Class JsonSerializableAddressBook
 Class JsonAdaptedPerson
 Class JsonAdaptedTag
+Class JsonAdaptedTeam
+Class JsonAdaptedAuditLogEntry
 }
 
 }
@@ -37,7 +39,12 @@ Storage -right-|> AddressBookStorage
 JsonUserPrefsStorage .up.|> UserPrefsStorage
 JsonAddressBookStorage .up.|> AddressBookStorage
 JsonAddressBookStorage ..> JsonSerializableAddressBook
-JsonSerializableAddressBook --> "*" JsonAdaptedPerson
+
+' composition relationships showing the lists held by JsonSerializableAddressBook
+JsonSerializableAddressBook --> "*" JsonAdaptedPerson : persons
+JsonSerializableAddressBook --> "*" JsonAdaptedTeam : teams
+JsonSerializableAddressBook --> "*" JsonAdaptedAuditLogEntry : auditLogEntries
+
 JsonAdaptedPerson --> "*" JsonAdaptedTag
 
 @enduml
