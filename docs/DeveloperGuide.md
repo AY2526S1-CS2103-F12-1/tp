@@ -291,10 +291,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS** 
 1. User requests to clear all data from the address book 
-2. System prompts for confirmation 
-3. User confirms the action 
-4. System clears all persons and teams from the address book 
-5. System displays a success message
+2. User confirms the action 
+3. System clears all persons and teams from the address book 
+4. System displays a success message
    Use case ends.
 
 **Use case: Create team**
