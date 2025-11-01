@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
@@ -44,7 +45,8 @@ public class DeleteCommand extends Command {
                 .orElseThrow(() -> new CommandException(String.format(MESSAGE_PERSON_NOT_FOUND, employeeId)));
 
         if (!personToDelete.teamIds().isEmpty()) {
-            String teamList = "[" + String.join(", ", personToDelete.teamIds()) + "]";
+            String teamList = "[" + String.join(", ", personToDelete.teamIds().stream()
+                    .sorted().collect(toList())) + "]";
             throw new CommandException(String.format(MESSAGE_PERSON_IN_TEAM, personToDelete.id(), teamList));
         }
 
