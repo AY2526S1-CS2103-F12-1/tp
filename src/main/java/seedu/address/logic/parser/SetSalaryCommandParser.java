@@ -19,7 +19,7 @@ public class SetSalaryCommandParser implements Parser<SetSalaryCommand> {
      */
     public SetSalaryCommand parse(String args) throws ParseException {
         String[] tokens = args.trim().split("\\s+");
-        if (tokens.length < 2) {
+        if (tokens.length != 2) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, SetSalaryCommand.MESSAGE_USAGE));
         }
@@ -29,16 +29,24 @@ public class SetSalaryCommandParser implements Parser<SetSalaryCommand> {
             throw new ParseException(Messages.MESSAGE_INVALID_PERSON_ID);
         }
 
-        double value = Double.parseDouble(tokens[1]);
-        if (!Double.isFinite(value)) {
-            throw new ParseException(Messages.MESSAGE_SALARY_TOO_HIGH);
-        }
+        try {
+            double value = Double.parseDouble(tokens[1]);
+            if (!Double.isFinite(value)) {
+                throw new ParseException(Messages.MESSAGE_SALARY_TOO_HIGH);
+            }
 
-        if (value < 0) {
+            if (value < 0) {
+                throw new ParseException(Messages.MESSAGE_INVALID_SALARY);
+            }
+
+            if (value == -0) {
+                value = 0;
+            }
+
+            return new SetSalaryCommand(id, value);
+        } catch (NumberFormatException e) {
             throw new ParseException(Messages.MESSAGE_INVALID_SALARY);
         }
-
-        return new SetSalaryCommand(id, value);
     }
 
     /**

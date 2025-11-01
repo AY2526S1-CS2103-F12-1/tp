@@ -2,12 +2,14 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.SetSalaryCommand.MESSAGE_SUCCESS;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -19,6 +21,12 @@ class SetSalaryCommandTest {
     void execute_validIdAndSalary_success() {
         SetSalaryCommand command = new SetSalaryCommand("E0001", 100);
         assertCommandSuccess(command, model, String.format(MESSAGE_SUCCESS, 100.0, "E0001"), model);
+    }
+
+    @Test
+    void execute_nonExistentPerson_failure() {
+        SetSalaryCommand command = new SetSalaryCommand("E9999", 100);
+        assertCommandFailure(command, model, Messages.MESSAGE_NON_EXISTENT_PERSON);
     }
 
     @Test

@@ -25,6 +25,7 @@ public class Messages {
     public static final String MESSAGE_SALARY_TOO_HIGH = "The salary value has exceeded the limit for "
             + "floating point numbers.";
     public static final String MESSAGE_PERSON_NOT_FOUND = "Person with employee ID %1$s not found.";
+    public static final String MESSAGE_NON_EXISTENT_PERSON = "The person does not exist!";
 
     /**
      * Returns an error message indicating the duplicate prefixes.
