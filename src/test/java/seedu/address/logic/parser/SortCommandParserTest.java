@@ -28,9 +28,9 @@ import seedu.address.model.person.Phone;
 class SortCommandParserTest {
     private static final Random RAND = new Random();
 
-    private static final String[] VALID_TOKENS = { "name", "hp", "em", "addr", "gh", "id", "salary", "team" };
+    private static final String[] VALID_TOKENS = { "-name", "-hp", "-em", "-addr", "-gh", "-id", "-salary", "-team" };
 
-    private static final String[] EXAMPLE_INVALID_TOKENS = { "phone", "email", "address", "github" };
+    private static final String[] EXAMPLE_INVALID_TOKENS = { "-phone", "-email", "-address", "-github" };
 
     // Produce "sort" or "sort -name -hp ..." correctly (space before first "-")
     private String getRandomValidCommand() {
@@ -42,7 +42,7 @@ class SortCommandParserTest {
         }
 
         List<String> taken = tokens.subList(0, numTaken);
-        return "-" + String.join(" -", taken);
+        return String.join(" ", taken);
     }
 
     // Mix at least one invalid token among possibly some valid ones; ensure proper spacing
@@ -59,7 +59,7 @@ class SortCommandParserTest {
         picked.addAll(invalids.subList(0, numInvalid));
         Collections.shuffle(picked, RAND);
 
-        return "sort -" + String.join(" -", picked);
+        return "sort " + String.join(" ", picked);
     }
 
     private Person buildPerson(
@@ -108,8 +108,8 @@ class SortCommandParserTest {
     void createComparator_containsInvalidTokens_throwsParseException() {
         for (int i = 0; i < 20; i++) {
             String[] tokensWithInvalid = getRandomInvalidCommand()
-                    .replaceFirst("^sort -", "") // strip leading "sort -"
-                    .split(" -");
+                    .replaceFirst("^sort ", "") // strip leading "sort -"
+                    .split(" ");
             assertThrows(ParseException.class, () -> SortCommandParser.createComparator(tokensWithInvalid));
         }
     }
