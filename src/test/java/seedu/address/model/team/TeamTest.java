@@ -118,8 +118,8 @@ public class TeamTest {
         // sanity checks using TypicalTeams fixtures
         assertEquals("QA", QA.getTeamName().teamName());
         assertTrue(CORE.getMembers().contains("E0001"));
-        assertEquals("Backend", BACKEND.getTeamName().teamName());
-        assertEquals("Frontend", FRONTEND.getTeamName().teamName());
+        assertEquals("BACKEND", BACKEND.getTeamName().teamName());
+        assertEquals("FRONTEND", FRONTEND.getTeamName().teamName());
     }
 
     @Test

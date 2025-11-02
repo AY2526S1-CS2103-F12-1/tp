@@ -23,8 +23,9 @@ public record TeamName(String teamName) {
      *
      * @param teamName A valid name.
      */
-    public TeamName {
+    public TeamName(String teamName) {
         requireNonNull(teamName);
+        this.teamName = teamName.toUpperCase();
         checkArgument(isValidTeamName(teamName), MESSAGE_CONSTRAINTS);
     }
 

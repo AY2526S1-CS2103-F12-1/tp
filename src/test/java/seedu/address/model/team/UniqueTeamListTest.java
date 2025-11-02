@@ -54,7 +54,7 @@ public class UniqueTeamListTest {
         Team root = new Team("T1", new TeamName("Root"));
         list.add(root);
 
-        String expected = "Root #T1 Members: []\n";
+        String expected = "ROOT #T1 Members: []\n";
         assertEquals(expected, list.getHierarchyString());
     }
 
@@ -117,9 +117,9 @@ public class UniqueTeamListTest {
 
         String expected =
                 """
-                        Root1 #T1 Members: []
-                        └── Child1 #T2 Members: []
-                        Root2 #T3 Members: []
+                        ROOT1 #T1 Members: []
+                        └── CHILD1 #T2 Members: []
+                        ROOT2 #T3 Members: []
                         """;
 
         assertEquals(expected, list.getHierarchyString());
