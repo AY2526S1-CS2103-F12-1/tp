@@ -102,6 +102,9 @@ Shows a list of all persons in the address book.
 
 Format: `list`
 
+Note:
+* By default, the list is sorted by the order of contact entry into henri, _NOT_ by person ID.
+
 ### Editing a person : `edit`
 
 Edits an existing person in the address book.
@@ -329,7 +332,7 @@ Format: `clear`
 
 ### Importing contacts from data file : `import`
 
-Imports contact data from a specific JSON file from the data folder into the main address book.
+Imports the contact data of people from a specific JSON file from the data folder into the main address book.
 
 Format: `import FILENAME.json`
 
@@ -341,6 +344,13 @@ Format: `import FILENAME.json`
 
 Example:
 * `import oldContacts.json` imports non-duplicate contacts from 'data/oldContacts.json' into the address book.
+
+Exceptions:
+* If any imported contacts already exist in the henri app (same IDs or Names), it will be skipped and the skipped IDs will be displayed with the command result.
+* If there are any specific errors in the data file "An error was found in the JSON data you are trying to import: " followed by the specific error message will be displayed and no data will be imported.
+
+Note:
+* The import command is only meant to import the data of the contacts of people, not teams. Teams must be created manually after importing contacts.
 
 ### Viewing of audit logs : `audit`
 

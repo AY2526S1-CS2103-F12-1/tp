@@ -1,7 +1,5 @@
 package seedu.address.logic.parser;
 
-import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
 import java.nio.file.Path;
 
 import seedu.address.logic.commands.ImportCommand;
@@ -23,7 +21,8 @@ public class ImportCommandParser implements Parser<ImportCommand> {
             return new ImportCommand(filePath);
         } catch (ParseException pe) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ImportCommand.MESSAGE_USAGE), pe);
+                    String.format("No valid import file path provided or command format was invalid!\n"
+                            + ImportCommand.MESSAGE_USAGE), pe);
         }
     }
 
