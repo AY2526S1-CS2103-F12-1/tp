@@ -94,20 +94,20 @@ public class Subteams {
      * Returns true if the list contains the given team.
      * This checks the top-level list and recursively checks subteams of contained teams.
      *
-     * @param teamId the team to check
+     * @param parentTeamId the parent team from which to start the search
+     * @param otherTeamId the team to check
      * @return true if present in this list or any nested subteams
      */
-    public boolean contains(String teamId) throws TeamNotFoundException {
+    public static boolean teamContainsOtherTeam(String parentTeamId, String otherTeamId) throws TeamNotFoundException {
         assert(addressBook != null) : "AddressBook must be set for subteams before using contains method.";
-        Objects.requireNonNull(teamId);
-        Team team = addressBook.getTeamById(teamId);
-        // check if team already nested or if first layer contains id
-        if (team.getParentTeamId() != null || internalList.contains(teamId)) {
+        Objects.requireNonNull(parentTeamId);
+        Objects.requireNonNull(otherTeamId);
+        Team parentTeam = addressBook.getTeamById(parentTeamId);
+        if (parentTeam.getSubteams().getUnmodifiableList().contains(otherTeamId)) {
             return true;
         }
-        // check nested levels
-        for (String t : team.getSubteams().getUnmodifiableList()) {
-            if (containsRecursive(t, teamId)) {
+        for (String t : parentTeam.getSubteams().getUnmodifiableList()) {
+            if (containsRecursive(t, otherTeamId)) {
                 return true;
             }
         }
@@ -121,7 +121,7 @@ public class Subteams {
      * @param targetTeamId the target team to find
      * @return true if targetTeamId is found in the subteams of currentTeamId
      */
-    private boolean containsRecursive(String currentTeamId, String targetTeamId) throws TeamNotFoundException {
+    private static boolean containsRecursive(String currentTeamId, String targetTeamId) throws TeamNotFoundException {
         assert(currentTeamId != null && targetTeamId != null) : "Team IDs must not be null.";
         if (currentTeamId.equals(targetTeamId)) {
             return true;
