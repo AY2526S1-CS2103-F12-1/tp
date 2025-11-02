@@ -26,7 +26,7 @@ public class DeleteCommand extends Command {
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person:\n%1$s";
     public static final String MESSAGE_PERSON_NOT_FOUND = "No person found with employee ID: %1$s";
     public static final String MESSAGE_PERSON_IN_TEAM =
-            "Cannot delete person %1$s because they are a member of one or more teams. Member of teams: %2$s";
+            "Cannot delete person %1$s because they are a member of these teams: %2$s";
 
     private final String employeeId;
 
