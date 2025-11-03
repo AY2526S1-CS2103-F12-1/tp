@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class DeleteCommand extends Command {
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person:\n%1$s";
     public static final String MESSAGE_PERSON_NOT_FOUND = "No person found with employee ID: %1$s";
+    public static final String MESSAGE_PERSON_IN_TEAM = "Cannot delete %1$s as they are a member of: %2$s";
 
     private final String employeeId;
 
@@ -40,6 +42,12 @@ public class DeleteCommand extends Command {
                 .filter(person -> person.id().equals(employeeId))
                 .findFirst()
                 .orElseThrow(() -> new CommandException(String.format(MESSAGE_PERSON_NOT_FOUND, employeeId)));
+
+        if (!personToDelete.teamIds().isEmpty()) {
+            String teamList = "[" + String.join(", ", personToDelete.teamIds().stream()
+                    .sorted().collect(toList())) + "]";
+            throw new CommandException(String.format(MESSAGE_PERSON_IN_TEAM, personToDelete.id(), teamList));
+        }
 
         model.deletePerson(personToDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)));
