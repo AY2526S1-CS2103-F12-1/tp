@@ -37,8 +37,8 @@ class SubteamTest {
 
     @Test
     void teamInTopLevelList_returnsTrue() {
-        Subteams subteams = new Subteams(Collections.singletonList(INDEX_FIRST));
-        assertTrue(subteams.contains(INDEX_FIRST));
+        teamA.addToSubteam(teamB.getId());
+        assertTrue(Subteams.teamContainsOtherTeam(teamA.getId(), teamB.getId()));
     }
 
     @Test
@@ -56,7 +56,6 @@ class SubteamTest {
 
     @Test
     void teamInNestedSubteams_returnsTrue() {
-        Team teamA = new Team(INDEX_FIRST, new TeamName("Example"));
         teamA.addToSubteam(INDEX_SECOND);
         assertTrue(teamA.containsTeamInSubteams(INDEX_SECOND));
     }
@@ -70,8 +69,7 @@ class SubteamTest {
 
     @Test
     void teamNotNested_returnsFalse() {
-        Subteams subteams = new Subteams(Collections.singletonList(INDEX_FIRST));
-        assertFalse(subteams.contains(INDEX_SECOND));
+        assertFalse(Subteams.teamContainsOtherTeam(INDEX_FIRST, INDEX_SECOND));
     }
 
     @Test
@@ -79,6 +77,15 @@ class SubteamTest {
         assertThrows(InvalidSubteamNesting.class, () -> {
             teamA.addToSubteam(teamB.getId());
             teamB.addToSubteam(teamA.getId());
+        });
+    }
+
+    @Test
+    void tripleNested_addRootAsSubteamOfLeaf_throwsInvalidSubteamNesting() {
+        assertThrows(InvalidSubteamNesting.class, () -> {
+            teamA.addToSubteam(teamB.getId());
+            teamB.addToSubteam(teamC.getId());
+            teamC.addToSubteam(teamA.getId());
         });
     }
 
@@ -92,8 +99,7 @@ class SubteamTest {
 
     @Test
     void nullTeam_throwsNullPointerException() {
-        Subteams subteams = new Subteams();
-        assertThrows(NullPointerException.class, () -> subteams.contains(null));
+        assertThrows(NullPointerException.class, () -> Subteams.teamContainsOtherTeam(null, null));
     }
 
     @Test

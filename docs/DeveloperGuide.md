@@ -1047,8 +1047,41 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Glossary
 
+* **Address Book**: The core data structure that stores all persons, teams, and related information in Henri.
+
+* **API (Application Programming Interface)**: A set of protocols and tools that specify how software components should interact with each other.
+
+* **Audit Log**: A chronological record of system activities that tracks user commands and changes made to the address book for accountability and traceability purposes.
+
+* **Command Line Interface (CLI))**: Command Line Interface. A text-based interface where users interact with a program by typing commands
+
+* **Employee ID**: A unique identifier assigned to each team following the format `E####` (e.g., `E0001`, `E0042`). Uses gap-filling strategy to reuse deleted IDs.
+
+* **Graphical User Interface (GUI)**: The visual interface through which users interact with Henri, including windows, buttons, and text fields.
+
+* **Java Archive file (Jar File)**: The executable file containing the application.
+
+* **JavaScript Object Notation (JSON)**: A lightweight data format used for storing and exchanging Henri's data in a human-readable format.
+
+* **Java Development Kit (JDK)**: Required to run Java applications.
+
+* **Leader**: A person designated as the head of a team, identified by their Employee ID.
+
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
+
+* **Organization Hierarchy**: The visual representation of teams and their members, showing the reporting structure within an organization.
+
+* **Parser**: A component that interprets user input and converts it into executable commands.
+
+* **Person**: An individual entry in the address book containing details like name, phone, email, address, and GitHub username.
+
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+
+* **Tag**: A label that can be attached to persons for categorization purposes (e.g., "developer", "manager").
+
+* **Team**: A group of persons in the organization with a unique Team ID, name, and designated leader.
+
+* **Team ID**: A unique identifier assigned to each team following the format `T####` (e.g., `T0001`, `T0042`). Uses monotonic increment and never reuses deleted IDs.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -1062,21 +1095,6 @@ Given below are instructions to test the app manually.
 testers are expected to do more *exploratory* testing.
 
 </box>
-
-### Launch and shutdown
-
-1. Initial launch
-
-   1. Download the jar file and copy into an empty folder
-
-   2. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
-
-1. Saving window preferences
-
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
-
-   2. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
 
 ## **Appendix: Instructions for manual testing**
 
@@ -1540,4 +1558,6 @@ testers are expected to do more *exploratory* testing.
 
 1. Customisable command words to fit user preference
 2. Import Command enhancements to support team import
+3. Import Command enhancements to have more input validation 
+4. 
 

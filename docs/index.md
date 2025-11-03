@@ -3,7 +3,7 @@
   title: ""
 ---
 
-# henri - Contact Manager for HR Administrators
+# Henri - Contact Manager for HR Administrators
 
 [![CI Status](https://github.com/se-edu/addressbook-level3/workflows/Java%20CI/badge.svg)](https://github.com/AY2526S1-CS2103-F12-1/tp/actions/)
 [![codecov](https://codecov.io/gh/se-edu/addressbook-level3/branch/master/graph/badge.svg)](https://codecov.io/gh/se-edu/addressbook-level3)
