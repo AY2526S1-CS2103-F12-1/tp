@@ -58,8 +58,7 @@ public class AddCommand extends Command {
         if (model.hasPerson(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
-        Set<Long> usedIds = model.getAddressBook().getPersonList().stream()
-                .map(Person::id).filter(id -> id.startsWith("E"))
+        Set<Long> usedIds = model.getAddressBook().getPersonList().stream().map(Person::id)
                 .map(id -> Long.parseLong(id.substring(1))).collect(Collectors.toSet());
 
         long newId = findNextAvailableId(usedIds);
@@ -74,11 +73,8 @@ public class AddCommand extends Command {
      * Scans sequentially from 1 until a gap is found.
      */
     public static long findNextAvailableId(Set<Long> usedIds) {
-        long id = 1;
-        while (usedIds.contains(id)) {
-            id++;
-        }
-        return id;
+        return java.util.stream.LongStream.iterate(1, id -> id + 1)
+                .filter(id -> !usedIds.contains(id)).findFirst().getAsLong();
     }
 
     @Override

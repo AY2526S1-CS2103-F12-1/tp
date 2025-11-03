@@ -70,10 +70,9 @@ public class LogicManager implements Logic {
     @Override
     public CommandResult execute(String commandText) throws CommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
-
+        ReadOnlyAddressBook backupAddressBook = model.getAddressBook();
         CommandResult commandResult;
         Command command = addressBookParser.parseCommand(commandText);
-        ReadOnlyAddressBook backupAddressBook = model.getAddressBook();
 
         try {
             commandResult = command.execute(model);
