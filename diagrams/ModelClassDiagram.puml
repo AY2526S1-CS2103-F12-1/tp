@@ -10,7 +10,9 @@ Class "<<interface>>\nReadOnlyUserPrefs" as ReadOnlyUserPrefs
 Class "<<interface>>\nModel" as Model
 Class AddressBook
 Class ModelManager
+Class ParentTeamId
 Class UserPrefs
+Class Subteams
 
 Class UniquePersonList
 Class UniqueTeamList
@@ -60,8 +62,10 @@ Team *--> Id
 Team *--> TeamName
 Team *--> LeaderId
 Team *--> "*" Members
-Team -up-> "~* SubTeams" Team
-Team -right-> "1 ParentTeam" Team
+Team --> "1" Subteams
+Subteams --> AddressBook
+note top of Subteams: Subteams lookup Teams in AddressBook by ID
+Team --> "1" ParentTeamId
 
 
 Person -[hidden]up--> I
