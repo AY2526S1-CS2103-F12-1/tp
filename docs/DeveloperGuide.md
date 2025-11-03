@@ -467,19 +467,19 @@ The Team Management mechanism is facilitated by several command classes:
 
 ##### Create Team Sequence
 
-<puml src="diagrams/CreateTeamDiagram.puml" alt="Create Team Sequence" width="800"/>
+<puml src="diagrams/CreateTeamDiagram.puml" alt="Create Team Sequence" width="1000"/>
 
 The sequence diagram shows how a new team is created, including the automatic Team ID generation process.
 
 ##### Add to Team Sequence
 
-<puml src="diagrams/AddToTeamDiagram.puml" alt="Add to Team Sequence" width="800"/>
+<puml src="diagrams/AddToTeamDiagram.puml" alt="Add to Team Sequence" width="1000"/>
 
 The sequence diagram illustrates the validation and update process when adding an employee to a team.
 
 ##### Set Subteam Sequence
 
-<puml src="diagrams/SetSubteamDiagram.puml" alt="Set Subteam Sequence" width="800"/>
+<puml src="diagrams/SetSubteamDiagram.puml" alt="Set Subteam Sequence" width="1000"/>
 
 The sequence diagram demonstrates the circular dependency check before establishing a parent-child relationship.
 
@@ -493,13 +493,13 @@ The activity diagram shows the decision flow for creating a new team with option
 
 ##### Add to Team Activity
 
-<puml src="diagrams/AddToTeamDiagram2.puml" alt="Add to Team Activity" width="800"/>
+<puml src="diagrams/AddToTeamDiagram2.puml" alt="Add to Team Activity" width="600"/>
 
 The activity diagram illustrates the validation steps before adding an employee to a team.
 
 ##### Set Subteam Activity
 
-<puml src="diagrams/SetSubteamDiagram2.puml" alt="Set Subteam Activity" width="800"/>
+<puml src="diagrams/SetSubteamDiagram2.puml" alt="Set Subteam Activity" width="600"/>
 
 The activity diagram shows the circular dependency detection algorithm.
 
