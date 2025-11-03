@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -25,7 +26,6 @@ public class ImportCommand extends Command {
 
     public static final String COMMAND_WORD = "import";
     public static final String MESSAGE_IMPORT_SUCCESS = "Imported contacts from JSON file";
-    public static final String MESSAGE_INVALID_PATH = "Invalid file path provided";
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Imports contact data from a specific JSON file from the data folder into the main address book.\n"
             + "Parameters: FILENAME (must be a valid file with .json extension)\n"
@@ -52,12 +52,13 @@ public class ImportCommand extends Command {
             ReadOnlyAddressBook importedData = importedAddressBookOptional
                     .orElseGet(SampleDataUtil::getSampleAddressBook);
             List<Person> importedPersons = importedData.getPersonList();
-            this.addImportedPersons(model, importedPersons);
+            List<String> failedImports = this.addImportedPersons(model, importedPersons);
+            return new CommandResult(MESSAGE_IMPORT_SUCCESS
+                    + (!failedImports.isEmpty() ? (".\nExisting contact imports skipped: " + failedImports) : ""));
         } catch (DataLoadingException e) {
-            throw new CommandException(MESSAGE_INVALID_PATH);
+            String errorMsg = e.getMessage().substring(e.getMessage().indexOf(':') + 1).trim();
+            throw new CommandException("An error was found in the JSON data you are trying to import:\n" + errorMsg);
         }
-
-        return new CommandResult(MESSAGE_IMPORT_SUCCESS);
     }
 
     /**
@@ -65,15 +66,18 @@ public class ImportCommand extends Command {
      * @param model {@code Model} which the command should operate on.
      * @param list a list of Person objects
      */
-    private void addImportedPersons(Model model, List<Person> list) {
+    private List<String> addImportedPersons(Model model, List<Person> list) {
         // Add each imported person into the model iteratively.
+        List<String> skippedPersons = new ArrayList<>();
         for (Person person : list) {
             try {
                 model.addPerson(person);
             } catch (Exception ex) {
+                skippedPersons.add(person.id());
                 storageLogger.info("Skipping person during import: " + person + " (" + ex.getMessage() + ")");
             }
         }
+        return skippedPersons;
     }
 
     @Override
