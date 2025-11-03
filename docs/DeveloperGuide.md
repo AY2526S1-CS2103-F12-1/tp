@@ -65,7 +65,7 @@ For example, the `Logic` component defines its API in the `Logic.java` interface
 
 The sections below give more details of each component.
 
-### UI component
+### UI Component
 
 The **API** of this component is specified in [`Ui.java`](https://github.com/AY2526S1-CS2103-F12-1/tp/blob/master/src/main/java/seedu/address/ui/Ui.java)
 
@@ -81,7 +81,7 @@ The `UI` component,
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
 
-### Logic component
+### Logic Component
 
 **API** : [`Logic.java`](https://github.com/AY2526S1-CS2103-F12-1/tp/blob/master/src/main/java/seedu/address/logic/Logic.java)
 
@@ -136,7 +136,7 @@ The `Model` component,
 </box>
 
 
-### Storage component
+### Storage Component
 
 **API** : [`Storage.java`](https://github.com/AY2526S1-CS2103-F12-1/tp/blob/master/src/main/java/seedu/address/storage/Storage.java)
 
@@ -147,7 +147,7 @@ The `Storage` component,
 * inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
-### Common classes
+### Common Classes
 
 Classes used by multiple components are in the `seedu.address.commons` package.
 
@@ -157,7 +157,7 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### Employee ID generation
+### Employee ID Generation
 
 Employee IDs follow the format `E####` where # represents a digit (e.g., `E0001`, `E0042`).
 
@@ -175,7 +175,7 @@ The sequence diagram above illustrates how the system generates a new employee I
 
 #### Activity Diagram
 
-<puml src="diagrams/EmployeeIdGenerationDiagram.puml" alt="Employee ID Generation Activity"  width="600"/>
+<puml src="diagrams/EmployeeIdGenerationDiagram2.puml" alt="Employee ID Generation Activity"  width="600"/>
 
 The activity diagram shows the gap-filling algorithm that ensures efficient ID space usage.
 
@@ -238,13 +238,13 @@ Team IDs follow the format `T####` where # represents a digit (e.g., `T0001`, `T
 
 #### Sequence Diagram
 
-<puml src="diagrams/TeamIdGenerationDiagram.puml" alt="Team ID Generation Sequence" width="600" />
+<puml src="diagrams/TeamIdGenerationDiagram.puml" alt="Team ID Generation Sequence" width="800" />
 
 The sequence diagram illustrates the initialization of the static counter during application startup and its usage when creating new teams.
 
 #### Activity Diagram
 
-<puml src="diagrams/TeamIdGenerationDiagram.puml" alt="Team ID Generation Activity"  width="600"/>
+<puml src="diagrams/TeamIdGenerationDiagram2.puml" alt="Team ID Generation Activity"  width="800"/>
 
 The activity diagram demonstrates the monotonic increment strategy that preserves audit trail capability.
 
@@ -323,13 +323,13 @@ The Import mechanism is facilitated by two main classes:
 
 #### Sequence Diagram
 
-<puml src="diagrams/ImportCommandSequenceDiagram.puml" alt="Import Command Sequence" width="600"/>
+<puml src="diagrams/ImportCommandDiagram.puml" alt="Import Command Sequence" width="800"/>
 
 The sequence diagram illustrates the interaction between components during an import operation.
 
 #### Activity Diagram
 
-<puml src="diagrams/ImportCommandActivityDiagram.puml" alt="Import Command Activity" with="600"/>
+<puml src="diagrams/ImportCommandDiagram2.puml" alt="Import Command Activity" with="800"/>
 
 The activity diagram shows the decision-making process for handling valid and invalid entries during import.
 
@@ -467,19 +467,19 @@ The Team Management mechanism is facilitated by several command classes:
 
 ##### Create Team Sequence
 
-<puml src="diagrams/CreateTeamSequenceDiagram.puml" alt="Create Team Sequence" width="600"/>
+<puml src="diagrams/CreateTeamDiagram.puml" alt="Create Team Sequence" width="800"/>
 
 The sequence diagram shows how a new team is created, including the automatic Team ID generation process.
 
 ##### Add to Team Sequence
 
-<puml src="diagrams/AddToTeamSequenceDiagram.puml" alt="Add to Team Sequence" width="600"/>
+<puml src="diagrams/AddToTeamDiagram.puml" alt="Add to Team Sequence" width="800"/>
 
 The sequence diagram illustrates the validation and update process when adding an employee to a team.
 
 ##### Set Subteam Sequence
 
-<puml src="diagrams/SetSubteamSequenceDiagram.puml" alt="Set Subteam Sequence" width="600"/>
+<puml src="diagrams/SetSubteamDiagram.puml" alt="Set Subteam Sequence" width="800"/>
 
 The sequence diagram demonstrates the circular dependency check before establishing a parent-child relationship.
 
@@ -487,19 +487,19 @@ The sequence diagram demonstrates the circular dependency check before establish
 
 ##### Create Team Activity
 
-<puml src="diagrams/CreateTeamActivityDiagram.puml" alt="Create Team Activity" width="600"/>
+<puml src="diagrams/CreateTeamDiagram2.puml" alt="Create Team Activity" width="800"/>
 
 The activity diagram shows the decision flow for creating a new team with optional leader assignment.
 
 ##### Add to Team Activity
 
-<puml src="diagrams/AddToTeamActivityDiagram.puml" alt="Add to Team Activity" width="600"/>
+<puml src="diagrams/AddToTeamDiagram2.puml" alt="Add to Team Activity" width="800"/>
 
 The activity diagram illustrates the validation steps before adding an employee to a team.
 
 ##### Set Subteam Activity
 
-<puml src="diagrams/SetSubteamActivityDiagram.puml" alt="Set Subteam Activity" width="600"/>
+<puml src="diagrams/SetSubteamDiagram2.puml" alt="Set Subteam Activity" width="800"/>
 
 The activity diagram shows the circular dependency detection algorithm.
 
