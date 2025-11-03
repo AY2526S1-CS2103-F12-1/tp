@@ -305,7 +305,7 @@ Difference in behaviours of Employee ID and Team ID exists because:
 
 </box>
 
-### \[Proposed\] Import Feature Enhancement
+### Import Contacts
 
 #### Design Considerations: 
 ##### Aspect: Error Handling During Import
@@ -349,8 +349,7 @@ Difference in behaviours of Employee ID and Team ID exists because:
     * **Cons:** More complex ID system, inconsistent ID format may confuse users, commands need to handle multiple ID formats
 
 
-### \[\] Customisable command words to fit user preference
-{To explain how command word will be customisable}
+### \[\] 
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -1274,3 +1273,12 @@ testers are expected to do more *exploratory* testing.
 
     1. Test case: Add a new person using the `add` command and immediately close the app using the window close button (not the `exit` command).<br>
        Expected: On restart, the newly added person should still be present in the address book.
+
+
+## **Appendix: Planned Enhancement**
+
+**Team size**: 5
+
+1. Customisable command words to fit user preference
+2. Import Command enhancements to support team import
+
