@@ -39,6 +39,10 @@ public final class SetSalaryCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
         Person person = model.find(p -> p.id().equals(toSet));
+        if (person == null) {
+            throw new CommandException(MESSAGE_NON_EXISTENT_PERSON);
+        }
+
         Person edited = person.duplicate().withSalary(salaryInDollars).build();
         model.setPerson(person, edited);
         return new CommandResult(String.format(MESSAGE_SUCCESS, salaryInDollars, person.id()));
