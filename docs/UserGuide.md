@@ -446,7 +446,7 @@ Example:
 * `import oldContacts.json` imports non-duplicate contacts from 'data/oldContacts.json' into the address book.
 
 Exceptions:
-* If any imported contacts already exist in the henri app (same IDs or Names), it will be skipped and the skipped IDs will be displayed with the command result.
+* If any imported contacts already exist in the henri app (same names), it will be skipped and the skipped IDs will be displayed with the command result.
 * If there are any specific errors in the data file "An error was found in the JSON data you are trying to import: " followed by the specific error message will be displayed and no data will be imported.
 
 Note:
@@ -544,8 +544,11 @@ Furthermore, certain edits can cause Henri to behave in unexpected ways (e.g., i
 
 --------------------------------------------------------------------------------------------------------------------
 ## Future Enhancements
-1. **Customize command word** Allow users to customize command words to their preference. This would resolve the problem where command words might feel too long (e.g remove-from-team command)
-2. **Import feature to support adding of subteams and team members** Allow users to import not only employees but also teams, subteams and team members from a JSON file.
+1. **Customisable command words to fit user preferences**
+2. **`import` command enhancements to support team import**
+3. **`import` command enhancements to have more input validation**
+4. **Standardise phone number format for duplicate detection**
+5. **Allow storage of subteam relationships in data file**
 
 
 ## Command Summary
