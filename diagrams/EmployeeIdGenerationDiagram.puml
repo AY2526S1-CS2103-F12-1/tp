@@ -1,67 +1,89 @@
 @startuml
 !include style.puml
+skinparam ArrowFontStyle plain
 
 box Logic LOGIC_COLOR_T1
-participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant "parser:AddCommandParser" as Parser LOGIC_COLOR
-participant "cmd:AddCommand" as AddCommand LOGIC_COLOR
+participant ":AddCommandParser" as Parser LOGIC_COLOR
+participant ":AddCommand" as AddCommand LOGIC_COLOR
+participant ":Model" as Model LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
-participant ":Model" as Model MODEL_COLOR
 participant ":AddressBook" as AddressBook MODEL_COLOR
+participant ":UniquePersonList" as PersonList MODEL_COLOR
 end box
 
-[-> LogicManager : execute("add -name John...")
-note right: Ommit other details in the command for better readability
-
-activate LogicManager
-
-LogicManager -> Parser ** : create()
-LogicManager -> Parser : parse(args)
+[-> Parser : parse(args)
 activate Parser
 
 Parser -> Model : getAddressBook()
 activate Model
+
 Model --> Parser : addressBook
 deactivate Model
 
 Parser -> AddressBook : getPersonList()
 activate AddressBook
-AddressBook --> Parser : persons
+
+AddressBook --> Parser : personList
 deactivate AddressBook
 
-Parser -> Parser : extractUsedIds(persons)
+Parser -> Parser : collectUsedIds(personList)
 activate Parser
-Parser --> Parser : usedIds (Set<Long>)
+
+Parser --> Parser : usedIds
 deactivate Parser
 
 Parser -> Parser : findNextAvailableId(usedIds)
 activate Parser
-Parser --> Parser : newId (e.g., 1)
+note right
+  Start from ID 1
+  Find first ID not in usedIds
+  Return first available ID
+end note
+
+Parser --> Parser : nextId
 deactivate Parser
 
-Parser -> Parser : formatEmployeeId(newId)
+Parser -> Parser : createPerson(nextId)
 activate Parser
-Parser --> Parser : employeeId
+
+Parser --> Parser : person
 deactivate Parser
 
-Parser -> AddCommand ** : create(employeeId, person)
-Parser --> LogicManager : addCommand
+Parser -> AddCommand : <<create>>(person)
+activate AddCommand
+
+AddCommand --> Parser
+deactivate AddCommand
+
+[<-- Parser : AddCommand
 deactivate Parser
 
-LogicManager -> AddCommand : execute(model)
+...
+
+[-> AddCommand : execute(model)
 activate AddCommand
 
 AddCommand -> Model : addPerson(person)
 activate Model
+
+Model -> AddressBook : addPerson(person)
+activate AddressBook
+
+AddressBook -> PersonList : add(person)
+activate PersonList
+
+PersonList --> AddressBook
+deactivate PersonList
+
+AddressBook --> Model
+deactivate AddressBook
+
 Model --> AddCommand
 deactivate Model
 
-AddCommand --> LogicManager : commandResult
+[<-- AddCommand : CommandResult
 deactivate AddCommand
-
-[<-- LogicManager
-deactivate LogicManager
 
 @enduml
