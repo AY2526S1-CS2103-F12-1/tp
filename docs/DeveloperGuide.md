@@ -794,13 +794,17 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Audit Log**: A chronological record of system activities that tracks user commands and changes made to the address book for accountability and traceability purposes.
 
-* **Command Line Input (CLI))**: Command Line Interface. A text-based interface where users interact with a program by typing commands
+* **Command Line Interface (CLI))**: Command Line Interface. A text-based interface where users interact with a program by typing commands
 
 * **Employee ID**: A unique identifier assigned to each team following the format `E####` (e.g., `E0001`, `E0042`). Uses gap-filling strategy to reuse deleted IDs.
 
 * **Graphical User Interface (GUI)**: The visual interface through which users interact with Henri, including windows, buttons, and text fields.
 
-* **JavaScript Object Notation (JSON))**: A lightweight data format used for storing and exchanging Henri's data in a human-readable format.
+* **Java Archive file (Jar File)**: The executable file containing the application.
+
+* **JavaScript Object Notation (JSON)**: A lightweight data format used for storing and exchanging Henri's data in a human-readable format.
+
+* **Java Development Kit (JDK)**: Required to run Java applications.
 
 * **Leader**: A person designated as the head of a team, identified by their Employee ID.
 
