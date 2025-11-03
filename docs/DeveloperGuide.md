@@ -169,17 +169,17 @@ Employee IDs follow the format `E####` where # represents a digit (e.g., `E0001`
 
 #### Sequence Diagram
 
-<puml src="diagrams/EmployeeIdGenerationDiagram.puml" alt="Employee ID Generation Sequence" width="600"/>
+<puml src="diagrams/EmployeeIdGenerationDiagram.puml" alt="Employee ID Generation Sequence" width="800"/>
 
 The sequence diagram above illustrates how the system generates a new employee ID by scanning existing IDs and finding the first available gap.
 
 #### Activity Diagram
 
-<puml src="diagrams/EmployeeIdGenerationDiagram2.puml" alt="Employee ID Generation Activity"  width="600"/>
+<puml src="diagrams/EmployeeIdGenerationDiagram2.puml" alt="Employee ID Generation Activity"  width="300"/>
 
 The activity diagram shows the gap-filling algorithm that ensures efficient ID space usage.
 
-#### Code flow:
+#### Code Flow:
 ```java
 Set<Long> usedIds = model.getAddressBook().getPersonList().stream()
 .map(Person::id)
@@ -244,7 +244,7 @@ The sequence diagram illustrates the initialization of the static counter during
 
 #### Activity Diagram
 
-<puml src="diagrams/TeamIdGenerationDiagram2.puml" alt="Team ID Generation Activity"  width="800"/>
+<puml src="diagrams/TeamIdGenerationDiagram2.puml" alt="Team ID Generation Activity"  width="600"/>
 
 The activity diagram demonstrates the monotonic increment strategy that preserves audit trail capability.
 
@@ -314,7 +314,7 @@ The Import mechanism is facilitated by two main classes:
 * `ImportCommand` - Executes the import operation
 * `ImportCommandParser` - Parses user input and creates ImportCommand objects
 
-#### How it Works
+#### How It Works
 1. **User Input Parsing**: When a user enters `import friends.json`, the `ImportCommandParser` validates the filename and constructs a file path relative to the `data` folder.
 2. **File Reading**: The `ImportCommand` uses `JsonAddressBookStorage` to read the JSON file and convert it into a `ReadOnlyAddressBook` object.
 3. **Person Addition**: The command iterates through all imported persons and attempts to add each one to the current address book using `model.addPerson(person)`.
@@ -323,7 +323,7 @@ The Import mechanism is facilitated by two main classes:
 
 #### Sequence Diagram
 
-<puml src="diagrams/ImportCommandDiagram.puml" alt="Import Command Sequence" width="800"/>
+<puml src="diagrams/ImportCommandDiagram.puml" alt="Import Command Sequence" width="1000"/>
 
 The sequence diagram illustrates the interaction between components during an import operation.
 
@@ -487,19 +487,19 @@ The sequence diagram demonstrates the circular dependency check before establish
 
 ##### Create Team Activity
 
-<puml src="diagrams/CreateTeamDiagram2.puml" alt="Create Team Activity" width="800"/>
+<puml src="diagrams/CreateTeamDiagram2.puml" alt="Create Team Activity" width="600"/>
 
 The activity diagram shows the decision flow for creating a new team with optional leader assignment.
 
 ##### Add to Team Activity
 
-<puml src="diagrams/AddToTeamDiagram2.puml" alt="Add to Team Activity" width="600"/>
+<puml src="diagrams/AddToTeamDiagram2.puml" alt="Add to Team Activity" width="300"/>
 
 The activity diagram illustrates the validation steps before adding an employee to a team.
 
 ##### Set Subteam Activity
 
-<puml src="diagrams/SetSubteamDiagram2.puml" alt="Set Subteam Activity" width="600"/>
+<puml src="diagrams/SetSubteamDiagram2.puml" alt="Set Subteam Activity" width="300"/>
 
 The activity diagram shows the circular dependency detection algorithm.
 
@@ -1084,17 +1084,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Team ID**: A unique identifier assigned to each team following the format `T####` (e.g., `T0001`, `T0042`). Uses monotonic increment and never reuses deleted IDs.
 
 --------------------------------------------------------------------------------------------------------------------
-
-## **Appendix: Instructions for manual testing**
-
-Given below are instructions to test the app manually.
-
-<box type="info" seamless>
-
-**Note:** These instructions only provide a starting point for testers to work on;
-testers are expected to do more *exploratory* testing.
-
-</box>
 
 ## **Appendix: Instructions for manual testing**
 
