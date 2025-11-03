@@ -70,7 +70,7 @@ public class Team {
             throw new InvalidSubteamNesting();
         }
         // prevent cycles
-        if (subteams.contains(subteamId)) {
+        if (Subteams.teamContainsOtherTeam(this.id, subteamId) || Subteams.teamContainsOtherTeam(subteamId, this.id)) {
             throw new InvalidSubteamNesting();
         } else {
             subteams.add(subteamId, this.id);
@@ -85,7 +85,7 @@ public class Team {
      * @return true if the team is a subteam, false otherwise
      */
     public boolean containsTeamInSubteams(String teamId) {
-        return subteams.contains(teamId);
+        return Subteams.teamContainsOtherTeam(this.id, teamId);
     }
 
     /**
@@ -95,7 +95,7 @@ public class Team {
      * @return true if the team is a subteam, false otherwise
      */
     public boolean containsTeamInSubteams(Team team) {
-        return subteams.contains(team.getId());
+        return Subteams.teamContainsOtherTeam(this.id, team.getId());
     }
 
     /**
