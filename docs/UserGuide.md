@@ -185,7 +185,7 @@ Warning:
 * If none of the specified tags exist on the person, the command will fail with an error message listing the non-existent tags. However, if at least one tag exists, valid tags will be removed and a warning will show which tags were not found.
 
 ### Creating a team: `create-team`
-Adds a team to the address book.
+Adds a team to the address book. All team names are automatically set to Upper Case format.
 
 Format: `create-team TEAM_NAME TEAM_LEADER_ID`
 

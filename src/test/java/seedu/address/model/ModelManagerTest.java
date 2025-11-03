@@ -150,7 +150,7 @@ public class ModelManagerTest {
         // find team with same id and verify updated name
         boolean foundEditedName = model.getAddressBook().getTeamList().stream()
                 .filter(t -> "T0001".equals(t.getId()))
-                .anyMatch(t -> "CoreRenamed".equals(t.getTeamName().teamName()));
+                .anyMatch(t -> "CORERENAMED".equals(t.getTeamName().teamName()));
         assertTrue(foundEditedName);
     }
 

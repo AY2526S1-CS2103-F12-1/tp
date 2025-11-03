@@ -29,10 +29,10 @@ public class CreateTeamCommandTest {
         CreateTeamCommand cmd = new CreateTeamCommand("Systems", "E0001");
         CommandResult result = cmd.execute(model);
 
-        assertEquals(String.format(CreateTeamCommand.MESSAGE_SUCCESS, "Systems"),
+        assertEquals(String.format(CreateTeamCommand.MESSAGE_SUCCESS, "SYSTEMS"),
                 result.getFeedbackToUser());
         assertTrue(model.getAddressBook().getTeamList().stream()
-                .anyMatch(t -> "Systems".equals(t.getTeamName().teamName())
+                .anyMatch(t -> "SYSTEMS".equals(t.getTeamName().teamName())
                         && "E0001".equals(t.getLeaderId())));
     }
 

@@ -42,7 +42,7 @@ class JsonAdaptedTeam {
      */
     public JsonAdaptedTeam(Team source) {
         id = source.getId();
-        name = source.getTeamName().teamName();
+        name = source.getTeamName().teamName().toUpperCase();
         leaderId = source.getLeaderId();
         if (source.getMembers() != null) {
             members.addAll(source.getMembers());

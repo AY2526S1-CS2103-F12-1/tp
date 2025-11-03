@@ -64,7 +64,7 @@ public class JsonSerializableAddressBookTest {
         List<Team> teams = converted.getTeamList();
 
         assertEquals(1, teams.size());
-        assertEquals("Core", teams.get(0).getTeamName().teamName());
+        assertEquals("CORE", teams.get(0).getTeamName().teamName());
     }
 
     @Test
