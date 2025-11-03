@@ -180,7 +180,7 @@ The sequence diagram above illustrates how the system generates a new employee I
 The activity diagram shows the gap-filling algorithm that ensures efficient ID space usage.
 
 #### Code flow: 
-```
+```java
 Set<Long> usedIds = model.getAddressBook().getPersonList().stream()
 .map(Person::id)
 .filter(id -> id.startsWith("E"))
@@ -249,7 +249,7 @@ The sequence diagram illustrates the initialization of the static counter during
 The activity diagram demonstrates the monotonic increment strategy that preserves audit trail capability.
 
 #### Code Flow: 
-```
+```java
 // In LogicManager constructor
 long maxTeamId = teams.stream()
     .map(Team::getId)
@@ -307,6 +307,64 @@ Difference in behaviours of Employee ID and Team ID exists because:
 
 ### Import Contacts
 
+The Import feature allows HR administrators to load contact data from external JSON files into the main address book. This is particularly useful for migrating data from other systems or restoring backups.
+
+#### Implementation
+The Import mechanism is facilitated by two main classes:
+* `ImportCommand` - Executes the import operation
+* `ImportCommandParser` - Parses user input and creates ImportCommand objects
+
+#### How it Works 
+1. **User Input Parsing**: When a user enters `import friends.json`, the `ImportCommandParser` validates the filename and constructs a file path relative to the `data` folder.
+2. **File Reading**: The `ImportCommand` uses `JsonAddressBookStorage` to read the JSON file and convert it into a `ReadOnlyAddressBook` object.
+3. **Person Addition**: The command iterates through all imported persons and attempts to add each one to the current address book using `model.addPerson(person)`.
+4. **Error Handling**: If adding a person fails (e.g., duplicate GitHub username, invalid data), the exception is caught and logged, but the import continues with remaining persons.
+5. **ID Reassignment**: When imported persons have conflicting IDs or invalid formats, the existing Employee ID generation mechanism automatically assigns new IDs using gap-filling logic.
+
+#### Sequence Diagram
+
+<puml src="diagrams/ImportCommandSequenceDiagram.puml" alt="Import Command Sequence" width="600"/>
+
+The sequence diagram illustrates the interaction between components during an import operation.
+
+#### Activity Diagram
+
+<puml src="diagrams/ImportCommandActivityDiagram.puml" alt="Import Command Activity" with="600"/>
+
+The activity diagram shows the decision-making process for handling valid and invalid entries during import.
+
+#### Code Flow
+```java
+// In ImportCommandParser.parse()
+String trimmedArgs = args.trim();
+if (!trimmedArgs.endsWith(".json")) {
+    throw new ParseException(MESSAGE_INVALID_COMMAND_FORMAT);
+}
+Path filePath = Paths.get("data", trimmedArgs);
+return new ImportCommand(filePath);
+
+// In ImportCommand.execute()
+JsonAddressBookStorage tempBookStorage = new JsonAddressBookStorage(filePath);
+ReadOnlyAddressBook importedData = tempBookStorage.readAddressBook()
+    .orElseGet(SampleDataUtil::getSampleAddressBook);
+
+// Add each person, skipping those that cause exceptions
+for (Person person : importedData.getPersonList()) {
+    try {
+        model.addPerson(person);
+    } catch (Exception ex) {
+        logger.info("Skipping person: " + person + " (" + ex.getMessage() + ")");
+    }
+}
+```
+
+#### Key Features
+* **Partial Import**: Skips invalid entries and continues importing valid ones 
+* **Automatic ID Management**: Conflicting Employee IDs are automatically reassigned using the gap-filling algorithm 
+* **Error Logging**: Skipped entries are logged for debugging and audit purposes 
+* **Format Validation**: Only `.json` files are accepted as input 
+* **Relative Path**: Files are expected in the `data` folder for security and organization
+
 #### Design Considerations: 
 ##### Aspect: Error Handling During Import
 
@@ -348,8 +406,14 @@ Difference in behaviours of Employee ID and Team ID exists because:
     * **Pros:** Preserves original ID information, easy to identify imported entries, no conflicts possible
     * **Cons:** More complex ID system, inconsistent ID format may confuse users, commands need to handle multiple ID formats
 
+<box>
+**Note**: The import feature automatically leverages the existing Employee ID generation mechanism. This means:
+Imported persons with missing or invalid IDs receive automatically generated IDs
+The gap-filling logic ensures efficient ID space usage
+No manual ID assignment is required from the user
+</box>
 
-### \[\] 
+### Team Management
 
 
 --------------------------------------------------------------------------------------------------------------------
