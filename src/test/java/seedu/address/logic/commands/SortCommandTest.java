@@ -23,7 +23,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 
 class SortCommandTest {
-    private static final String[] VALID_TOKENS = { "name", "hp", "em", "addr", "gh", "id", "salary", "team" };
+    private static final String[] VALID_TOKENS = { "-name", "-hp", "-em", "-addr", "-gh", "-id", "-salary", "-team" };
 
     private static final Random RAND = new Random();
 
