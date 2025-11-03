@@ -8,7 +8,9 @@
 
 Henri is a **desktop app for managing personal details of employees in tech companies, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). It helps HR personnel accelerate company processes via improved readability and contact organisation. If you can type fast, Henri can get your contact management tasks done faster than traditional GUI apps.
 
-<!-- * Table of Contents -->
+### Target User Profile
+This product is designed for HR administrators from tech companies with many dynamic cross-functional project teams, who frequently manage contact information of developers from various departments and prefer using the keyboard over using a mouse.
+
 <page-nav-print />
 
 --------------------------------------------------------------------------------------------------------------------
@@ -181,7 +183,7 @@ Note:
 
 * If the person list is filtered using the `view` command, employee IDs which are not in the current view will not be accepted. Consider using the `list` command to display all persons first.
 
-### Adding a tag: `tag`
+### Adding a Tag: `tag`
 Adds one or more tags to an existing person in the address book without removing existing tags.
 
 Format: `tag EMPLOYEE_ID TAG [MORE_TAGS]…`
@@ -213,7 +215,7 @@ Warning:
 * If all tags you attempt to add are duplicates, the command will return a message indicating no new tags were added.
 
 
-### Removing a tag: `untag`
+### Removing a Tag: `untag`
 
 Removes one or more tags from an existing person in the address book.
 
@@ -240,8 +242,10 @@ Note:
 Warning: 
 * If none of the specified tags exist on the person, the command will fail with an error message listing the non-existent tags. However, if at least one tag exists, valid tags will be removed and a warning will show which tags were not found.
 
-### Creating a team: `create-team`
+### Creating a Team: `create-team`
 Adds a team to the address book. All team names are automatically set to Upper Case format. 
+
+![create-team](images/createTeam.png)
 
 Format: `create-team TEAM_NAME TEAM_LEADER_ID`
 
@@ -256,8 +260,10 @@ Note:
 
 * If the person list is filtered using the `view` command, employee IDs which are not in the current view will not be accepted. Consider using the `list` command to display all persons first.
 
-### Adding members to a team: `add-to-team`
+### Adding Members to a Team: `add-to-team`
 Adds a peron to an existing team in the address book.
+
+![add-to-team](images/addToTeam.png)
 
 Format: `add-to-team TEAM_ID MEMBER_ID`
 
@@ -270,8 +276,10 @@ Example:
 Exceptions:
 * If the team ID or member ID does not exist, the command will fail with an error message.
 
-### Removing members from a team: `remove-from-team`
+### Removing Members from a Team: `remove-from-team`
 Remove a person from an existing team in the address book.
+
+![remove-from-team](images/removeFromTeam.png)
 
 Format: `remove-from-team TEAM_ID MEMBER_ID`
 
@@ -290,11 +298,13 @@ Note:
 
 * If the person list is filtered using the `view` command, employee IDs which are not in the current view will not be accepted. Consider using the `list` command to display all persons first.
 
-### Set a team as a subteam of another team: `set-subteam`
+### Set a Team as a Subteam of Another Team: `set-subteam`
 
 Sets an already created team as a subteam of another already created parent team.
 The parent team must not already contain the subteam as a subteam (directly or indirectly) to avoid cycles.
 The subteam must also not already contain the parent team as a subteam (directly or indirectly) to avoid cycles.
+
+![set-subteam](images/setSubteam.png)
 
 Format: `set-subteam PARENT_TEAM_ID SUBTEAM_ID`
 
@@ -307,8 +317,10 @@ Exceptions:
   - If the team TEAM_ID_A exists as a parent team (directly or indirectly) of team TEAM_ID_B.
   - If the team TEAM_ID_B exists as a subteam (directly or indirectly) of team TEAM_ID_A.
 
-### Deleting a team: `delete-team`
+### Deleting a Team: `delete-team`
 Deletes an existing team from the address book.
+
+![delete-team](images/deleteTeam.png)
 
 Format: `delete-team TEAM_ID`
 
@@ -321,9 +333,11 @@ Exceptions:
 
 Format: `delete-team TEAM_ID`
 
-### Locating persons by name: `view`
+### Locating Persons by Name: `view`
 
 Finds persons whose names contain any of the given keywords.
+
+![view](images/viewCommand.png)
 
 Format: `view KEYWORD [MORE_KEYWORDS]`
 
@@ -346,7 +360,7 @@ Examples:
 * `view alex david` returns `Alex Yeoh`, `David Li`<br>
   ![result for 'find alex david'](images/findAlexDavidResult.png)
 
-### Deleting a person : `delete`
+### Deleting a Person : `delete`
 
 Deletes the specified person from the address book.
 
@@ -362,7 +376,7 @@ Note:
 
 * If the person list is filtered using the `view` command, employee IDs which are not in the current view will not be accepted. Consider using the `list` command to display all persons first.
 
-### Setting a person's salary: `set-salary`
+### Setting a Person's Salary: `set-salary`
 
 Sets the salary of the specified person in the address book.
 
@@ -379,7 +393,7 @@ Examples:
 * `set-salary E2050 3550.61` sets the salary of the person with the ID of "E2050" to *$3550.61 / month*.
 * `set-salary E1001 4000.247` sets the salary of the person with the ID of "E1001" to *$4000.25 / month*.
 
-### Sorting persons: `sort`
+### Sorting Persons: `sort`
 
 Sorts the persons in the address book by the specified fields.
 
@@ -405,7 +419,7 @@ Examples:
 * `sort -salary -gh` sorts the persons in the address book by salary in numerical order, then by GitHub username in alphabetical order.
 * `sort` sorts the persons in the address book by name in alphabetical order.
 
-### Clearing all entries : `clear`
+### Clearing All Entries : `clear`
 
 Clears all entries from the address book.
 
@@ -416,7 +430,7 @@ Note:
 * This command clears both the persons and teams from the address book.
 * When the address book is cleared, the employee ID counter resets, but the team ID counter does not reset.
 
-### Importing contacts from data file : `import`
+### Importing Contacts from the Data File : `import`
 
 Imports the contact data of people from a specific JSON file from the data folder into the main address book.
 
@@ -467,7 +481,7 @@ JSON Format Example
 }
 ```
 
-### Viewing of audit logs : `audit`
+### Viewing of the Audit Logs : `audit`
 
 Displays a log of all past actions that have modified the address book data.
 
@@ -487,17 +501,17 @@ Examples:
 Note: 
 * The audit log persists between sessions and survives application restarts. Only commands that modify data are recorded to keep the log meaningful and concise.
 
-### Exiting the program : `exit`
+### Exiting the Program : `exit`
 
 Exits the program.
 
 Format: `exit`
 
-### Saving the data
+### Saving the Data
 
 Henri data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
-### Editing the data file
+### Editing the Data File
 
 Henri data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
@@ -517,7 +531,7 @@ Furthermore, certain edits can cause Henri to behave in unexpected ways (e.g., i
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Known issues / Limitations
+## Known Issues / Limitations
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
@@ -532,9 +546,9 @@ Furthermore, certain edits can cause Henri to behave in unexpected ways (e.g., i
 ## Future Enhancements
 1. **Customize command word** Allow users to customize command words to their preference. This would resolve the problem where command words might feel too long (e.g remove-from-team command)
 2. **Import feature to support adding of subteams and team members** Allow users to import not only employees but also teams, subteams and team members from a JSON file.
-3. 
 
-## Command summary
+
+## Command Summary
 
 | Action               | Format, Examples                                                                                                                                                                                  |
 |----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
