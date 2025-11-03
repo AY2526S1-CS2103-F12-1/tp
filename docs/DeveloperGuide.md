@@ -100,10 +100,10 @@ The sequence diagram below illustrates the interactions within the `Logic` compo
 
 How the `Logic` component works:
 
-1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command. 
-2. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`. 
+1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
+2. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
 3. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
-   Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve. 
+   Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
 4. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
@@ -161,10 +161,10 @@ This section describes some noteworthy details on how certain features are imple
 
 Employee IDs follow the format `E####` where # represents a digit (e.g., `E0001`, `E0042`).
 
-1. When a new employee is added via `AddCommand`, the system scans all existing employee IDs in the address book
-2. The `findNextAvailableId()` method identifies gaps in the sequence and assigns the lowest available ID 
-3. This ensures ID reuse when employees are deleted, maintaining efficient ID space usage
-4. The `ImportCommand` also uses this mechanism to reassign IDs when imported employees have conflicting IDs
+1. When a new employee is added via `AddCommand`, the system scans all existing employee IDs in the address book.
+2. The `findNextAvailableId()` method identifies gaps in the sequence and assigns the lowest available ID.
+3. This ensures ID reuse when employees are deleted, maintaining efficient ID space usage.
+4. The `ImportCommand` also uses this mechanism to reassign IDs when imported employees have conflicting IDs.
 
 
 #### Sequence Diagram
@@ -179,7 +179,7 @@ The sequence diagram above illustrates how the system generates a new employee I
 
 The activity diagram shows the gap-filling algorithm that ensures efficient ID space usage.
 
-#### Code flow: 
+#### Code flow:
 ```java
 Set<Long> usedIds = model.getAddressBook().getPersonList().stream()
 .map(Person::id)
@@ -191,11 +191,11 @@ long newId = findNextAvailableId(usedIds);
 Person personWithId = new Person(String.format("E%04d", newId), ...);
 ```
 
-#### Key Features: 
-* **Gap filling**: If employee E0001 is deleted, the next added employee will receive ID E0001 
-* **Sequential scanning**: Starts from 1 and finds the first unused ID 
-* **Collision prevention**: Checks against all existing IDs before assignment 
-* **Import handling**: During import operations, conflicting IDs are automatically reassigned using the same gap-filling logic
+#### Key Features:
+* **Gap filling**: If employee E0001 is deleted, the next added employee will receive ID E0001.
+* **Sequential scanning**: Starts from 1 and finds the first unused ID.
+* **Collision prevention**: Checks against all existing IDs before assignment.
+* **Import handling**: During import operations, conflicting IDs are automatically reassigned using the same gap-filling logic.
 
 #### Design Considerations
 
@@ -227,14 +227,14 @@ Person personWithId = new Person(String.format("E%04d", newId), ...);
 
 </box>
 
-### Team ID Generation 
+### Team ID Generation
 
 Team IDs follow the format `T####` where # represents a digit (e.g., `T0001`, `T0042`).
 
-#### Implementation Details: 
-1. `CreateTeamCommand` maintains a static nextId counter that persists across command executions 
-2. During `LogicManager` initialization, the counter is set to one greater than the highest existing team ID 
-3. Each new team receives the current nextId value, which is then incremented
+#### Implementation Details
+1. `CreateTeamCommand` maintains a static nextId counter that persists across command executions.
+2. During `LogicManager` initialization, the counter is set to one greater than the highest existing team ID.
+3. Each new team receives the current nextId value, which is then incremented.
 
 #### Sequence Diagram
 
@@ -248,7 +248,7 @@ The sequence diagram illustrates the initialization of the static counter during
 
 The activity diagram demonstrates the monotonic increment strategy that preserves audit trail capability.
 
-#### Code Flow: 
+#### Code Flow
 ```java
 // In LogicManager constructor
 long maxTeamId = teams.stream()
@@ -264,10 +264,10 @@ Team team = new Team(String.format("T%04d", nextId++), teamName, leaderId);
 ```
 
 #### Key Features:
-* **Monotonic increment**: Team IDs always increase; deleted IDs are never reused 
-* **Application-wide counter**: Static variable ensures consistency across multiple command executions 
-* **Initialization safety**: Counter is set based on existing data when the application starts 
-* **Persistence**: The counter value persists in memory throughout the application lifecycle
+* **Monotonic increment**: Team IDs always increase; deleted IDs are never reused.
+* **Application-wide counter**: Static variable ensures consistency across multiple command executions.
+* **Initialization safety**: Counter is set based on existing data when the application starts.
+* **Persistence**: The counter value persists in memory throughout the application lifecycle.
 
 #### Design Considerations
 ##### Aspect: Team ID Generation and Persistence
@@ -314,7 +314,7 @@ The Import mechanism is facilitated by two main classes:
 * `ImportCommand` - Executes the import operation
 * `ImportCommandParser` - Parses user input and creates ImportCommand objects
 
-#### How it Works 
+#### How it Works
 1. **User Input Parsing**: When a user enters `import friends.json`, the `ImportCommandParser` validates the filename and constructs a file path relative to the `data` folder.
 2. **File Reading**: The `ImportCommand` uses `JsonAddressBookStorage` to read the JSON file and convert it into a `ReadOnlyAddressBook` object.
 3. **Person Addition**: The command iterates through all imported persons and attempts to add each one to the current address book using `model.addPerson(person)`.
@@ -359,13 +359,13 @@ for (Person person : importedData.getPersonList()) {
 ```
 
 #### Key Features
-* **Partial Import**: Skips invalid entries and continues importing valid ones 
-* **Automatic ID Management**: Conflicting Employee IDs are automatically reassigned using the gap-filling algorithm 
-* **Error Logging**: Skipped entries are logged for debugging and audit purposes 
-* **Format Validation**: Only `.json` files are accepted as input 
+* **Partial Import**: Skips invalid entries and continues importing valid ones
+* **Automatic ID Management**: Conflicting Employee IDs are automatically reassigned using the gap-filling algorithm
+* **Error Logging**: Skipped entries are logged for debugging and audit purposes
+* **Format Validation**: Only `.json` files are accepted as input
 * **Relative Path**: Files are expected in the `data` folder for security and organization
 
-#### Design Considerations: 
+#### Design Considerations:
 ##### Aspect: Error Handling During Import
 
 * **Alternative 1 (current choice):** Skip invalid entries and continue
@@ -545,63 +545,63 @@ model.updateTeam(parentTeam);
 #### Key Features
 * **Automatic Team ID Generation**: Uses monotonic increment strategy (never reuses IDs)
 * **Hierarchical Structure**: Support for parent-child team relationships
-* **Circular Dependency Prevention**: Validates subteam relationships to prevent cycles 
-* **Leader Assignment**: Optional team leader designation during creation 
-* **Membership Validation**: Ensures employees exist before adding to teams 
+* **Circular Dependency Prevention**: Validates subteam relationships to prevent cycles
+* **Leader Assignment**: Optional team leader designation during creation
+* **Membership Validation**: Ensures employees exist before adding to teams
 * **Clean Deletion**: Prevents deletion of teams with active members
 * **Unique Team IDs**: Automatically generated using a monotonic increment strategy
 
-#### Design Considerations 
+#### Design Considerations
 
 ##### Aspect: Team Deletion with Members
-* Alternative 1 (current choice): Prevent deletion of teams with members 
-  * Require all members to be removed before team deletion 
-  * Throw error if team has members 
-  * Pros: Prevents accidental data loss, forces explicit cleanup, maintains data integrity 
-  * Cons: Requires multiple steps to delete a team with members, less convenient for bulk operations 
-* Alternative 2: Cascade deletion with automatic member removal 
-  * Automatically remove all members when deleting a team 
-  * Provide warning but allow deletion 
-  * Pros: Single-step deletion, more convenient for cleanup operations, faster bulk operations 
-  * Cons: Risk of accidental data loss, harder to undo, may violate business rules requiring explicit approval 
-* Alternative 3: Soft delete with archive 
-  * Mark team as deleted but keep data in system 
-  * Allow restoration within a time period 
-  * Pros: Recoverable from mistakes, maintains historical data, supports audit trails 
-  * Cons: More complex implementation, requires cleanup mechanism, uses more storage 
+* Alternative 1 (current choice): Prevent deletion of teams with members
+  * Require all members to be removed before team deletion
+  * Throw error if team has members
+  * Pros: Prevents accidental data loss, forces explicit cleanup, maintains data integrity
+  * Cons: Requires multiple steps to delete a team with members, less convenient for bulk operations
+* Alternative 2: Cascade deletion with automatic member removal
+  * Automatically remove all members when deleting a team
+  * Provide warning but allow deletion
+  * Pros: Single-step deletion, more convenient for cleanup operations, faster bulk operations
+  * Cons: Risk of accidental data loss, harder to undo, may violate business rules requiring explicit approval
+* Alternative 3: Soft delete with archive
+  * Mark team as deleted but keep data in system
+  * Allow restoration within a time period
+  * Pros: Recoverable from mistakes, maintains historical data, supports audit trails
+  * Cons: More complex implementation, requires cleanup mechanism, uses more storage
 
-##### Aspect: Subteam Relationship Validation 
-* Alternative 1 (current choice): Graph-based circular dependency check 
-  * Traverse the team hierarchy to detect cycles 
-  * Prevent relationships that would create circular references 
-  * Pros: Guarantees acyclic hierarchy, prevents infinite loops, maintains tree structure integrity 
-  * Cons: More complex validation logic, requires graph traversal, potentially slower for deep hierarchies 
-* Alternative 2: Allow circular relationships with depth limit 
-  * Permit circular relationships but limit traversal depth 
+##### Aspect: Subteam Relationship Validation
+* Alternative 1 (current choice): Graph-based circular dependency check
+  * Traverse the team hierarchy to detect cycles
+  * Prevent relationships that would create circular references
+  * Pros: Guarantees acyclic hierarchy, prevents infinite loops, maintains tree structure integrity
+  * Cons: More complex validation logic, requires graph traversal, potentially slower for deep hierarchies
+* Alternative 2: Allow circular relationships with depth limit
+  * Permit circular relationships but limit traversal depth
   * Stop at a maximum depth (e.g., 5 levels)
-  * Pros: Simpler validation, more flexible structure, handles complex organizational models 
-  * Cons: May hide structural issues, could confuse users, breaks tree assumptions 
-* Alternative 3: No validation 
-  * Allow any parent-child relationship 
-  * Leave circular dependency handling to users 
-  * Pros: Simplest implementation, maximum flexibility, no performance overhead 
+  * Pros: Simpler validation, more flexible structure, handles complex organizational models
+  * Cons: May hide structural issues, could confuse users, breaks tree assumptions
+* Alternative 3: No validation
+  * Allow any parent-child relationship
+  * Leave circular dependency handling to users
+  * Pros: Simplest implementation, maximum flexibility, no performance overhead
   * Cons: Can create invalid hierarchies, poor user experience, difficult debugging
 
 ##### Aspect: Team Leader Assignment
-* Alternative 1 (current choice): Optional leader during creation 
-  * Allow team creation without a leader 
-  * Leader can be assigned later 
-  * Pros: Flexible workflow, supports teams without designated leaders, simpler command syntax 
-  * Cons: May result in teams without leaders, requires separate command to assign leader later 
-* Alternative 2: Mandatory leader assignment 
-  * Require leader ID during team creation 
-  * Validate leader exists and is available 
-  * Pros: Ensures accountability, clearer team structure, enforces organizational policy 
-  * Cons: Less flexible, may block team creation if leader unknown, requires more validation 
-* Alternative 3: Automatic leader assignment 
-  * Assign first team member as leader automatically 
-  * Allow leader change through separate command 
-  * Pros: Always has a leader, automatic management, reduces manual steps 
+* Alternative 1 (current choice): Optional leader during creation
+  * Allow team creation without a leader
+  * Leader can be assigned later
+  * Pros: Flexible workflow, supports teams without designated leaders, simpler command syntax
+  * Cons: May result in teams without leaders, requires separate command to assign leader later
+* Alternative 2: Mandatory leader assignment
+  * Require leader ID during team creation
+  * Validate leader exists and is available
+  * Pros: Ensures accountability, clearer team structure, enforces organizational policy
+  * Cons: Less flexible, may block team creation if leader unknown, requires more validation
+* Alternative 3: Automatic leader assignment
+  * Assign first team member as leader automatically
+  * Allow leader change through separate command
+  * Pros: Always has a leader, automatic management, reduces manual steps
   * Cons: May assign wrong person, requires additional logic, could confuse users
 
 <box>
@@ -610,7 +610,7 @@ model.updateTeam(parentTeam);
 * The system prevents circular dependencies by checking the entire hierarchy before establishing new relationships
 * Deleting a parent team automatically removes the parent reference from child teams but doesn't delete the child teams
 * Team IDs are never reused, even after deletion, to maintain audit trail integrity
-</box> 
+</box>
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -679,8 +679,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1. User requests to add a new person with specified details (name, phone, email, GitHub username, etc.)
-2. System validates the input 
-3. System adds the person to the address book 
+2. System validates the input
+3. System adds the person to the address book
 4. System displays a success message with the added person's details
    Use case ends.
 
@@ -689,43 +689,43 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   * 2a1. System shows an error message indicating which fields are required.
     Use case ends.
 
-* 2b. The email format is invalid. 
+* 2b. The email format is invalid.
   * 2b1. System shows an error message about the invalid email format.
     Use case ends.
 
-* 2c. The GitHub username already exists. 
+* 2c. The GitHub username already exists.
   * 2c1. System shows an error message indicating duplicate GitHub username.
     Use case ends.
 
-* 2d. The phone number format is invalid. 
+* 2d. The phone number format is invalid.
   * 2d1. System shows an error message about the invalid phone format.
     Use case ends.
 
 **Use case: Add employee to team**
 
 **MSS**
-1. User requests to add a person to a team by specifying employee ID and team name 
-2. System validates that both the person and team exist 
-3. System adds the person to the specified team 
+1. User requests to add a person to a team by specifying employee ID and team name
+2. System validates that both the person and team exist
+3. System adds the person to the specified team
 4. System displays a success message
    Use case ends.
 
 **Extensions**
 * 2a. The employee ID does not exist.
   * 2a1. System shows an error message.
-    Use case ends. 
-* 2b. The team name does not exist. 
+    Use case ends.
+* 2b. The team name does not exist.
   * 2b1. System shows an error message.
-    Use case ends. 
-* 2c. The person is already in the team. 
+    Use case ends.
+* 2c. The person is already in the team.
   * 2c1. System shows an error message indicating the person is already a team member.
     Use case ends.
 
 **Use case: View audit log**
 
 **MSS**
-1. User requests to view the audit log 
-2. System displays a list of all recorded actions with timestamps, user, and details of changes made 
+1. User requests to view the audit log
+2. System displays a list of all recorded actions with timestamps, user, and details of changes made
 3. User reviews the audit history
    Use case ends.
 
@@ -736,26 +736,26 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Use case: Clear address book**
 
-**MSS** 
-1. User requests to clear all data from the address book 
-2. System clears all persons and teams from the address book 
+**MSS**
+1. User requests to clear all data from the address book
+2. System clears all persons and teams from the address book
 3. System displays a success message
    Use case ends.
 
 **Use case: Create team**
 
 **MSS**
-1. User requests to create a new team with a specified team name 
-2. System validates the team name 
-3. System creates the team 
+1. User requests to create a new team with a specified team name
+2. System validates the team name
+3. System creates the team
 4. System displays a success message
    Use case ends.
 
 **Extensions**
-* 2a. The team name already exists. 
+* 2a. The team name already exists.
   * 2a1. System shows an error message indicating duplicate team name.
-    Use case ends. 
-* 2b. The team name format is invalid. 
+    Use case ends.
+* 2b. The team name format is invalid.
   * 2b1. System shows an error message about the invalid format.
     Use case ends.
 
@@ -781,29 +781,29 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Use case: Delete team**
 
 **MSS**
-1. User requests to delete a team by specifying team name 
-2. System validates that the team exists 
-3. System removes the team and all its associations 
+1. User requests to delete a team by specifying team name
+2. System validates that the team exists
+3. System removes the team and all its associations
 4. System displays a success message
    Use case ends.
 
 **Extensions**
-* 2a. The team name does not exist. 
+* 2a. The team name does not exist.
   * 2a1. System shows an error message.
-    Use case ends. 
-* 2b. The team has members. 
-  * 2b1. System shows a warning and asks for confirmation. 
-  * 2b2. User confirms deletion. 
+    Use case ends.
+* 2b. The team has members.
+  * 2b1. System shows a warning and asks for confirmation.
+  * 2b2. User confirms deletion.
   * 2b3. System removes all members from the team and deletes the team.
     Use case resumes at step 4.
 
 **Use case: Edit details of a person**
 
-**MSS** 
-1. User requests to list persons 
-2. System shows a list of persons 
-3. User finds the person's ID 
-4. User requests to update details of a specific person in the list by ID 
+**MSS**
+1. User requests to list persons
+2. System shows a list of persons
+3. User finds the person's ID
+4. User requests to update details of a specific person in the list by ID
 5. System shows the updated details of the person
     Use case ends.
 
@@ -817,63 +817,63 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Use case: Exit application**
 
 **MSS**
-1. User requests to exit the application 
-2. System saves all data 
+1. User requests to exit the application
+2. System saves all data
 3. System closes the application
    Use case ends.
 
 **Extensions**
-* 2a. There are unsaved changes. 
+* 2a. There are unsaved changes.
   * 2a1. System saves the changes before closing.
     Use case resumes at step 3.
 
 **Use case: Display help**
 
 **MSS**
-1. User requests help information 
-2. System displays a help window with available commands and their usage 
+1. User requests help information
+2. System displays a help window with available commands and their usage
 3. User reviews the help information
    Use case ends.
 
 **Extensions**
-* 1a. User specifies a specific command to get help for. 
+* 1a. User specifies a specific command to get help for.
   * 1a1. System displays detailed help for that specific command.
     Use case ends.
 
 **Use case: Import contacts**
 
 **MSS**
-1. User requests to import contacts from a file by specifying file path 
-2. System validates the file format 
-3. System reads the file and imports all valid contacts 
+1. User requests to import contacts from a file by specifying file path
+2. System validates the file format
+3. System reads the file and imports all valid contacts
 4. System displays a summary of imported contacts and any errors encountered
    Use case ends.
 
 **Extensions**
-* 2a. The file does not exist. 
+* 2a. The file does not exist.
   * 2a1. System shows an error message.
-    Use case ends. 
-* 2b. The file format is invalid or corrupted. 
+    Use case ends.
+* 2b. The file format is invalid or corrupted.
   * 2b1. System shows an error message about the invalid format.
-    Use case ends. 
-* 3a. Some contacts in the file have invalid data. 
-  * 3a1. System skips invalid contacts and imports valid ones. 
+    Use case ends.
+* 3a. Some contacts in the file have invalid data.
+  * 3a1. System skips invalid contacts and imports valid ones.
   * 3a2. System shows a summary of skipped contacts with reasons.
-    Use case resumes at step 4. 
-* 3b. Some contacts already exist (duplicate GitHub usernames). 
-  * 3b1. System skips duplicate contacts. 
+    Use case resumes at step 4.
+* 3b. Some contacts already exist (duplicate GitHub usernames).
+  * 3b1. System skips duplicate contacts.
   * 3b2. System shows a summary of skipped duplicates.
     Use case resumes at step 4.
 
 **Use case: List persons**
 
 **MSS**
-1. User requests to list all persons 
+1. User requests to list all persons
 2. System displays all persons in the address book with their basic information
    Use case ends.
 
 **Extensions**
-* 1a. The address book is empty. 
+* 1a. The address book is empty.
   * 1a1. System shows a message indicating no persons found.
     Use case ends.
 
@@ -881,63 +881,63 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1. User requests to remove a person from a team by specifying employee ID and team name 
-2. System validates that both the person and team exist 
-3. System validates that the person is a member of the team 
-4. System removes the person from the team 
+1. User requests to remove a person from a team by specifying employee ID and team name
+2. System validates that both the person and team exist
+3. System validates that the person is a member of the team
+4. System removes the person from the team
 5. System displays a success message
    Use case ends.
 
 **Extensions**
-* 2a. The employee ID does not exist. 
+* 2a. The employee ID does not exist.
   * 2a1. System shows an error message.
-    Use case ends. 
-* 2b. The team name does not exist. 
+    Use case ends.
+* 2b. The team name does not exist.
   * 2b1. System shows an error message.
-    Use case ends. 
-* 3a. The person is not in the team. 
+    Use case ends.
+* 3a. The person is not in the team.
   * 3a1. System shows an error message indicating the person is not a team member.
     Use case ends.
 
 **Use case: Set employee salary**
 
 **MSS**
-1. User requests to set salary for a person by specifying employee ID and salary amount 
-2. System validates the employee ID exists 
-3. System validates the salary format 
-4. System updates the person's salary 
+1. User requests to set salary for a person by specifying employee ID and salary amount
+2. System validates the employee ID exists
+3. System validates the salary format
+4. System updates the person's salary
 5. System displays a success message with the updated salary
    Use case ends.
 
 **Extensions**
-* 2a. The employee ID does not exist. 
+* 2a. The employee ID does not exist.
   * 2a1. System shows an error message.
-    Use case ends. 
-* 3a. The salary format is invalid (negative or non-numeric). 
+    Use case ends.
+* 3a. The salary format is invalid (negative or non-numeric).
   * 3a1. System shows an error message about the invalid salary format.
     Use case ends.
 
 **Use case: Set Subteam**
 
 **MSS**
-1. User requests to set a subteam relationship by specifying parent team and child team names 
-2. System validates that both teams exist 
-3. System validates that setting this relationship does not create a circular dependency 
-4. System sets the child team as a subteam of the parent team 
+1. User requests to set a subteam relationship by specifying parent team and child team names
+2. System validates that both teams exist
+3. System validates that setting this relationship does not create a circular dependency
+4. System sets the child team as a subteam of the parent team
 5. System displays a success message
    Use case ends.
 
 **Extensions**
-* 2a. The parent team does not exist. 
+* 2a. The parent team does not exist.
   * 2a1. System shows an error message.
-    Use case ends. 
-* 2b. The child team does not exist. 
+    Use case ends.
+* 2b. The child team does not exist.
   * 2b1. System shows an error message.
-    Use case ends. 
-* 3a. Setting this relationship would create a circular dependency. 
+    Use case ends.
+* 3a. Setting this relationship would create a circular dependency.
   * 3a1. System shows an error message indicating circular dependency.
-    Use case ends. 
-* 3b. The child team is already a subteam of the parent team. 
+    Use case ends.
+* 3b. The child team is already a subteam of the parent team.
   * 3b1. System shows an error message indicating the relationship already exists.
     Use case ends.
 
@@ -945,16 +945,16 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 1. User requests to sort persons by a specified field (name, salary, etc.)
-2. System validates the sort field 
-3. System sorts the persons list according to the specified field 
+2. System validates the sort field
+3. System sorts the persons list according to the specified field
 4. System displays the sorted list
    Use case ends.
 
 **Extensions**
-* 2a. The sort field is invalid. 
+* 2a. The sort field is invalid.
   * 2a1. System shows an error message listing valid sort fields.
-    Use case ends. 
-* 3a. The address book is empty. 
+    Use case ends.
+* 3a. The address book is empty.
   * 3a1. System shows a message indicating no persons to sort.
     Use case ends.
 
@@ -993,12 +993,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   Use case ends.
 * 3a. The given ID is invalid.
   * 3a1. System shows an error message.
-    Use case resumes at step 2. 
-* 5a. Some specified tags do not exist on the person. 
-  * 5a1. System removes only the existing tags. 
+    Use case resumes at step 2.
+* 5a. Some specified tags do not exist on the person.
+  * 5a1. System removes only the existing tags.
   * 5a2. System displays a warning message listing tags that were not found.
-    Use case resumes at step 6. 
-* 5b. None of the specified tags exist on the person. 
+    Use case resumes at step 6.
+* 5b. None of the specified tags exist on the person.
   * 5b1. System shows an error message indicating no tags were removed.
     Use case ends.
 
@@ -1510,7 +1510,7 @@ testers are expected to do more *exploratory* testing.
 2. Viewing non-existent person
 
    1. Prerequisites: No person named "Nullable" exists.
-    
+
    2. Test case: `view Nullable`<br>
           Expected: No details displayed.
 
