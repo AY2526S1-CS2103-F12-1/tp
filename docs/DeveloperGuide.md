@@ -166,6 +166,19 @@ Employee IDs follow the format `E####` where # represents a digit (e.g., `E0001`
 3. This ensures ID reuse when employees are deleted, maintaining efficient ID space usage
 4. The `ImportCommand` also uses this mechanism to reassign IDs when imported employees have conflicting IDs
 
+
+#### Sequence Diagram
+
+<puml src="diagrams/EmployeeIdGenerationDiagram.puml" alt="Employee ID Generation Sequence" width="600"/>
+
+The sequence diagram above illustrates how the system generates a new employee ID by scanning existing IDs and finding the first available gap.
+
+#### Activity Diagram
+
+<puml src="diagrams/EmployeeIdGenerationDiagram.puml" alt="Employee ID Generation Activity"  width="600"/>
+
+The activity diagram shows the gap-filling algorithm that ensures efficient ID space usage.
+
 #### Code flow: 
 ```
 Set<Long> usedIds = model.getAddressBook().getPersonList().stream()
@@ -222,6 +235,18 @@ Team IDs follow the format `T####` where # represents a digit (e.g., `T0001`, `T
 1. `CreateTeamCommand` maintains a static nextId counter that persists across command executions 
 2. During `LogicManager` initialization, the counter is set to one greater than the highest existing team ID 
 3. Each new team receives the current nextId value, which is then incremented
+
+#### Sequence Diagram
+
+<puml src="diagrams/TeamIdGenerationDiagram.puml" alt="Team ID Generation Sequence" width="600" />
+
+The sequence diagram illustrates the initialization of the static counter during application startup and its usage when creating new teams.
+
+#### Activity Diagram
+
+<puml src="diagrams/TeamIdGenerationDiagram.puml" alt="Team ID Generation Activity"  width="600"/>
+
+The activity diagram demonstrates the monotonic increment strategy that preserves audit trail capability.
 
 #### Code Flow: 
 ```

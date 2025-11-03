@@ -1,0 +1,57 @@
+@startuml
+!include style.puml
+skinparam ActivityFontStyle plain
+
+start
+
+partition "Application Startup" {
+  :LogicManager initialized;
+
+  :Get all existing teams from AddressBook;
+
+  if (Teams exist?) then (yes)
+    :Filter teams with IDs starting with "T";
+
+    :Extract numeric parts of team IDs;
+
+    note right
+      T0001 -> 1
+      T0042 -> 42
+    end note
+
+    :Find maximum team ID number;
+
+    :Set CreateTeamCommand.nextId = maxId + 1;
+  else (no)
+    :Set CreateTeamCommand.nextId = 1;
+  endif
+}
+
+partition "Create Team Command" {
+  :Receive create team command;
+
+  :Get current nextId from static counter;
+
+  :Format ID as T%04d;
+
+  note right
+    Examples:
+    1 -> T0001
+    42 -> T0042
+  end note
+
+  :Create Team object with formatted ID;
+
+  :Increment static nextId counter;
+
+  note right
+    Counter persists across
+    multiple team creations
+  end note
+
+  :Add team to AddressBook;
+}
+
+stop
+
+@enduml

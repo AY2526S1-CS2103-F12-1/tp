@@ -1,0 +1,89 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":AddCommandParser" as Parser LOGIC_COLOR
+participant ":AddCommand" as AddCommand LOGIC_COLOR
+participant ":Model" as Model LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":AddressBook" as AddressBook MODEL_COLOR
+participant ":UniquePersonList" as PersonList MODEL_COLOR
+end box
+
+[-> Parser : parse(args)
+activate Parser
+
+Parser -> Model : getAddressBook()
+activate Model
+
+Model --> Parser : addressBook
+deactivate Model
+
+Parser -> AddressBook : getPersonList()
+activate AddressBook
+
+AddressBook --> Parser : personList
+deactivate AddressBook
+
+Parser -> Parser : collectUsedIds(personList)
+activate Parser
+
+Parser --> Parser : usedIds
+deactivate Parser
+
+Parser -> Parser : findNextAvailableId(usedIds)
+activate Parser
+note right
+  Start from ID 1
+  Find first ID not in usedIds
+  Return first available ID
+end note
+
+Parser --> Parser : nextId
+deactivate Parser
+
+Parser -> Parser : createPerson(nextId)
+activate Parser
+
+Parser --> Parser : person
+deactivate Parser
+
+Parser -> AddCommand : <<create>>(person)
+activate AddCommand
+
+AddCommand --> Parser
+deactivate AddCommand
+
+[<-- Parser : AddCommand
+deactivate Parser
+
+...
+
+[-> AddCommand : execute(model)
+activate AddCommand
+
+AddCommand -> Model : addPerson(person)
+activate Model
+
+Model -> AddressBook : addPerson(person)
+activate AddressBook
+
+AddressBook -> PersonList : add(person)
+activate PersonList
+
+PersonList --> AddressBook
+deactivate PersonList
+
+AddressBook --> Model
+deactivate AddressBook
+
+Model --> AddCommand
+deactivate Model
+
+[<-- AddCommand : CommandResult
+deactivate AddCommand
+
+@enduml
