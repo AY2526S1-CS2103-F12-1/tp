@@ -27,6 +27,9 @@ public class AddressTest {
         // invalid addresses
         assertFalse(Address.isValidAddress("")); // empty string
         assertFalse(Address.isValidAddress(" ")); // spaces only
+        assertFalse(Address.isValidAddress("This address is way too long to be considered a valid address "
+                + "because it exceeds the maximum allowed length of 150 characters "
+                + "which is definitely not acceptable")); // too long
 
         // valid addresses
         assertTrue(Address.isValidAddress("Blk 456, Den Road, #01-355"));

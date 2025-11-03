@@ -32,6 +32,7 @@ public class EmailTest {
         assertFalse(Email.isValidEmail("@example.com")); // missing local part
         assertFalse(Email.isValidEmail("peterjackexample.com")); // missing '@' symbol
         assertFalse(Email.isValidEmail("peterjack@")); // missing domain name
+        assertFalse(Email.isValidEmail("peterjack@example")); // missing top level domain
 
         // invalid parts
         assertFalse(Email.isValidEmail("peterjack@-")); // invalid domain name
@@ -52,6 +53,12 @@ public class EmailTest {
         assertFalse(Email.isValidEmail("peterjack@example.com-")); // domain name ends with a hyphen
         assertFalse(Email.isValidEmail("peterjack@example.c")); // top level domain has less than two chars
 
+        // emoji in email
+        assertFalse(Email.isValidEmail("test@example.com\uD83D\uDE00")); // emoji at the end
+        assertFalse(Email.isValidEmail("\uD83D\uDE00test@example.com")); // emoji at the start
+        assertFalse(Email.isValidEmail("test\uD83D\uDE00@example.com")); // emoji in local part
+        assertFalse(Email.isValidEmail("test@\uD83D\uDE00example.com")); // emoji in domain part
+
         // valid email
         assertTrue(Email.isValidEmail("PeterJack_1190@example.com")); // underscore in local part
         assertTrue(Email.isValidEmail("PeterJack.1190@example.com")); // period in local part
@@ -64,6 +71,7 @@ public class EmailTest {
         assertTrue(Email.isValidEmail("peter_jack@very-very-very-long-example.com")); // long domain name
         assertTrue(Email.isValidEmail("if.you.dream.it_you.can.do.it@example.com")); // long local part
         assertTrue(Email.isValidEmail("e1234567@u.nus.edu")); // more than one period in domain
+        assertTrue(Email.isValidEmail("test@sub-domain.com")); // hyphen in domain
     }
 
     @Test
