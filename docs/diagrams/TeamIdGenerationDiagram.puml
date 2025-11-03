@@ -1,85 +1,58 @@
 @startuml
 !include style.puml
-skinparam ArrowFontStyle plain
 
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":CreateTeamCommand" as CreateTeamCommand LOGIC_COLOR
-participant ":Model" as Model LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
 participant ":AddressBook" as AddressBook MODEL_COLOR
-participant ":UniqueTeamList" as TeamList MODEL_COLOR
 end box
 
-[-> LogicManager : <<create>>(model, storage)
+[-> LogicManager : execute("create-team Engineering E1001")
 activate LogicManager
 
-LogicManager -> Model : getAddressBook()
-activate Model
+LogicManager -> LogicManager : parseCommand()
+activate LogicManager
+LogicManager -> CreateTeamCommand ** : create(teamName, leaderId)
+deactivate LogicManager
 
-Model --> LogicManager : addressBook
+LogicManager -> CreateTeamCommand : execute(model)
+activate CreateTeamCommand
+
+CreateTeamCommand -> Model : getAddressBook()
+activate Model
+Model --> CreateTeamCommand : addressBook
 deactivate Model
 
-LogicManager -> AddressBook : getTeamList()
+CreateTeamCommand -> AddressBook : getTeamList()
 activate AddressBook
-
-AddressBook --> LogicManager : teamList
+AddressBook --> CreateTeamCommand : teams
 deactivate AddressBook
 
-LogicManager -> LogicManager : findMaxTeamId(teamList)
-activate LogicManager
-
-LogicManager --> LogicManager : maxTeamId
-deactivate LogicManager
-
-LogicManager -> CreateTeamCommand : setNextId(maxTeamId + 1)
+CreateTeamCommand -> CreateTeamCommand : getCurrentMaxId(teams)
 activate CreateTeamCommand
-
-CreateTeamCommand --> LogicManager
+note right: Find max team ID\nfrom existing teams
+CreateTeamCommand --> CreateTeamCommand : maxId
 deactivate CreateTeamCommand
 
-[<-- LogicManager
-deactivate LogicManager
-
-...
-
-[-> CreateTeamCommand : execute(model)
+CreateTeamCommand -> CreateTeamCommand : generateTeamId()
 activate CreateTeamCommand
-
-CreateTeamCommand -> CreateTeamCommand : getAndIncrementNextId()
-activate CreateTeamCommand
-
-
-CreateTeamCommand --> CreateTeamCommand : teamId
-deactivate CreateTeamCommand
-
-CreateTeamCommand -> CreateTeamCommand : createTeam(teamId)
-activate CreateTeamCommand
-
-CreateTeamCommand --> CreateTeamCommand : team
+note right: nextId = maxId + 1\nFormat as "T%04d"
+CreateTeamCommand --> CreateTeamCommand : teamId (e.g., "T0001")
 deactivate CreateTeamCommand
 
 CreateTeamCommand -> Model : addTeam(team)
 activate Model
-
-Model -> AddressBook : addTeam(team)
-activate AddressBook
-
-AddressBook -> TeamList : add(team)
-activate TeamList
-
-TeamList --> AddressBook
-deactivate TeamList
-
-AddressBook --> Model
-deactivate AddressBook
-
 Model --> CreateTeamCommand
 deactivate Model
 
-[<-- CreateTeamCommand : CommandResult
+CreateTeamCommand --> LogicManager : commandResult
 deactivate CreateTeamCommand
+
+[<-- LogicManager
+deactivate LogicManager
 
 @enduml
