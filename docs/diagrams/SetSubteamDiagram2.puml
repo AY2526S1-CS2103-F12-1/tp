@@ -10,17 +10,11 @@ partition "Input Validation" {
 
   if (Child team exists?) then (no)
     :Show error message;
-    note right
-      "Child team not found"
-    end note
     stop
   endif
 
   if (Parent team exists?) then (no)
     :Show error message;
-    note right
-      "Parent team not found"
-    end note
     stop
   endif
 }
@@ -36,10 +30,6 @@ partition "Circular Dependency Check" {
 
     if (Parent is in visited set?) then (yes)
       :Show error message;
-      note right
-        "Setting this relationship would
-        create a circular dependency"
-      end note
       stop
     endif
 
@@ -53,10 +43,6 @@ partition "Update Relationship" {
 }
 
 :Display success message;
-note right
-  "Set [Child Team] as subteam
-  of [Parent Team]"
-end note
 
 stop
 

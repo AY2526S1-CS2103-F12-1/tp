@@ -61,10 +61,6 @@ activate CreateTeamCommand
 
 CreateTeamCommand -> CreateTeamCommand : generateTeamId()
 activate CreateTeamCommand
-note right
-  Format: "T%04d"
-  Uses monotonic increment
-end note
 CreateTeamCommand --> CreateTeamCommand : teamId (e.g., "T0001")
 deactivate CreateTeamCommand
 
@@ -75,10 +71,6 @@ Model -> AddressBook : addTeam(team)
 activate AddressBook
 
 AddressBook -> AddressBook : checkTeamNameUnique()
-note right
-  Validate team name
-  is unique
-end note
 
 AddressBook --> Model
 deactivate AddressBook

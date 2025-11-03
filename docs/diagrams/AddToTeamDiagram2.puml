@@ -10,17 +10,11 @@ partition "Input Validation" {
 
   if (Employee ID exists?) then (no)
     :Show error message;
-    note right
-      "Employee with this ID not found"
-    end note
     stop
   endif
 
   if (Team exists?) then (no)
     :Show error message;
-    note right
-      "Team not found"
-    end note
     stop
   endif
 }
@@ -30,10 +24,7 @@ partition "Membership Check" {
 
   if (Employee already in team?) then (yes)
     :Show error message;
-    note right
-      "Employee is already a member
-      of this team"
-    end note
+
     stop
   endif
 }
@@ -44,9 +35,6 @@ partition "Update Team" {
 }
 
 :Display success message;
-note right
-  "Added [Employee Name] to [Team Name]"
-end note
 
 stop
 
