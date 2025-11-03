@@ -29,10 +29,10 @@ HiddenOutside ..> Logic
 
 LogicManager .right.|> Logic
 LogicManager -right->"1" ParserClasses
-ParserClasses ..> XYZCommand : <<create>>
+ParserClasses ..> XYZCommand : creates >
 
 XYZCommand -up-|> Command
-LogicManager .left.> Command : <<call>>
+LogicManager .left.> Command : calls >
 
 Command .up.> Storage
 note right of Storage: Command uses Storage\ndirectly in ImportCommand
@@ -46,5 +46,5 @@ note right of XYZCommand: XYZCommand = AddCommand, \nFindCommand, etc
 
 Logic ..> CommandResult
 LogicManager .down.> CommandResult
-Command .up.> CommandResult : <<create>>
+Command .up.> CommandResult : creates >
 @enduml
