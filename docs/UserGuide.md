@@ -6,7 +6,7 @@
 
 # Henri User Guide
 
-Henri is a **desktop app for managing contacts, optimized for use via a  Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, Henri can get your contact management tasks done faster than traditional GUI apps.
+Henri is a **desktop app for managing personal details of employees in tech companies, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). It helps HR personnel accelerate company processes via improved readability and contact organisation. If you can type fast, Henri can get your contact management tasks done faster than traditional GUI apps.
 
 <!-- * Table of Contents -->
 <page-nav-print />
@@ -20,7 +20,7 @@ Henri is a **desktop app for managing contacts, optimized for use via a  Line In
 
 2. Download the latest `.jar` file from [here](https://github.com/AY2526S1-CS2103-F12-1/tp/releases).
 
-3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+3. Copy the file to the folder you want to use as the _home folder_ for your Henri installation.
 
 4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar henri.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
@@ -53,15 +53,14 @@ Henri is a **desktop app for managing contacts, optimized for use via a  Line In
   e.g. in `add -name NAME`, `NAME` is a parameter which can be used as `add -name John Doe`.
 
 * Items in square brackets are optional.<br>
-  e.g `-name NAME [-tag TAG]` can be used as `-name John Doe -tag friend` or as `-name John Doe`.
+  e.g `-name NAME [-gh GITHUB_USERNAME]` can be used as `-name John Doe -gh @johndoe123` or as `-name John Doe`.
 
-* Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[-tag TAG]…​` can be used as ` ` (i.e. 0 times), `-tag friend`, `-tag friend -tag family` etc.
+* Command words are **case-sensitive**.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `-name NAME -hp PHONE_NUMBER`, `-hp PHONE_NUMBER -name NAME` is also acceptable.
 
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
+* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit`, `audit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
@@ -75,7 +74,6 @@ Shows a message explaining how to access the help page.
 
 Format: `help`
 
-
 ### Adding a person: `add`
 
 Adds a person to the address book.
@@ -83,18 +81,46 @@ Adds a person to the address book.
 Format: `add -name NAME -hp PHONE_NUMBER -em EMAIL -addr ADDRESS [-gh GITHUB_USERNAME]`
 
 #### Required Parameters
-1. `-name` - name of the person being added to the address book (maximum 50 characters)
-2. `-hp`   - numerical phone number of the person (3-12 digits)
+1. `-name` - name of the person being added to the address book
+   - Should only contain alphanumeric characters with a single space between words
+   - Accepted special characters: hyphen (-), apostrophe ('), slash (/), period (.), comma (,), and at symbol (@)
+   - Should be 1-50 characters long
+2. `-hp`   - numerical phone number of the person
+   - Should only contain digits
+   - Should be 3-12 digits long
 3. `-em`   - email address in the format 'user@domain'
+   - user
+     - Can only contain alphanumeric characters and the following special characters: `+`, `_`, `.`, `-`
+     - Must start and end with an alphanumeric character
+   - domain
+     - Can contain one or more subdomains separated by periods (.)
+     - Each subdomain can only contain alphanumeric characters and hyphens (`-`)
+     - Each subdomain must start and end with an alphanumeric character
+     - Must end with a top-level domain of minimum 2 characters
+   - User and domain parts are separated by a single at symbol (`@`)
 4. `-addr` - the address of the person in string format
+   - Should be 1-150 characters long
 
 #### Optional Parameters
-1. `-gh` - the GitHub username string associated with the person (starts with '@', 3-39 characters)
+1. `-gh` - the GitHub username string associated with the person
+   - Should start with an at symbol (`@`)
+   - Can only contain alphanumeric characters or hyphens (`-`)
+   - Cannot begin or end with a hyphen (`-`)
+   - Cannot have consecutive hyphens (`--`)
+   - Should be 3-39 characters long (excluding the at symbol)
 
 Examples:
 * `add -name John Doe -hp 98765432 -em johnd@example.com -addr John street, block 123, #01-01`
 * `add -name Betsy Crowe -em betsycrowe@example.com -addr Newgate Prison -hp 1234567`
 * `add -name Mike Oxlong -hp 96767676 -em mikeo@exammple.com -addr 67 Downing St -gh @mikeoxlong`
+
+<box type="tip" seamless>
+**Tip:** To add tags to a person, use the [`tag`](#tag) command.
+</box>
+
+Note:
+* Duplicate names are not allowed in the address book. If a person with the same name (case-insensitive) already exists, the command will fail with an error message.
+* If by coincidence there are two persons with the same name, consider manually aliasing their names.
 
 ### Listing all persons : `list`
 
@@ -116,11 +142,31 @@ Format: `edit EMPLOYEE_ID [-name NAME] [-hp PHONE] [-em EMAIL] [-addr ADDRESS] [
 * Existing values will be updated to the input values.
 
 #### Possible Parameters
-1. `-name` - name of the person being added to the address book (maximum 50 characters)
-2. `-hp`   - numerical phone number of the person (3-12 digits)
+1. `-name` - name of the person being added to the address book
+    - Should only contain alphanumeric characters with a single space between words
+    - Accepted special characters: hyphen (-), apostrophe ('), slash (/), period (.), comma (,), and at symbol (@)
+    - Should be 1-50 characters long
+2. `-hp`   - numerical phone number of the person
+    - Should only contain digits
+    - Should be 3-12 digits long
 3. `-em`   - email address in the format 'user@domain'
+    - user
+        - Can only contain alphanumeric characters and the following special characters: `+`, `_`, `.`, `-`
+        - Must start and end with an alphanumeric character
+    - domain
+        - Can contain one or more subdomains separated by periods (.)
+        - Each subdomain can only contain alphanumeric characters and hyphens (`-`)
+        - Each subdomain must start and end with an alphanumeric character
+        - Must end with a top-level domain of minimum 2 characters
+    - User and domain parts are separated by a single at symbol (`@`)
 4. `-addr` - the address of the person in string format
-5. `-gh` - the GitHub username string associated with the person (starts with '@', 3-39 characters)
+    - Should be 1-150 characters long
+5. `-gh` - the GitHub username string associated with the person
+    - Should start with an at symbol (`@`)
+    - Can only contain alphanumeric characters or hyphens (`-`)
+    - Cannot begin or end with a hyphen (`-`)
+    - Cannot have consecutive hyphens (`--`)
+    - Should be 3-39 characters long (excluding the at symbol)
 
 <box type="tip" seamless>
 
@@ -130,6 +176,10 @@ Format: `edit EMPLOYEE_ID [-name NAME] [-hp PHONE] [-em EMAIL] [-addr ADDRESS] [
 Examples:
 *  `edit E1001 -hp 91234567 -em johndoe@example.com` Edits the phone number and email address of the person with the ID of "E1001" to be `91234567` and `johndoe@example.com` respectively.
 *  `edit E1002 -name Betsy Crower` Edits the name of the employee with id "E1002" to be `Betsy Crower`.
+
+Note:
+
+* If the person list is filtered using the `view` command, employee IDs which are not in the current view will not be accepted. Consider using the `list` command to display all persons first.
 
 ### Adding a tag: `tag`
 Adds one or more tags to an existing person in the address book without removing existing tags.
@@ -154,7 +204,10 @@ Examples:
 * `tag E2050 Friends colleagues` If employee E2050 already has a "friends" tag (in any case variation), only "colleagues" will be added and a warning will show that "Friends" is a duplicate.
 
 Note: 
+
 * Tags are case-insensitive. Adding Boardgames to a person who already has boardgames will be detected as a duplicate and ignored.
+* If the person list is filtered using the `view` command, employee IDs which are not in the current view will not be accepted. Consider using the `list` command to display all persons first.
+
 
 Warning: 
 * If all tags you attempt to add are duplicates, the command will return a message indicating no new tags were added.
@@ -188,17 +241,28 @@ Warning:
 * If none of the specified tags exist on the person, the command will fail with an error message listing the non-existent tags. However, if at least one tag exists, valid tags will be removed and a warning will show which tags were not found.
 
 ### Creating a team: `create-team`
-Adds a team to the address book. All team names are automatically set to Upper Case format.
+Adds a team to the address book. All team names are automatically set to Upper Case format. 
 
 Format: `create-team TEAM_NAME TEAM_LEADER_ID`
 
+* The team name must be an alphanumeric string containing 1 to 40 characters.
+* The team name must not contain spaces.
+* The team name is case-insensitive. e.g. `DevTeam` and `devteam` are considered the same team name.
+
 Example:
 * `create-team Systems E1001` creates a team named `Systems` with the person having employee ID `E1001` as the team leader.
+
+Note:
+
+* If the person list is filtered using the `view` command, employee IDs which are not in the current view will not be accepted. Consider using the `list` command to display all persons first.
 
 ### Adding members to a team: `add-to-team`
 Adds a peron to an existing team in the address book.
 
 Format: `add-to-team TEAM_ID MEMBER_ID`
+
+* The team ID must start with a **capital** "T" followed by 4 digits. e.g. `T0001`, `T0234`.
+* The member ID must start with a **capital** "E" followed by 4 digits. e.g. `E0001`, `E0234`.
 
 Example:
 * `add-to-team T0001 E1002` adds the person with employee ID `E1002` to the team with team ID `T0001`.
@@ -211,6 +275,9 @@ Remove a person from an existing team in the address book.
 
 Format: `remove-from-team TEAM_ID MEMBER_ID`
 
+* The team ID must start with a capital "T" followed by 4 digits. e.g. `T0001`, `T0234`.
+* The member ID must start with a capital "E" followed by 4 digits. e.g. `E0001`, `E0234`.
+
 Example:
 * `remove-from-team T0001 E1002` removes the person with employee ID `E1002` from the team with team ID `T0001`.
 
@@ -218,6 +285,10 @@ Exceptions:
 * If the member to be removed is the team leader, the command will fail with an error message.
 * If the member to be removed is not part of the team, the command will fail with an error message.
 * If the team ID or member ID does not exist, the command will fail with an error message.
+
+Note:
+
+* If the person list is filtered using the `view` command, employee IDs which are not in the current view will not be accepted. Consider using the `list` command to display all persons first.
 
 ### Set a team as a subteam of another team: `set-subteam`
 
@@ -236,7 +307,7 @@ Exceptions:
   - If the team TEAM_ID_A exists as a parent team (directly or indirectly) of team TEAM_ID_B.
   - If the team TEAM_ID_B exists as a subteam (directly or indirectly) of team TEAM_ID_A.
 
-### Deleting a team `delete-team`
+### Deleting a team: `delete-team`
 Deletes an existing team from the address book.
 
 Format: `delete-team TEAM_ID`
@@ -248,7 +319,7 @@ Exceptions:
 * If the team ID does not exist, the command will fail with an error message.
 * If the team to be deleted has subteams, the command will fail with an error message.
 
-Format: `remove-team TEAM_ID`
+Format: `delete-team TEAM_ID`
 
 ### Locating persons by name: `view`
 
@@ -286,6 +357,10 @@ Format: `delete E1002`
 
 Examples:
 * `delete E1002` deletes the employee with id "E1002" in the address book.
+
+Note:
+
+* If the person list is filtered using the `view` command, employee IDs which are not in the current view will not be accepted. Consider using the `list` command to display all persons first.
 
 ### Setting a person's salary: `set-salary`
 
@@ -336,6 +411,11 @@ Clears all entries from the address book.
 
 Format: `clear`
 
+Note:
+
+* This command clears both the persons and teams from the address book.
+* When the address book is cleared, the employee ID counter resets, but the team ID counter does not reset.
+
 ### Importing contacts from data file : `import`
 
 Imports the contact data of people from a specific JSON file from the data folder into the main address book.
@@ -357,6 +437,35 @@ Exceptions:
 
 Note:
 * The import command is only meant to import the data of the contacts of people, not teams. Teams must be created manually after importing contacts.
+* Ensure that the name and ID fields of the imported contacts do not conflict with existing contacts in the address book to avoid duplicates.
+* For people without a GitHub username, the `gitHubUsername` field can be an empty string.
+* For people without any tags, the `tags` array can be empty.
+
+JSON Format Example
+- Please ensure that the JSON file closely follows the structure below for successful import:
+```
+{
+  "persons" : [ {
+    "id" : "E1001",
+    "name" : "Alex Yeoh",
+    "phone" : "87438807",
+    "email" : "alexyeoh@example.com",
+    "address" : "Blk 30 Geylang Street 29, #06-40",
+    "gitHubUsername" : "@alexxx",
+    "salary" : "1000.0",
+    "tags" : [ "friends" ]
+  }, {
+    "id" : "E1002",
+    "name" : "Bernice Yu",
+    "phone" : "99272758",
+    "email" : "berniceyu@example.com",
+    "address" : "Blk 30 Lorong 3 Serangoon Gardens, #07-18",
+    "gitHubUsername" : "",
+    "salary" : "2000.0",
+    "tags" : [ ]
+  } ]
+}
+```
 
 ### Viewing of audit logs : `audit`
 
@@ -369,7 +478,7 @@ Format: `audit`
   * The action type (e.g., ADD, DELETE, EDIT, CLEAR)
   * Details of what was changed 
   * Timestamp of when the action occurred
-* Read-only commands (like list, find, view, help, exit) are not logged. 
+* Read-only commands (like list, view, help, exit) are not logged. 
 * If no actions have been performed, displays "No audit log entries found."
 
 Examples:
@@ -386,17 +495,17 @@ Format: `exit`
 
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+Henri data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/dat-addr addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+Henri data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <box type="warning" seamless>
 
 **Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+If your changes to the data file makes its format invalid, Henri will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
+Furthermore, certain edits can cause Henri to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </box>
 
 --------------------------------------------------------------------------------------------------------------------
@@ -404,7 +513,7 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Henri home folder.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -416,11 +525,14 @@ Furthermore, certain edits can cause the AddressBook to behave in unexpected way
 4. **`remove-from-team` command might be long** we acknowledge that the command word might be long however for clarity reasons we decided to keep as such.
 5. **`add` command allows for duplicate phone number, email address, home address and GitHub username** as it is possible that multiple employees in the company share the same phone number (department phone number), home address (living together), email address (shared email address by department), GitHub username (shared GitHub account for open source projects). Hence, we allow duplicate entries for these fields.
 6. **`create-team` command does not check for duplicate team names** as it is possible that multiple teams in the company share the same name (e.g. multiple "DevTeam" in different departments). Hence, we allow duplicate team names.
+7. **`import` command only supports adding of employees** currently which does not include teams and subteams.
+8. **Subteams are not exported in the data file** currently, only teams and their members are exported.
 
 --------------------------------------------------------------------------------------------------------------------
 ## Future Enhancements
 1. **Customize command word** Allow users to customize command words to their preference. This would resolve the problem where command words might feel too long (e.g remove-from-team command)
-2. **Import feature to support optional features, adding of subteams and team members** Currently, the import feature only supports adding of employees . We can enhance it to support adding of teams, subteams and team members as well.
+2. **Import feature to support adding of subteams and team members** Allow users to import not only employees but also teams, subteams and team members from a JSON file.
+3. 
 
 ## Command summary
 
