@@ -406,8 +406,11 @@ for (Person person : importedData.getPersonList()) {
     * **Pros:** Preserves original ID information, easy to identify imported entries, no conflicts possible
     * **Cons:** More complex ID system, inconsistent ID format may confuse users, commands need to handle multiple ID formats
 
-<box>
-**Note**: The import feature automatically leverages the existing Employee ID generation mechanism. This means:
+<box type="info" seamless>
+
+**Note**: 
+
+The import feature automatically leverages the existing Employee ID generation mechanism. This means:
 Imported persons with missing or invalid IDs receive automatically generated IDs
 The gap-filling logic ensures efficient ID space usage
 No manual ID assignment is required from the user
@@ -604,8 +607,9 @@ model.updateTeam(parentTeam);
   * Pros: Always has a leader, automatic management, reduces manual steps
   * Cons: May assign wrong person, requires additional logic, could confuse users
 
-<box>
+<box type="info" seamless>
 **Note on Team Hierarchy**:
+
 * Teams can have multiple subteams but only one parent team
 * The system prevents circular dependencies by checking the entire hierarchy before establishing new relationships
 * Deleting a parent team automatically removes the parent reference from child teams but doesn't delete the child teams
@@ -614,7 +618,7 @@ model.updateTeam(parentTeam);
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Documentation, logging, testing, configuration, dev-ops**
+## **Documentation, Logging, Testing, Configuration, Dev-Ops**
 
 * [Documentation guide](Documentation.md)
 * [Testing guide](Testing.md)
@@ -626,7 +630,7 @@ model.updateTeam(parentTeam);
 
 ## **Appendix: Requirements**
 
-### Product scope
+### Product Scope
 
 **Target user profile**:
 
@@ -638,7 +642,7 @@ model.updateTeam(parentTeam);
 **Value proposition**: Our application helps HR administrators who want to efficiently manage contact information, track team structures and developer allocations. It will provide ease of access and increased efficiency with assistive tools for keyboard-based users that will speed up the storage and retrieval of HR data.
 
 
-### User stories
+### User Stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
