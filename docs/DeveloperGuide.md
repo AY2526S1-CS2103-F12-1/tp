@@ -157,9 +157,86 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### ID Increment for Person ID 
+### Employee ID generation
 
-### ID Increment for Team ID
+Employee IDs follow the format `E####` where # represents a digit (e.g., `E0001`, `E0042`).
+
+1. When a new employee is added via `AddCommand`, the system scans all existing employee IDs in the address book
+2. The `findNextAvailableId()` method identifies gaps in the sequence and assigns the lowest available ID 
+3. This ensures ID reuse when employees are deleted, maintaining efficient ID space usage
+4. The `ImportCommand` also uses this mechanism to reassign IDs when imported employees have conflicting IDs
+
+#### Code flow: 
+```
+Set<Long> usedIds = model.getAddressBook().getPersonList().stream()
+.map(Person::id)
+.filter(id -> id.startsWith("E"))
+.map(id -> Long.parseLong(id.substring(1)))
+.collect(Collectors.toSet());
+
+long newId = findNextAvailableId(usedIds);
+Person personWithId = new Person(String.format("E%04d", newId), ...);
+```
+
+#### Key Features: 
+* **Gap filling**: If employee E0001 is deleted, the next added employee will receive ID E0001 
+* **Sequential scanning**: Starts from 1 and finds the first unused ID 
+* **Collision prevention**: Checks against all existing IDs before assignment 
+* **Import handling**: During import operations, conflicting IDs are automatically reassigned using the same gap-filling logic
+
+<box type="info" seamless>
+
+**Employee IDs** DO reset when the address book is cleared:
+- If the address book is cleared, the next employee added will receive ID E0001
+- Employee IDs always fill gaps - if E0002 is deleted, the next employee added will receive E0002
+- The ID generation starts fresh when there are no employees in the system
+
+</box>
+
+### Team ID Generation 
+
+Team IDs follow the format `T####` where # represents a digit (e.g., `T0001`, `T0042`).
+
+#### Implementation Details: 
+1. `CreateTeamCommand` maintains a static nextId counter that persists across command executions 
+2. During `LogicManager` initialization, the counter is set to one greater than the highest existing team ID 
+3. Each new team receives the current nextId value, which is then incremented
+
+#### Code Flow: 
+```
+// In LogicManager constructor
+long maxTeamId = teams.stream()
+    .map(Team::getId)
+    .filter(id -> id.startsWith("T"))
+    .mapToLong(id -> Long.parseLong(id.substring(1)))
+    .max()
+    .orElse(0);
+CreateTeamCommand.setNextId(maxTeamId + 1);
+
+// In CreateTeamCommand.execute()
+Team team = new Team(String.format("T%04d", nextId++), teamName, leaderId);
+```
+
+#### Key Features:
+* **Monotonic increment**: Team IDs always increase; deleted IDs are never reused 
+* **Application-wide counter**: Static variable ensures consistency across multiple command executions 
+* **Initialization safety**: Counter is set based on existing data when the application starts 
+* **Persistence**: The counter value persists in memory throughout the application lifecycle
+
+<box type="info" seamless>
+
+**Note on ID Generation Reset Behavior:**
+
+**Team IDs** do NOT reset when the address book is cleared:
+- If teams T0001, T0002, T0003 exist and the address book is cleared, the next team created will be T0004
+- Team IDs never fill gaps - if T0002 is deleted, that ID is never reused
+- The counter persists even after clearing `addressbook.json` because it's maintained in the application's memory and reinitialized based on the highest existing team ID at startup
+
+Difference in behaviours of Employee ID and Team ID exists because:
+- Team IDs serve as audit trail markers and should never be reused
+- Employee IDs optimize space usage for potentially high turnover workforces
+
+</box>
 
 ### \[Proposed\] Import feature enhancement
 
