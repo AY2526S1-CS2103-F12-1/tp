@@ -1,6 +1,5 @@
 package seedu.address.logic.parser;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
@@ -34,7 +33,6 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSucces
 import static seedu.address.testutil.TypicalPersons.AMY;
 import static seedu.address.testutil.TypicalPersons.BOB;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.Messages;
@@ -50,32 +48,14 @@ import seedu.address.testutil.PersonBuilder;
 public class AddCommandParserTest {
     private AddCommandParser parser = new AddCommandParser();
 
-    @BeforeEach
-    public void setUp() {
-        // Reset nextId before each test to ensure consistent behavior
-        AddCommandParser.setNextId(1);
-    }
-
-    private static long getNextId() {
-        return AddCommandParser.getNextId();
-    }
-
     @Test
     public void parse_allFieldsPresent_success() {
-        Person expectedPerson = new PersonBuilder(BOB).withId(getNextId()).withTags().build();
+        // Person will have placeholder ID
+        Person expectedPerson = new PersonBuilder(BOB).withId(0).withTags().build();
 
-        // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + GITHUBUSERNAME_DESC_BOB,
+                        + ADDRESS_DESC_BOB + GITHUBUSERNAME_DESC_BOB,
                 new AddCommand(expectedPerson));
-
-
-        // multiple tags - all accepted
-        Person expectedPersonMultipleTags = new PersonBuilder(BOB)
-                .withId(getNextId()).withTags().build();
-        assertParseSuccess(parser,
-                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + GITHUBUSERNAME_DESC_BOB,
-                new AddCommand(expectedPersonMultipleTags));
     }
 
     @Test
@@ -146,8 +126,7 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_optionalFieldsMissing_success() {
-        // zero tags
-        Person expectedPerson = new PersonBuilder(AMY).withTags().withId(getNextId()).build();
+        Person expectedPerson = new PersonBuilder(AMY).withTags().withId(0).build();
         assertParseSuccess(parser,
                 NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY + GITHUBUSERNAME_DESC_AMY,
                 new AddCommand(expectedPerson));
@@ -212,7 +191,7 @@ public class AddCommandParserTest {
 
         // non-empty preamble
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + GITHUBUSERNAME_DESC_BOB,
+                        + ADDRESS_DESC_BOB + GITHUBUSERNAME_DESC_BOB,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
 
@@ -233,49 +212,9 @@ public class AddCommandParserTest {
     @Test
     public void parse_githubUsernameMissing_success() {
         // GitHub username prefix missing
-        Person expectedPerson = new PersonBuilder(AMY).withGitHubUsername("").withTags().withId(getNextId()).build();
+        Person expectedPerson = new PersonBuilder(AMY).withGitHubUsername("").withTags().withId(0).build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
                 new AddCommand(expectedPerson));
-    }
-
-
-    @Test
-    public void setNextId_validId_success() {
-        AddCommandParser.setNextId(100);
-        assertEquals(100, AddCommandParser.getNextId());
-    }
-
-    @Test
-    public void setNextId_afterMultipleAdds_incrementsCorrectly() throws Exception {
-        AddCommandParser.setNextId(1);
-
-        // Parse first person
-        parser.parse(NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + GITHUBUSERNAME_DESC_BOB);
-        assertEquals(2, AddCommandParser.getNextId());
-
-        // Parse second person
-        parser.parse(NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY
-                + ADDRESS_DESC_AMY + GITHUBUSERNAME_DESC_AMY);
-        assertEquals(3, AddCommandParser.getNextId());
-    }
-
-    @Test
-    public void setNextId_largeValue_success() {
-        AddCommandParser.setNextId(1007);
-        assertEquals(1007, AddCommandParser.getNextId());
-
-        // Next person should get E1007
-        Person expectedPerson = new PersonBuilder(BOB)
-                .withTags()
-                .withId(1007)
-                .build();
-
-        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                        + ADDRESS_DESC_BOB + GITHUBUSERNAME_DESC_BOB,
-                new AddCommand(expectedPerson));
-
-        assertEquals(1008, AddCommandParser.getNextId());
     }
 
 }

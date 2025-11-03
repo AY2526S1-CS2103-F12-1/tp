@@ -14,7 +14,6 @@ import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.CreateTeamCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.logic.parser.AddCommandParser;
 import seedu.address.logic.parser.AddressBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
@@ -54,17 +53,7 @@ public class LogicManager implements Logic {
         addressBookParser = new AddressBookParser();
 
         // Initialize team and person ID counter
-        List<Person> persons = model.getAddressBook().getPersonList();
         List<Team> teams = model.getAddressBook().getTeamList();
-        if (!persons.isEmpty()) {
-            long maxId = persons.stream()
-                    .map(Person::id)
-                    .filter(id -> id.startsWith("E"))
-                    .mapToLong(id -> Long.parseLong(id.substring(1)))
-                    .max()
-                    .orElse(0);
-            AddCommandParser.setNextId(maxId + 1);
-        }
 
         if (!teams.isEmpty()) {
             long maxTeamId = teams.stream()
@@ -81,23 +70,23 @@ public class LogicManager implements Logic {
     @Override
     public CommandResult execute(String commandText) throws CommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
-
+        ReadOnlyAddressBook backupAddressBook = model.getAddressBook();
         CommandResult commandResult;
         Command command = addressBookParser.parseCommand(commandText);
-        commandResult = command.execute(model);
-
-        // Only log commands that modify state
-        if (shouldLogCommand(command)) {
-            String action = extractAction(command);
-            String details = generateDetails(commandResult);
-            model.getAuditLog().addEntry(action, details, LocalDateTime.now());
-        }
 
         try {
+            commandResult = command.execute(model);
             storage.saveAddressBook(model.getAddressBook());
+            if (shouldLogCommand(command)) {
+                String action = extractAction(command);
+                String details = generateDetails(commandResult);
+                model.getAuditLog().addEntry(action, details, LocalDateTime.now());
+            }
         } catch (AccessDeniedException e) {
+            model.setAddressBook(backupAddressBook);
             throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
         } catch (IOException ioe) {
+            model.setAddressBook(backupAddressBook);
             throw new CommandException(String.format(FILE_OPS_ERROR_FORMAT, ioe.getMessage()), ioe);
         }
 
