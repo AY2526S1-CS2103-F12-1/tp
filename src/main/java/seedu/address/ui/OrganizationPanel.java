@@ -1,6 +1,8 @@
 package seedu.address.ui;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
@@ -12,10 +14,14 @@ public class OrganizationPanel extends UiPart<Region> {
     private static final String FXML = "OrganizationPanel.fxml";
 
     @FXML
-    private Text organizationDetails;
+    private TextArea organizationDetails;
 
     @FXML
     private Text title;
+
+    // Added ScrollPane reference
+    @FXML
+    private ScrollPane organizationScrollPane;
 
     /**
      * Creates a {@code OrganizationPanel} with the given details.
