@@ -17,7 +17,7 @@
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Setting up, getting started**
+## **Setting up, Getting Started**
 
 Refer to the guide [_Setting up and getting started_](SettingUp.md).
 
@@ -114,7 +114,7 @@ How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
-### Model component
+### Model Component
 **API** : [`Model.java`](https://github.com/AY2526S1-CS2103-F12-1/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
 <puml src="diagrams/ModelClassDiagram.puml" width="600" />
@@ -1038,13 +1038,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above-average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-4.  The different elements of the user interface should be arranged according to level of impact/priority (i.e immediate feedback somewhere close to the input box/as a pop-up.
+4.  The different elements of the user interface should be arranged according to level of impact/priority (i.e immediate feedback somewhere close to the input box.
 5.  The command manual should be easily understandable by a first-time user of the application.
 6.  Updated contacts should not be lost despite the unexpected closing of the application.
-7.  Error messages should be displayed to the user within 200 milliseconds.
-8.  All error messages should be easily understandable by a non-technical user and suggest a possible solution.
-9.  The save process should ensure 100% data integrity, preventing corruption even if the system crashes during the save.
-10. The exported contact list file should be compatible with any mainstream OS.
+7.  Error messages should be displayed to the user within 200 milliseconds. 
+8. The save process should ensure 100% data integrity, preventing corruption even if the system crashes during the save. 
+9. The exported contact list file should be compatible with any mainstream OS.
 
 ### Glossary
 
@@ -1054,7 +1053,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Audit Log**: A chronological record of system activities that tracks user commands and changes made to the address book for accountability and traceability purposes.
 
-* **Command Line Interface (CLI))**: Command Line Interface. A text-based interface where users interact with a program by typing commands
+* **Command Line Interface (CLI)**: Command Line Interface. A text-based interface where users interact with a program by typing commands
 
 * **Employee ID**: A unique identifier assigned to each team following the format `E####` (e.g., `E0001`, `E0042`). Uses gap-filling strategy to reuse deleted IDs.
 
@@ -1123,7 +1122,7 @@ testers are expected to do more *exploratory* testing.
     2. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-### Add command
+### Add Command
 
 1. Adding a person with all required fields
 
@@ -1150,7 +1149,7 @@ testers are expected to do more *exploratory* testing.
        Expected: No person is added. Error message indicates invalid email format.
 
 
-### Add-to-team command
+### Add-to-team Command
 
 1. Adding an employee to a team
 
@@ -1180,7 +1179,7 @@ testers are expected to do more *exploratory* testing.
     2. Test case: `add-to-team T9999 E1001`<br>
        Expected: No changes made. Error message indicates the person is already in the team.
 
-### Audit command
+### Audit Command
 
 1. Viewing audit log with recorded actions
 
@@ -1196,7 +1195,7 @@ testers are expected to do more *exploratory* testing.
     2. Test case: `audit`<br>
        Expected: Output feedback displays with empty list or message indicating no history is available.
 
-### Clear command
+### Clear Command
 
 1. Clearing the address book
 
@@ -1212,7 +1211,7 @@ testers are expected to do more *exploratory* testing.
     2. Test case: `clear`<br>
        Expected: Success message indicates the address book has been cleared (even though it was already empty).
 
-### Create-team command
+### Create-team Command
 
 1. Creating a new team
 
@@ -1236,7 +1235,7 @@ testers are expected to do more *exploratory* testing.
     2. Test case: `create-team`<br>
        Expected: No team is created. Error message indicates team name cannot be empty.
 
-### Delete command
+### Delete Command
 
 1. Deleting a person by employee ID
 
@@ -1260,7 +1259,7 @@ testers are expected to do more *exploratory* testing.
     2. Test case: `delete invalid`<br>
        Expected: No person is deleted. Error message indicates invalid employee ID format.
 
-### Delete-team command
+### Delete-team Command
 
 1. Deleting a team
 
@@ -1283,7 +1282,7 @@ testers are expected to do more *exploratory* testing.
     2. Test case: `delete-team T9999`<br>
        Expected: No team is deleted. Error message indicates the team does not exist.
 
-### Edit command
+### Edit Command
 
 1. Editing a person's details
 
@@ -1309,21 +1308,21 @@ testers are expected to do more *exploratory* testing.
     1. Test case: `edit E1001 -hp invalid`<br>
        Expected: No changes made. Error message indicates invalid phone number format.
 
-### Exit command
+### Exit Command
 
 1. Exiting the application
 
     1. Test case: `exit`<br>
        Expected: Application saves all data and closes.
 
-### Help command
+### Help Command
 
 1. Opening the help window
 
     1. Test case: `help`<br>
        Expected: Help window opens with link to user guide.
 
-### Import command
+### Import Command
 
 1. Importing from a valid file
 
@@ -1351,7 +1350,7 @@ testers are expected to do more *exploratory* testing.
     2. Test case: `import contacts.json`<br>
        Expected: Only non-duplicate contacts are imported. Summary message shows skipped duplicates.
 
-### List command
+### List Command
 
 1. Listing all persons
 
@@ -1367,7 +1366,7 @@ testers are expected to do more *exploratory* testing.
     2. Test case: `list`<br>
        Expected: Message indicates no persons found or displays an empty list.
 
-### Remove-from-team command
+### Remove-from-team Command
 
 1. Removing an employee from a team
 
@@ -1388,7 +1387,7 @@ testers are expected to do more *exploratory* testing.
     1. Test case: `remove-from-team T0001 E1001`<br>
        Expected: No changes made. Error message indicates the team does not exist.
 
-### Set-salary command
+### Set-salary Command
 
 1. Setting salary for an employee
 
@@ -1410,7 +1409,7 @@ testers are expected to do more *exploratory* testing.
     1. Test case: `set-salary E9999 5000`<br>
        Expected: No changes made. Error message indicates employee ID does not exist.
 
-### Set-subteam command
+### Set-subteam Command
 
 1. Setting a subteam relationship
 
@@ -1438,7 +1437,7 @@ testers are expected to do more *exploratory* testing.
     2. Test case: `set-subteam T0001 T0002`<br>
        Expected: No changes made. Error message indicates the relationship already exists.
 
-### Sort command
+### Sort Command
 
 1. Sorting persons by name
 
@@ -1464,7 +1463,7 @@ testers are expected to do more *exploratory* testing.
     2. Test case: `sort -name`<br>
        Expected: Message indicates no persons to sort.
 
-### Tag command
+### Tag Command
 
 1. Adding a tag to a person
 
@@ -1485,7 +1484,7 @@ testers are expected to do more *exploratory* testing.
     1. Test case: `tag E1001 developer senior`<br>
        Expected: Both tags are added to person E1001 (if not already present). Success message lists all added tags.
 
-### Untag command
+### Untag Command
 
 1. Removing tags from a person (case-insensitive)
 
@@ -1516,7 +1515,7 @@ testers are expected to do more *exploratory* testing.
     1. Test case: `untag E9999 developer`<br>
        Expected: No changes made. Error message indicates employee ID does not exist.
 
-### View command
+### View Command
 
 1. Viewing person details
 
@@ -1537,19 +1536,19 @@ testers are expected to do more *exploratory* testing.
     1. Test case: `view`<br>
        Expected: Error message shows the correct command format.
 
-### Saving data
+### Saving Data
 
 1. Dealing with missing/corrupted data files
 
-    1. Test case: Delete the data file at `[JAR file location]/data/addressbook.json` and restart the app.<br>
+   * Test case: Delete the data file at `[JAR file location]/data/addressbook.json` and restart the app.<br>
        Expected: App starts with sample data populated.
 
-    2. Test case: Manually corrupt the data file by adding invalid JSON syntax and restart the app.<br>
+   * Test case: Manually corrupt the data file by adding invalid JSON syntax and restart the app.<br>
        Expected: App starts with an empty address book. Error message may be logged.
 
 2. Testing automatic saving
 
-    1. Test case: Add a new person using the `add` command and immediately close the app using the window close button (not the `exit` command).<br>
+   * Test case: Add a new person using the `add` command and immediately close the app using the window close button (not the `exit` command).<br>
        Expected: On restart, the newly added person should still be present in the address book.
 
 
@@ -1557,8 +1556,22 @@ testers are expected to do more *exploratory* testing.
 
 **Team size**: 5
 
-1. Customisable command words to fit user preference
-2. Import Command enhancements to support team import
-3. Import Command enhancements to have more input validation 
-4. 
+1. **Customisable command words to fit user preference**
 
+Currently, users are restricted to using predefined command words such as `add`, `delete`, and `edit`, which may not align with their personal workflow preferences or organizational standards. To address this limitation, we plan to implement a comprehensive command aliasing system that will allow users to define custom shortcuts for any command in the application. For example, a user could set `a` as an alias for `add`, `d` for `delete`, or `rm` for `remove-from-team`. These custom aliases would be stored in a `preferences.json` configuration file that persists across application sessions. The system would provide a `set-alias` command that allows users to create or modify aliases (e.g., `set-alias a add`), a `list-aliases` command to view all currently configured custom aliases, and a `reset-aliases` command to restore all command words to their default values. The implementation would include validation logic to prevent conflicts with existing commands or reserved keywords, ensuring that the aliasing system does not interfere with core application functionality. This enhancement would significantly improve user efficiency by allowing individuals to customize the command-line interface to match their typing patterns and preferences, while also enabling organizations to standardize command conventions across their teams.
+
+2. **Import Command enhancements to support team import**
+
+The current import functionality is limited to handling individual employee data and does not support the importation of team structures or organizational hierarchies. This restriction makes it difficult for organizations to migrate complete organizational structures from other systems or to set up new instances of Henri with pre-existing team configurations. To overcome this limitation, we plan to extend the JSON schema used by the import command to include team definitions that encompass members and subteam relationships. The enhanced import system would support the importation of complete organizational structures, including hierarchical team arrangements and employee-team assignments. During the import process, the system would automatically validate and resolve Team ID conflicts by regenerating Team IDs when conflicts are detected, ensuring that no duplicate team identifiers exist in the system. The import functionality would also validate subteam relationships to prevent the creation of circular dependencies that could compromise the integrity of the organizational hierarchy. Users would have the option to either merge imported teams with existing teams or keep them as separate entities, providing flexibility for different migration scenarios. After the import completes, the system would display a detailed report showing which teams were created, how many members were assigned, what conflicts were resolved, and any errors that occurred during the process. This enhancement would enable bulk migration of organizational structures and significantly simplify the onboarding process for new system deployments, making Henri more suitable for organizations transitioning from other HR management systems.
+
+3. **Import Command enhancements to have more input validation** 
+
+A significant weakness in the current import implementation is that it processes entries sequentially, one at a time, which can result in partial completion even when critical errors exist later in the import file. This behavior can lead to data inconsistencies and makes it difficult for users to identify and fix all problems before committing changes to the address book. To address this issue, we plan to implement a robust two-phase import process consisting of a validation phase followed by an execution phase. In the validation phase, the system would pre-scan the entire import file to detect all validation errors before making any changes to the address book. This comprehensive validation would check for issues such as missing required fields, invalid formats, duplicate entries, and business rule violations. The system would then provide a detailed validation report that groups all issues by error type, making it easier for users to understand and address problems systematically. We would also introduce a `--dry-run` flag that allows users to preview the results of an import operation without actually committing any changes to the system. This feature would give users confidence that their import file is correctly formatted and contains valid data before performing the actual import. The enhanced validation system would allow users to specify custom validation rules, such as required fields, format constraints, and business rules specific to their organization. Additionally, we would implement a rollback mechanism that can undo partial imports if errors occur during the execution phase, ensuring that the address book remains in a consistent state even if the import process fails midway. The system would also include duplicate detection logic that operates across the import file itself, not just against existing data, preventing the import of duplicate records within a single import operation. These enhancements would prevent data corruption, provide better error visibility, and give users confidence before committing large import operations, making the import process more reliable and user-friendly.
+
+4. **Standardize Phone Number Format for Duplicate Detection.** 
+
+The current duplicate detection mechanism treats phone numbers with different formats as distinct entries, even when they represent the same contact number. For example, the system does not recognize that `+65 12345678`, `12345678`, and `12345678 (24 hr)` all refer to the same phone number, allowing duplicate entries to be created. This limitation reduces data quality and can lead to confusion when managing employee contacts. To resolve this issue, we plan to implement a phone number normalization system that standardizes phone numbers during duplicate detection while preserving the user's preferred display format. The normalization process would strip country codes (such as `+65`, `+1`, `+44`) and remove non-numeric characters including spaces, hyphens, parentheses, and textual annotations like "(24 hr)" or "(mobile)". The system would store phone numbers in a canonical format internally for comparison purposes while displaying them in the user-specified format in the user interface. We would also implement fuzzy matching algorithms to detect similar phone numbers, such as those with or without area codes, providing more intelligent duplicate detection. To accommodate international organizations, we would add a configuration option that allows administrators to define which country code should be stripped for their organization, making the system adaptable to different geographical contexts. The user interface would be enhanced to display phone numbers in a consistent, user-configurable format across all views and reports. These improvements would prevent duplicate entries caused by formatting variations, improve overall data quality, and make it easier to maintain accurate employee contact information, especially in organizations with complex phone number formats or international presence.
+
+5. **Allow Storage for Subteam relationships in Data File**
+
+Currently, while Henri supports the creation and management of subteam relationships during runtime through the `set-subteam` command, these hierarchical relationships are not persisted to the data file when the application saves its state. This means that when users restart the application, all parent-child team relationships are lost and must be manually re-established, which can be problematic for organizations with complex hierarchical structures that may involve dozens or hundreds of subteam relationships. To address this limitation, we plan to extend the JSON schema used for data persistence to include a dedicated field for storing subteam relationships. The enhanced storage format would include a `subteams` array within each team object that lists the Team IDs of all direct child teams, allowing the complete organizational hierarchy to be preserved across application sessions. When the application loads data from the file, it would reconstruct the subteam relationships by reading these arrays and re-establishing the parent-child links in the internal data structures. The implementation would include validation logic to ensure data integrity, checking if a subteam ID refers to a non-existent team or circular dependencies that may have been introduced through manual file editing. In cases where invalid relationships are detected during loading, the system would log warnings and either skip the problematic relationships or apply automatic corrections to restore consistency. Additionally, we would implement backward compatibility support to ensure that data files created with older versions of Henri (without subteam data) can still be loaded correctly, with the subteam relationships simply being empty until users re-establish them. This enhancement would significantly improve the user experience by eliminating the need to reconstruct organizational hierarchies after every application restart, making Henri more practical for organizations with stable, complex team structures that need to be maintained over time.
