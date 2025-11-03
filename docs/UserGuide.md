@@ -68,7 +68,7 @@ This product is designed for HR administrators from tech companies with many dyn
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </box>
 
-### Viewing help : `help`
+### Viewing Help : `help`
 
 Shows a message explaining how to access the help page.
 
@@ -76,7 +76,7 @@ Shows a message explaining how to access the help page.
 
 Format: `help`
 
-### Adding a person: `add`
+### Adding a Person: `add`
 
 Adds a person to the address book.
 
@@ -124,7 +124,7 @@ Note:
 * Duplicate names are not allowed in the address book. If a person with the same name (case-insensitive) already exists, the command will fail with an error message.
 * If by coincidence there are two persons with the same name, consider manually aliasing their names.
 
-### Listing all persons : `list`
+### Listing all Persons : `list`
 
 Shows a list of all persons in the address book.
 
@@ -133,7 +133,7 @@ Format: `list`
 Note:
 * By default, the list is sorted by the order of contact entry into henri, _NOT_ by person ID.
 
-### Editing a person : `edit`
+### Editing a Person : `edit`
 
 Edits an existing person in the address book.
 
