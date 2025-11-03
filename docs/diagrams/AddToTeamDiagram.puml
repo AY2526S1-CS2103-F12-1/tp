@@ -1,0 +1,105 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":AddToTeamCommandParser" as AddToTeamCommandParser LOGIC_COLOR
+participant "cmd:AddToTeamCommand" as AddToTeamCommand LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+participant "team:Team" as Team MODEL_COLOR
+end box
+
+[-> LogicManager : execute("add-to-team E0001 Engineering")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("add-to-team E0001 Engineering")
+activate AddressBookParser
+
+create AddToTeamCommandParser
+AddressBookParser -> AddToTeamCommandParser
+activate AddToTeamCommandParser
+
+AddToTeamCommandParser --> AddressBookParser
+deactivate AddToTeamCommandParser
+
+AddressBookParser -> AddToTeamCommandParser : parse("E0001 Engineering")
+activate AddToTeamCommandParser
+
+create AddToTeamCommand
+AddToTeamCommandParser -> AddToTeamCommand
+activate AddToTeamCommand
+
+AddToTeamCommand --> AddToTeamCommandParser : cmd
+deactivate AddToTeamCommand
+
+AddToTeamCommandParser --> AddressBookParser : cmd
+deactivate AddToTeamCommandParser
+destroy AddToTeamCommandParser
+
+AddressBookParser --> LogicManager : cmd
+deactivate AddressBookParser
+
+LogicManager -> AddToTeamCommand : execute(model)
+activate AddToTeamCommand
+
+AddToTeamCommand -> Model : getPersonByEmployeeId("E0001")
+activate Model
+
+alt Person exists
+    Model --> AddToTeamCommand : person
+else Person not found
+    Model --> AddToTeamCommand : null
+    AddToTeamCommand --> LogicManager : CommandException
+end
+deactivate Model
+
+AddToTeamCommand -> Model : getTeamByName("Engineering")
+activate Model
+
+alt Team exists
+    Model --> AddToTeamCommand : team
+else Team not found
+    Model --> AddToTeamCommand : null
+    AddToTeamCommand --> LogicManager : CommandException
+end
+deactivate Model
+
+AddToTeamCommand -> Team : getMembers()
+activate Team
+Team --> AddToTeamCommand : members
+deactivate Team
+
+AddToTeamCommand -> AddToTeamCommand : checkMembership()
+activate AddToTeamCommand
+note right
+  Check if employee
+  already in team
+end note
+
+alt Already a member
+    AddToTeamCommand --> LogicManager : CommandException
+end
+deactivate AddToTeamCommand
+
+AddToTeamCommand -> Team : addMember(employeeId)
+activate Team
+Team --> AddToTeamCommand
+deactivate Team
+
+AddToTeamCommand -> Model : updateTeam(team)
+activate Model
+Model --> AddToTeamCommand
+deactivate Model
+
+AddToTeamCommand --> LogicManager : CommandResult
+deactivate AddToTeamCommand
+
+[<-- LogicManager
+deactivate LogicManager
+
+@enduml

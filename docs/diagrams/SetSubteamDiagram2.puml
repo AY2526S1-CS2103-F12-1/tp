@@ -1,0 +1,63 @@
+@startuml
+!include style.puml
+
+start
+
+:User enters "set-subteam Backend Engineering";
+
+partition "Input Validation" {
+  :Parse child and parent team names;
+
+  if (Child team exists?) then (no)
+    :Show error message;
+    note right
+      "Child team not found"
+    end note
+    stop
+  endif
+
+  if (Parent team exists?) then (no)
+    :Show error message;
+    note right
+      "Parent team not found"
+    end note
+    stop
+  endif
+}
+
+partition "Circular Dependency Check" {
+  :Initialize visited set;
+  :Add child team to visited;
+
+  :Start traversal from parent team;
+
+  while (More parents to check?) is (yes)
+    :Get current team's parent;
+
+    if (Parent is in visited set?) then (yes)
+      :Show error message;
+      note right
+        "Setting this relationship would
+        create a circular dependency"
+      end note
+      stop
+    endif
+
+    :Add parent to visited set;
+  endwhile (no more parents)
+}
+
+partition "Update Relationship" {
+  :Set parent-child relationship;
+  :Update both teams in model;
+}
+
+:Display success message;
+note right
+  "Set [Child Team] as subteam
+  of [Parent Team]"
+end note
+
+stop
+
+@enduml
