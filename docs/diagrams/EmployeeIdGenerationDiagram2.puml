@@ -1,0 +1,45 @@
+@startuml
+!include style.puml
+skinparam ActivityFontStyle plain
+
+start
+
+:Receive add employee command;
+
+:Get all existing persons from AddressBook;
+
+:Filter persons with IDs starting with "E";
+
+:Extract numeric parts of employee IDs;
+
+note right
+  E0001 -> 1
+  E0042 -> 42
+end note
+
+:Collect all used ID numbers into a Set;
+
+:Initialize counter to 1;
+
+while (Is counter in usedIds Set?) is (yes)
+  :Increment counter;
+  note right: Skip used IDs
+endwhile (no)
+
+:Assign counter as new employee ID;
+
+:Format ID as E%04d;
+
+note right
+  Examples:
+  1 -> E0001
+  42 -> E0042
+end note
+
+:Create Person object with new ID;
+
+:Add person to AddressBook;
+
+stop
+
+@enduml

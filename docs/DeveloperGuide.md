@@ -50,9 +50,9 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete E0001`.
 
-<puml src="diagrams/ArchitectureSequenceDiagram.puml" width="574" />
+<puml src="diagrams/ArchitectureSequenceDiagram.puml" width="600" />
 
 Each of the four main components (also shown in the diagram above),
 
@@ -89,9 +89,9 @@ Here's a (partial) class diagram of the `Logic` component:
 
 <puml src="diagrams/LogicClassDiagram.puml" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
+The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete E0001")` API call as an example.
 
-<puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
+<puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete E0001` Command" />
 
 <box type="info" seamless>
 
@@ -100,11 +100,11 @@ The sequence diagram below illustrates the interactions within the `Logic` compo
 
 How the `Logic` component works:
 
-1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
-1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
-1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
-   Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
-1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
+1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command. 
+2. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`. 
+3. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
+   Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve. 
+4. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
@@ -131,7 +131,7 @@ The `Model` component,
 
 **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
 
-<puml src="diagrams/BetterModelClassDiagram.puml" width="600" />
+<puml src="diagrams/BetterModelClassDiagram.puml" width="800" />
 
 </box>
 
@@ -157,12 +157,199 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### \[Proposed\] Import feature enhancement
+### Employee ID generation
 
-{To explain how import feature is to be added}
+Employee IDs follow the format `E####` where # represents a digit (e.g., `E0001`, `E0042`).
 
-### \[\] Customisable command words to fit user preference
-{To explain how command word will be customisable}
+1. When a new employee is added via `AddCommand`, the system scans all existing employee IDs in the address book
+2. The `findNextAvailableId()` method identifies gaps in the sequence and assigns the lowest available ID 
+3. This ensures ID reuse when employees are deleted, maintaining efficient ID space usage
+4. The `ImportCommand` also uses this mechanism to reassign IDs when imported employees have conflicting IDs
+
+
+#### Sequence Diagram
+
+<puml src="diagrams/EmployeeIdGenerationDiagram.puml" alt="Employee ID Generation Sequence" width="600"/>
+
+The sequence diagram above illustrates how the system generates a new employee ID by scanning existing IDs and finding the first available gap.
+
+#### Activity Diagram
+
+<puml src="diagrams/EmployeeIdGenerationDiagram.puml" alt="Employee ID Generation Activity"  width="600"/>
+
+The activity diagram shows the gap-filling algorithm that ensures efficient ID space usage.
+
+#### Code flow: 
+```
+Set<Long> usedIds = model.getAddressBook().getPersonList().stream()
+.map(Person::id)
+.filter(id -> id.startsWith("E"))
+.map(id -> Long.parseLong(id.substring(1)))
+.collect(Collectors.toSet());
+
+long newId = findNextAvailableId(usedIds);
+Person personWithId = new Person(String.format("E%04d", newId), ...);
+```
+
+#### Key Features: 
+* **Gap filling**: If employee E0001 is deleted, the next added employee will receive ID E0001 
+* **Sequential scanning**: Starts from 1 and finds the first unused ID 
+* **Collision prevention**: Checks against all existing IDs before assignment 
+* **Import handling**: During import operations, conflicting IDs are automatically reassigned using the same gap-filling logic
+
+#### Design Considerations
+
+##### Aspect: ID Generation Strategy for Employees
+
+* **Alternative 1 (current choice):** Gap-filling sequential ID assignment
+    * When adding employees, scan existing IDs to find the first available ID in sequence (starting from E0001)
+    * Reuses IDs when employees are deleted to maintain efficient ID space usage
+    * **Pros:** Conserves ID space for potentially high employee turnover, ensures sequential order
+    * **Cons:** Requires scanning all existing IDs on each add operation, may be slower for large datasets
+
+* **Alternative 2:** Monotonic increment without gap filling
+    * Always assign the next highest ID (similar to team ID generation)
+    * Never reuse deleted employee IDs
+    * **Pros:** Simpler implementation, faster ID generation, maintains audit trail of all employees ever added
+    * **Cons:** Could exhaust ID space faster with high turnover, gaps in ID sequence may look unprofessional
+
+* **Alternative 3:** UUID-based generation
+    * Generate universally unique identifiers for each employee
+    * **Pros:** Guaranteed uniqueness across systems, no state management needed, suitable for distributed systems
+    * **Cons:** Less human-readable (e.g., "E-550e8400-e29b-41d4-a716-446655440000"), harder to reference in commands, much longer IDs
+
+<box type="info" seamless>
+
+**Employee IDs** DO reset when the address book is cleared:
+- If the address book is cleared, the next employee added will receive ID E0001
+- Employee IDs always fill gaps - if E0002 is deleted, the next employee added will receive E0002
+- The ID generation starts fresh when there are no employees in the system
+
+</box>
+
+### Team ID Generation 
+
+Team IDs follow the format `T####` where # represents a digit (e.g., `T0001`, `T0042`).
+
+#### Implementation Details: 
+1. `CreateTeamCommand` maintains a static nextId counter that persists across command executions 
+2. During `LogicManager` initialization, the counter is set to one greater than the highest existing team ID 
+3. Each new team receives the current nextId value, which is then incremented
+
+#### Sequence Diagram
+
+<puml src="diagrams/TeamIdGenerationDiagram.puml" alt="Team ID Generation Sequence" width="600" />
+
+The sequence diagram illustrates the initialization of the static counter during application startup and its usage when creating new teams.
+
+#### Activity Diagram
+
+<puml src="diagrams/TeamIdGenerationDiagram.puml" alt="Team ID Generation Activity"  width="600"/>
+
+The activity diagram demonstrates the monotonic increment strategy that preserves audit trail capability.
+
+#### Code Flow: 
+```
+// In LogicManager constructor
+long maxTeamId = teams.stream()
+    .map(Team::getId)
+    .filter(id -> id.startsWith("T"))
+    .mapToLong(id -> Long.parseLong(id.substring(1)))
+    .max()
+    .orElse(0);
+CreateTeamCommand.setNextId(maxTeamId + 1);
+
+// In CreateTeamCommand.execute()
+Team team = new Team(String.format("T%04d", nextId++), teamName, leaderId);
+```
+
+#### Key Features:
+* **Monotonic increment**: Team IDs always increase; deleted IDs are never reused 
+* **Application-wide counter**: Static variable ensures consistency across multiple command executions 
+* **Initialization safety**: Counter is set based on existing data when the application starts 
+* **Persistence**: The counter value persists in memory throughout the application lifecycle
+
+#### Design Considerations
+##### Aspect: Team ID Generation and Persistence
+
+* **Alternative 1 (current choice):** Static counter initialized from existing data
+    * Use a static `nextId` counter that persists in memory throughout application lifecycle
+    * Initialize counter at startup by finding maximum existing team ID and adding 1
+    * Never reuse deleted team IDs
+    * **Pros:** Simple implementation, guaranteed unique IDs, preserves team history as audit trail, consistent numbering
+    * **Cons:** Counter state must be carefully managed, IDs are never reclaimed even if teams are deleted
+
+* **Alternative 2:** Gap-filling sequential ID assignment (similar to employee IDs)
+    * Reuse deleted team IDs by scanning for gaps
+    * **Pros:** Conserves ID space, consistent with employee ID generation
+    * **Cons:** Could cause confusion if team IDs are reused (e.g., historical references to "T0001" could mean different teams), loses audit trail capability
+
+* **Alternative 3:** Database-backed ID generation with persistence
+    * Store the next ID counter in the data file (`addressbook.json`)
+    * Increment and save the counter with each team creation
+    * **Pros:** Counter survives application restarts reliably, more robust for production systems
+    * **Cons:** More complex implementation, additional I/O operations, potential performance overhead
+
+<box type="info" seamless>
+
+**Note on ID Generation Reset Behavior:**
+
+**Team IDs** do NOT reset when the address book is cleared:
+- If teams T0001, T0002, T0003 exist and the address book is cleared, the next team created will be T0004
+- Team IDs never fill gaps - if T0002 is deleted, that ID is never reused
+- The counter persists even after clearing `addressbook.json` because it's maintained in the application's memory and reinitialized based on the highest existing team ID at startup
+
+Difference in behaviours of Employee ID and Team ID exists because:
+- Team IDs serve as audit trail markers and should never be reused
+- Employee IDs optimize space usage for potentially high turnover workforces
+
+</box>
+
+### Import Contacts
+
+#### Design Considerations: 
+##### Aspect: Error Handling During Import
+
+* **Alternative 1 (current choice):** Skip invalid entries and continue
+    * Log skipped persons but continue importing valid ones
+    * Provide summary of successes and failures at the end
+    * **Pros:** Maximizes data imported, user-friendly for partial imports, allows recovery from minor data issues
+    * **Cons:** May hide data quality issues, silent failures possible if user doesn't read summary carefully
+
+* **Alternative 2:** Fail-fast approach
+    * Stop import immediately upon encountering any invalid entry
+    * Rollback all changes made so far
+    * **Pros:** All-or-nothing consistency, forces user to fix data issues before importing, clearer error reporting
+    * **Cons:** Less flexible, may be frustrating for large imports with minor issues, requires fixing all issues before any data is imported
+
+* **Alternative 3:** Two-phase import with validation
+    * First phase: Validate entire import file without making changes
+    * Second phase: Perform actual import only if validation passes completely
+    * **Pros:** User gets full report of all issues before any changes, predictable outcome, maintains data consistency
+    * **Cons:** More complex implementation, slower for large files (requires two passes), more memory usage
+
+#### Aspect: ID Conflict Resolution During Import
+
+* **Alternative 1 (current choice):** Automatic ID reassignment using gap-filling logic
+    * When imported employee has conflicting ID, automatically assign next available ID
+    * Use the same gap-filling logic as the `add` command
+    * **Pros:** Seamless import experience, no user intervention needed, maintains data integrity automatically
+    * **Cons:** Loses original ID information from imported file, may cause confusion if IDs were meaningful in source system
+
+* **Alternative 2:** Prompt user for conflict resolution
+    * Pause import when ID conflict detected and ask user how to proceed
+    * Options: skip, overwrite, or assign new ID
+    * **Pros:** Gives user control over conflict resolution, preserves user intent
+    * **Cons:** Interrupts import flow, requires user interaction, not suitable for batch operations
+
+* **Alternative 3:** Prefix-based ID namespacing
+    * Add prefix to imported IDs (e.g., "I" for imported: "IE0001")
+    * Keep original IDs but mark them as imported
+    * **Pros:** Preserves original ID information, easy to identify imported entries, no conflicts possible
+    * **Cons:** More complex ID system, inconsistent ID format may confuse users, commands need to handle multiple ID formats
+
+
+### \[\] 
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -601,8 +788,41 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Glossary
 
+* **Address Book**: The core data structure that stores all persons, teams, and related information in Henri.
+
+* **API (Application Programming Interface)**: A set of protocols and tools that specify how software components should interact with each other.
+
+* **Audit Log**: A chronological record of system activities that tracks user commands and changes made to the address book for accountability and traceability purposes.
+
+* **Command Line Interface (CLI))**: Command Line Interface. A text-based interface where users interact with a program by typing commands
+
+* **Employee ID**: A unique identifier assigned to each team following the format `E####` (e.g., `E0001`, `E0042`). Uses gap-filling strategy to reuse deleted IDs.
+
+* **Graphical User Interface (GUI)**: The visual interface through which users interact with Henri, including windows, buttons, and text fields.
+
+* **Java Archive file (Jar File)**: The executable file containing the application.
+
+* **JavaScript Object Notation (JSON)**: A lightweight data format used for storing and exchanging Henri's data in a human-readable format.
+
+* **Java Development Kit (JDK)**: Required to run Java applications.
+
+* **Leader**: A person designated as the head of a team, identified by their Employee ID.
+
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
+
+* **Organization Hierarchy**: The visual representation of teams and their members, showing the reporting structure within an organization.
+
+* **Parser**: A component that interprets user input and converts it into executable commands.
+
+* **Person**: An individual entry in the address book containing details like name, phone, email, address, and GitHub username.
+
 * **Private contact detail**: A contact detail that is not meant to be shared with others
+
+* **Tag**: A label that can be attached to persons for categorization purposes (e.g., "developer", "manager").
+
+* **Team**: A group of persons in the organization with a unique Team ID, name, and designated leader.
+
+* **Team ID**: A unique identifier assigned to each team following the format `T####` (e.g., `T0001`, `T0042`). Uses monotonic increment and never reuses deleted IDs.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -616,21 +836,6 @@ Given below are instructions to test the app manually.
 testers are expected to do more *exploratory* testing.
 
 </box>
-
-### Launch and shutdown
-
-1. Initial launch
-
-   1. Download the jar file and copy into an empty folder
-
-   2. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
-
-1. Saving window preferences
-
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
-
-   2. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
 
 ## **Appendix: Instructions for manual testing**
 
@@ -1086,3 +1291,14 @@ testers are expected to do more *exploratory* testing.
 
     1. Test case: Add a new person using the `add` command and immediately close the app using the window close button (not the `exit` command).<br>
        Expected: On restart, the newly added person should still be present in the address book.
+
+
+## **Appendix: Planned Enhancement**
+
+**Team size**: 5
+
+1. Customisable command words to fit user preference
+2. Import Command enhancements to support team import
+3. Import Command enhancements to have more input validation 
+4. 
+
