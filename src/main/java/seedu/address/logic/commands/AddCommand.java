@@ -60,13 +60,11 @@ public class AddCommand extends Command {
         }
         Set<Long> usedIds = model.getAddressBook().getPersonList().stream()
                 .map(Person::id).filter(id -> id.startsWith("E"))
-                .map(id -> Long.parseLong(id.substring(1)))
-                .collect(Collectors.toSet());
+                .map(id -> Long.parseLong(id.substring(1))).collect(Collectors.toSet());
 
         long newId = findNextAvailableId(usedIds);
-        Person personWithId = new Person(String.format("E%04d", newId),
-                toAdd.name(), toAdd.phone(), toAdd.email(),
-                toAdd.address(), toAdd.gitHubUsername(), toAdd.tags());
+        Person personWithId = new Person(String.format("E%04d", newId), toAdd.name(), toAdd.phone(),
+                toAdd.email(), toAdd.address(), toAdd.gitHubUsername(), toAdd.tags());
         model.addPerson(personWithId);
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
     }

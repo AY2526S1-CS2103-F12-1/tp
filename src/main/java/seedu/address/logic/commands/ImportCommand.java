@@ -69,10 +69,8 @@ public class ImportCommand extends Command {
      * @param list a list of Person objects
      */
     private List<String> addImportedPersons(Model model, List<Person> list) {
-        Set<Long> usedIds = model.getAddressBook().getPersonList().stream()
-                .map(Person::id)
-                .filter(id -> id.startsWith("E"))
-                .map(id -> Long.parseLong(id.substring(1)))
+        Set<Long> usedIds = model.getAddressBook().getPersonList().stream().map(Person::id)
+                .filter(id -> id.startsWith("E")).map(id -> Long.parseLong(id.substring(1)))
                 .collect(Collectors.toSet());
 
         // Add each imported person into the model iteratively.
@@ -82,9 +80,8 @@ public class ImportCommand extends Command {
                 long numericId = Long.parseLong(person.id().substring(1));
                 if (usedIds.contains(numericId)) {
                     long newId = AddCommand.findNextAvailableId(usedIds);
-                    Person personWithId = new Person(String.format("E%04d", newId),
-                            person.name(), person.phone(), person.email(),
-                            person.address(), person.gitHubUsername(), person.tags());
+                    Person personWithId = new Person(String.format("E%04d", newId), person.name(), person.phone(),
+                            person.email(), person.address(), person.gitHubUsername(), person.tags());
                     model.addPerson(personWithId);
                     usedIds.add(newId);
                 } else {
