@@ -10,7 +10,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public record TeamName(String teamName) {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "TeamNames must be 1 to 40 alphanumeric characters and must not contain spaces";
+            "Team names must be 1 to 40 alphanumeric characters and must not contain spaces";
 
     /*
      * The first character of the name must not be a whitespace,

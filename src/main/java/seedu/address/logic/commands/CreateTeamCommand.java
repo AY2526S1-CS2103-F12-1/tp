@@ -23,8 +23,8 @@ public class CreateTeamCommand extends Command {
     public static final String COMMAND_WORD = "create-team";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Creates a team. "
-            + "Parameters: NAME leaderPersonId\n"
-            + "Example: " + COMMAND_WORD + " Team Alpha E0001";
+            + "Parameters: TEAM_NAME LEADER_ID\n"
+            + "Example: " + COMMAND_WORD + " Systems E0001";
 
     public static final String MESSAGE_SUCCESS = "New team created: %1$s";
     public static final String MESSAGE_DUPLICATE_TEAM = "This team already exists in the address book";
