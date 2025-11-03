@@ -10,7 +10,7 @@
 <VBox styleClass="organization-panel" xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1" spacing="12" alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
     <Text fx:id="title" styleClass="title" text="Organization Hierarchy" />
-    <TextArea fx:id="organizationDetails" styleClass="hierarchy-text" VBox.vgrow="ALWAYS">
+    <TextArea fx:id="organizationDetails" styleClass="hierarchy-text" VBox.vgrow="ALWAYS" editable="false">
         <ScrollPane fx:id="organizationScrollPane" styleClass="hierarchy-scroll" VBox.vgrow="ALWAYS" />
     </TextArea>
     <Label fx:id="organizationPanelPlaceholder" styleClass="result-display" />
