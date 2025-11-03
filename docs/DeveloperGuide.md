@@ -17,7 +17,7 @@
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Setting up, getting started**
+## **Setting up, Getting Started**
 
 Refer to the guide [_Setting up and getting started_](SettingUp.md).
 
@@ -114,7 +114,7 @@ How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
-### Model component
+### Model Component
 **API** : [`Model.java`](https://github.com/AY2526S1-CS2103-F12-1/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
 <puml src="diagrams/ModelClassDiagram.puml" width="600" />
@@ -1038,13 +1038,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above-average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-4.  The different elements of the user interface should be arranged according to level of impact/priority (i.e immediate feedback somewhere close to the input box/as a pop-up.
+4.  The different elements of the user interface should be arranged according to level of impact/priority (i.e immediate feedback somewhere close to the input box.
 5.  The command manual should be easily understandable by a first-time user of the application.
 6.  Updated contacts should not be lost despite the unexpected closing of the application.
-7.  Error messages should be displayed to the user within 200 milliseconds.
-8.  All error messages should be easily understandable by a non-technical user and suggest a possible solution.
-9.  The save process should ensure 100% data integrity, preventing corruption even if the system crashes during the save.
-10. The exported contact list file should be compatible with any mainstream OS.
+7.  Error messages should be displayed to the user within 200 milliseconds. 
+8. The save process should ensure 100% data integrity, preventing corruption even if the system crashes during the save. 
+9. The exported contact list file should be compatible with any mainstream OS.
 
 ### Glossary
 
