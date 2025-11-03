@@ -5,7 +5,9 @@ import static java.util.Objects.requireNonNull;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataLoadingException;
@@ -66,10 +68,26 @@ public class ImportCommand extends Command {
      * @param list a list of Person objects
      */
     private void addImportedPersons(Model model, List<Person> list) {
-        // Add each imported person into the model iteratively.
+        Set<Long> usedIds = model.getAddressBook().getPersonList().stream()
+                .map(Person::id)
+                .filter(id -> id.startsWith("E"))
+                .map(id -> Long.parseLong(id.substring(1)))
+                .collect(Collectors.toSet());
+
         for (Person person : list) {
             try {
-                model.addPerson(person);
+                long numericId = Long.parseLong(person.id().substring(1));
+                if (usedIds.contains(numericId)) {
+                    long newId = AddCommand.findNextAvailableId(usedIds);
+                    Person personWithId = new Person(String.format("E%04d", newId),
+                            person.name(), person.phone(), person.email(),
+                            person.address(), person.gitHubUsername(), person.tags());
+                    model.addPerson(personWithId);
+                    usedIds.add(newId);
+                } else {
+                    model.addPerson(person);
+                    usedIds.add(numericId);
+                }
             } catch (Exception ex) {
                 storageLogger.info("Skipping person during import: " + person + " (" + ex.getMessage() + ")");
             }

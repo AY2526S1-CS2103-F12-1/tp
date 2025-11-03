@@ -7,6 +7,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_GITHUB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -56,8 +59,29 @@ public class AddCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
 
-        model.addPerson(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
+        Set<Long> usedIds = model.getAddressBook().getPersonList().stream()
+                .map(Person::id).filter(id -> id.startsWith("E"))
+                .map(id -> Long.parseLong(id.substring(1)))
+                .collect(Collectors.toSet());
+
+        long newId = findNextAvailableId(usedIds);
+        Person personWithId = new Person(String.format("E%04d", newId),
+                toAdd.name(), toAdd.phone(), toAdd.email(),
+                toAdd.address(), toAdd.gitHubUsername(), toAdd.tags());
+        model.addPerson(personWithId);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(personWithId)));
+    }
+
+    /**
+     * Finds the next available ID that doesn't exist in the addressbook.
+     * Scans sequentially from 1 until a gap is found.
+     */
+    public static long findNextAvailableId(Set<Long> usedIds) {
+        long id = 1;
+        while (usedIds.contains(id)) {
+            id++;
+        }
+        return id;
     }
 
     @Override

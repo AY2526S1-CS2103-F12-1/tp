@@ -68,7 +68,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         Set<Tag> tagList = new HashSet<>();
 
-        Person person = new Person(String.format("E%04d", nextId++), name, phone, email, address,
+        Person person = new Person(String.format("E%04d", 0), name, phone, email, address,
                 gitHubUsername, tagList);
         return new AddCommand(person);
     }
@@ -79,22 +79,6 @@ public class AddCommandParser implements Parser<AddCommand> {
      */
     private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
-    }
-
-    /**
-     * Sets the next ID based on the highest existing ID in the address book.
-     * Should be called when the application starts.
-     */
-    public static void setNextId(long id) {
-        nextId = id;
-    }
-
-    /**
-     * Gets the current next ID value.
-     * Used for testing purposes.
-     */
-    public static long getNextId() {
-        return nextId;
     }
 
 }
