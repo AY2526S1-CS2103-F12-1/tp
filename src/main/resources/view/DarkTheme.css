@@ -352,10 +352,9 @@
 }
 
 .organization-panel {
-    -fx-background-color: gainsboro;
-    -fx-padding: 1;
-    -fx-border-radius: 10;
-    -fx-padding: 14 14;
+    -fx-background-color: #FAFAFA;
+    -fx-padding: 12;
+    -fx-padding-bottom: 0;
 }
 
 .title {
@@ -366,9 +365,9 @@
 }
 
 .hierarchy-text {
+    -fx-control-inner-background: #ECECEC;
     -fx-font-size: 12pt;
-    -fx-fill: black;
+    -fx-text-fill: #0066FF;
     -fx-underline: false;
     -fx-font-family: "Courier New";
 }
-
