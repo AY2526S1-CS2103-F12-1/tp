@@ -415,6 +415,202 @@ No manual ID assignment is required from the user
 
 ### Team Management
 
+The Team Management feature allows HR administrators to organize employees into teams with hierarchical structures. This includes creating teams, managing team membership, and establishing parent-child relationships between teams.
+
+#### Implementation
+
+The Team Management mechanism is facilitated by several command classes:
+* `CreateTeamCommand` - Creates new teams with unique team IDs
+* `AddToTeamCommand` - Adds employees to teams
+* `RemoveFromTeamCommand` - Removes employees from teams
+* `DeleteTeamCommand` - Deletes teams from the system
+* `SetSubteamCommand` - Establishes parent-child team relationships
+
+#### How it Works
+
+##### Creating Teams
+
+1. **User Input**: When a user enters `create-team Engineering E0001`, the `CreateTeamCommandParser` validates the team name and optional leader ID
+2. **Team ID Generation**: The system uses the monotonic increment strategy to assign a unique team ID (e.g., "T0001")
+3. **Team Creation**: A new `Team` object is created with the generated ID, team name, and optional leader ID
+4. **Model Update**: The team is added to the model using `model.addTeam(team)`
+
+##### Adding Employees to Teams
+
+1. **User Input**: User enters `add-to-team E0001 Engineering`
+2. **Validation**: System validates that both the employee and team exist
+3. **Duplicate Check**: System checks if the employee is already in the team
+4. **Update**: If valid, the employee is added to the team's member list
+
+##### Removing Employees from Teams
+
+1. **User Input**: User enters `remove-from-team E0001 Engineering`
+2. **Validation**: System validates that both the employee and team exist
+3. **Membership Check**: System verifies the employee is currently in the team
+4. **Update**: If valid, the employee is removed from the team's member list
+
+##### Deleting Teams
+
+1. **User Input**: User enters `delete-team Engineering`
+2. **Validation**: System checks if the team exists
+3. **Member Check**: System ensures the team has no members
+4. **Cleanup**: Team is removed from the model and all subteam relationships are updated
+
+##### Setting Subteam Relationships
+
+1. **User Input**: User enters `set-subteam Backend Engineering`
+2. **Validation**: System validates both parent and child teams exist
+3. **Circular Dependency Check**: System ensures setting the relationship won't create a cycle
+4. **Update**: The parent-child relationship is established
+
+#### Sequence Diagrams
+
+##### Create Team Sequence
+
+<puml src="diagrams/CreateTeamSequenceDiagram.puml" alt="Create Team Sequence" width="600"/>
+
+The sequence diagram shows how a new team is created, including the automatic Team ID generation process.
+
+##### Add to Team Sequence
+
+<puml src="diagrams/AddToTeamSequenceDiagram.puml" alt="Add to Team Sequence" width="600"/>
+
+The sequence diagram illustrates the validation and update process when adding an employee to a team.
+
+##### Set Subteam Sequence
+
+<puml src="diagrams/SetSubteamSequenceDiagram.puml" alt="Set Subteam Sequence" width="600"/>
+
+The sequence diagram demonstrates the circular dependency check before establishing a parent-child relationship.
+
+#### Activity Diagrams
+
+##### Create Team Activity
+
+<puml src="diagrams/CreateTeamActivityDiagram.puml" alt="Create Team Activity" width="600"/>
+
+The activity diagram shows the decision flow for creating a new team with optional leader assignment.
+
+##### Add to Team Activity
+
+<puml src="diagrams/AddToTeamActivityDiagram.puml" alt="Add to Team Activity" width="600"/>
+
+The activity diagram illustrates the validation steps before adding an employee to a team.
+
+##### Set Subteam Activity
+
+<puml src="diagrams/SetSubteamActivityDiagram.puml" alt="Set Subteam Activity" width="600"/>
+
+The activity diagram shows the circular dependency detection algorithm.
+
+#### Code Flow Examples
+
+##### Create Team
+```java
+// In CreateTeamCommand.execute()
+String teamId = String.format("T%04d", nextId++);
+Team team = new Team(teamId, teamName, leaderId);
+model.addTeam(team);
+return new CommandResult(String.format(MESSAGE_SUCCESS, team));
+```
+
+##### Add to Team
+```java
+// In AddToTeamCommand.execute()
+Person person = model.getPersonByEmployeeId(employeeId);
+Team team = model.getTeamByName(teamName);
+
+if (team.getMembers().contains(employeeId)) {
+    throw new CommandException(MESSAGE_PERSON_ALREADY_IN_TEAM);
+}
+
+team.addMember(employeeId);
+model.updateTeam(team);
+```
+
+##### Set Subteam
+```java
+// In SetSubteamCommand.execute()
+Team parentTeam = model.getTeamByName(parentTeamName);
+Team childTeam = model.getTeamByName(childTeamName);
+
+if (wouldCreateCycle(parentTeam, childTeam)) {
+    throw new CommandException(MESSAGE_CIRCULAR_DEPENDENCY);
+}
+
+parentTeam.addSubteam(childTeam.getId());
+model.updateTeam(parentTeam);
+```
+
+#### Key Features
+* **Automatic Team ID Generation**: Uses monotonic increment strategy (never reuses IDs)
+* **Hierarchical Structure**: Support for parent-child team relationships
+* **Circular Dependency Prevention**: Validates subteam relationships to prevent cycles 
+* **Leader Assignment**: Optional team leader designation during creation 
+* **Membership Validation**: Ensures employees exist before adding to teams 
+* **Clean Deletion**: Prevents deletion of teams with active members
+* **Unique Team IDs**: Automatically generated using a monotonic increment strategy
+
+#### Design Considerations 
+
+##### Aspect: Team Deletion with Members
+* Alternative 1 (current choice): Prevent deletion of teams with members 
+  * Require all members to be removed before team deletion 
+  * Throw error if team has members 
+  * Pros: Prevents accidental data loss, forces explicit cleanup, maintains data integrity 
+  * Cons: Requires multiple steps to delete a team with members, less convenient for bulk operations 
+* Alternative 2: Cascade deletion with automatic member removal 
+  * Automatically remove all members when deleting a team 
+  * Provide warning but allow deletion 
+  * Pros: Single-step deletion, more convenient for cleanup operations, faster bulk operations 
+  * Cons: Risk of accidental data loss, harder to undo, may violate business rules requiring explicit approval 
+* Alternative 3: Soft delete with archive 
+  * Mark team as deleted but keep data in system 
+  * Allow restoration within a time period 
+  * Pros: Recoverable from mistakes, maintains historical data, supports audit trails 
+  * Cons: More complex implementation, requires cleanup mechanism, uses more storage 
+
+##### Aspect: Subteam Relationship Validation 
+* Alternative 1 (current choice): Graph-based circular dependency check 
+  * Traverse the team hierarchy to detect cycles 
+  * Prevent relationships that would create circular references 
+  * Pros: Guarantees acyclic hierarchy, prevents infinite loops, maintains tree structure integrity 
+  * Cons: More complex validation logic, requires graph traversal, potentially slower for deep hierarchies 
+* Alternative 2: Allow circular relationships with depth limit 
+  * Permit circular relationships but limit traversal depth 
+  * Stop at a maximum depth (e.g., 5 levels)
+  * Pros: Simpler validation, more flexible structure, handles complex organizational models 
+  * Cons: May hide structural issues, could confuse users, breaks tree assumptions 
+* Alternative 3: No validation 
+  * Allow any parent-child relationship 
+  * Leave circular dependency handling to users 
+  * Pros: Simplest implementation, maximum flexibility, no performance overhead 
+  * Cons: Can create invalid hierarchies, poor user experience, difficult debugging
+
+##### Aspect: Team Leader Assignment
+* Alternative 1 (current choice): Optional leader during creation 
+  * Allow team creation without a leader 
+  * Leader can be assigned later 
+  * Pros: Flexible workflow, supports teams without designated leaders, simpler command syntax 
+  * Cons: May result in teams without leaders, requires separate command to assign leader later 
+* Alternative 2: Mandatory leader assignment 
+  * Require leader ID during team creation 
+  * Validate leader exists and is available 
+  * Pros: Ensures accountability, clearer team structure, enforces organizational policy 
+  * Cons: Less flexible, may block team creation if leader unknown, requires more validation 
+* Alternative 3: Automatic leader assignment 
+  * Assign first team member as leader automatically 
+  * Allow leader change through separate command 
+  * Pros: Always has a leader, automatic management, reduces manual steps 
+  * Cons: May assign wrong person, requires additional logic, could confuse users
+
+<box>
+**Note on Team Hierarchy**:
+* Teams can have multiple subteams but only one parent team
+* The system prevents circular dependencies by checking the entire hierarchy before establishing new relationships
+* Deleting a parent team automatically removes the parent reference from child teams but doesn't delete the child teams
+* Team IDs are never reused, even after deletion, to maintain audit trail integrity
+</box> 
 
 --------------------------------------------------------------------------------------------------------------------
 
