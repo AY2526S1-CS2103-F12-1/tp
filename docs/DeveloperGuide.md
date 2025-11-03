@@ -184,6 +184,27 @@ Person personWithId = new Person(String.format("E%04d", newId), ...);
 * **Collision prevention**: Checks against all existing IDs before assignment 
 * **Import handling**: During import operations, conflicting IDs are automatically reassigned using the same gap-filling logic
 
+#### Design Considerations
+
+##### Aspect: ID Generation Strategy for Employees
+
+* **Alternative 1 (current choice):** Gap-filling sequential ID assignment
+    * When adding employees, scan existing IDs to find the first available ID in sequence (starting from E0001)
+    * Reuses IDs when employees are deleted to maintain efficient ID space usage
+    * **Pros:** Conserves ID space for potentially high employee turnover, ensures sequential order
+    * **Cons:** Requires scanning all existing IDs on each add operation, may be slower for large datasets
+
+* **Alternative 2:** Monotonic increment without gap filling
+    * Always assign the next highest ID (similar to team ID generation)
+    * Never reuse deleted employee IDs
+    * **Pros:** Simpler implementation, faster ID generation, maintains audit trail of all employees ever added
+    * **Cons:** Could exhaust ID space faster with high turnover, gaps in ID sequence may look unprofessional
+
+* **Alternative 3:** UUID-based generation
+    * Generate universally unique identifiers for each employee
+    * **Pros:** Guaranteed uniqueness across systems, no state management needed, suitable for distributed systems
+    * **Cons:** Less human-readable (e.g., "E-550e8400-e29b-41d4-a716-446655440000"), harder to reference in commands, much longer IDs
+
 <box type="info" seamless>
 
 **Employee IDs** DO reset when the address book is cleared:
@@ -223,6 +244,27 @@ Team team = new Team(String.format("T%04d", nextId++), teamName, leaderId);
 * **Initialization safety**: Counter is set based on existing data when the application starts 
 * **Persistence**: The counter value persists in memory throughout the application lifecycle
 
+#### Design Considerations
+##### Aspect: Team ID Generation and Persistence
+
+* **Alternative 1 (current choice):** Static counter initialized from existing data
+    * Use a static `nextId` counter that persists in memory throughout application lifecycle
+    * Initialize counter at startup by finding maximum existing team ID and adding 1
+    * Never reuse deleted team IDs
+    * **Pros:** Simple implementation, guaranteed unique IDs, preserves team history as audit trail, consistent numbering
+    * **Cons:** Counter state must be carefully managed, IDs are never reclaimed even if teams are deleted
+
+* **Alternative 2:** Gap-filling sequential ID assignment (similar to employee IDs)
+    * Reuse deleted team IDs by scanning for gaps
+    * **Pros:** Conserves ID space, consistent with employee ID generation
+    * **Cons:** Could cause confusion if team IDs are reused (e.g., historical references to "T0001" could mean different teams), loses audit trail capability
+
+* **Alternative 3:** Database-backed ID generation with persistence
+    * Store the next ID counter in the data file (`addressbook.json`)
+    * Increment and save the counter with each team creation
+    * **Pros:** Counter survives application restarts reliably, more robust for production systems
+    * **Cons:** More complex implementation, additional I/O operations, potential performance overhead
+
 <box type="info" seamless>
 
 **Note on ID Generation Reset Behavior:**
@@ -238,9 +280,49 @@ Difference in behaviours of Employee ID and Team ID exists because:
 
 </box>
 
-### \[Proposed\] Import feature enhancement
+### \[Proposed\] Import Feature Enhancement
 
-{To explain how import feature is to be added}
+#### Design Considerations: 
+##### Aspect: Error Handling During Import
+
+* **Alternative 1 (current choice):** Skip invalid entries and continue
+    * Log skipped persons but continue importing valid ones
+    * Provide summary of successes and failures at the end
+    * **Pros:** Maximizes data imported, user-friendly for partial imports, allows recovery from minor data issues
+    * **Cons:** May hide data quality issues, silent failures possible if user doesn't read summary carefully
+
+* **Alternative 2:** Fail-fast approach
+    * Stop import immediately upon encountering any invalid entry
+    * Rollback all changes made so far
+    * **Pros:** All-or-nothing consistency, forces user to fix data issues before importing, clearer error reporting
+    * **Cons:** Less flexible, may be frustrating for large imports with minor issues, requires fixing all issues before any data is imported
+
+* **Alternative 3:** Two-phase import with validation
+    * First phase: Validate entire import file without making changes
+    * Second phase: Perform actual import only if validation passes completely
+    * **Pros:** User gets full report of all issues before any changes, predictable outcome, maintains data consistency
+    * **Cons:** More complex implementation, slower for large files (requires two passes), more memory usage
+
+#### Aspect: ID Conflict Resolution During Import
+
+* **Alternative 1 (current choice):** Automatic ID reassignment using gap-filling logic
+    * When imported employee has conflicting ID, automatically assign next available ID
+    * Use the same gap-filling logic as the `add` command
+    * **Pros:** Seamless import experience, no user intervention needed, maintains data integrity automatically
+    * **Cons:** Loses original ID information from imported file, may cause confusion if IDs were meaningful in source system
+
+* **Alternative 2:** Prompt user for conflict resolution
+    * Pause import when ID conflict detected and ask user how to proceed
+    * Options: skip, overwrite, or assign new ID
+    * **Pros:** Gives user control over conflict resolution, preserves user intent
+    * **Cons:** Interrupts import flow, requires user interaction, not suitable for batch operations
+
+* **Alternative 3:** Prefix-based ID namespacing
+    * Add prefix to imported IDs (e.g., "I" for imported: "IE0001")
+    * Keep original IDs but mark them as imported
+    * **Pros:** Preserves original ID information, easy to identify imported entries, no conflicts possible
+    * **Cons:** More complex ID system, inconsistent ID format may confuse users, commands need to handle multiple ID formats
+
 
 ### \[\] Customisable command words to fit user preference
 {To explain how command word will be customisable}
