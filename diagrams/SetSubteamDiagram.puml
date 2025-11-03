@@ -1,0 +1,83 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":SetSubteamCommandParser" as SetSubteamCommandParser LOGIC_COLOR
+participant "cmd:SetSubteamCommand" as SetSubteamCommand LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("set-subteam Backend Engineering")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("set-subteam Backend Engineering")
+activate AddressBookParser
+
+create SetSubteamCommandParser
+AddressBookParser -> SetSubteamCommandParser
+activate SetSubteamCommandParser
+
+SetSubteamCommandParser --> AddressBookParser
+deactivate SetSubteamCommandParser
+
+AddressBookParser -> SetSubteamCommandParser : parse("Backend Engineering")
+activate SetSubteamCommandParser
+
+create SetSubteamCommand
+SetSubteamCommandParser -> SetSubteamCommand
+activate SetSubteamCommand
+
+SetSubteamCommand --> SetSubteamCommandParser : cmd
+deactivate SetSubteamCommand
+
+SetSubteamCommandParser --> AddressBookParser : cmd
+deactivate SetSubteamCommandParser
+destroy SetSubteamCommandParser
+
+AddressBookParser --> LogicManager : cmd
+deactivate AddressBookParser
+
+LogicManager -> SetSubteamCommand : execute(model)
+activate SetSubteamCommand
+
+SetSubteamCommand -> Model : getTeamByName("Backend")
+activate Model
+Model --> SetSubteamCommand : childTeam
+deactivate Model
+
+SetSubteamCommand -> Model : getTeamByName("Engineering")
+activate Model
+Model --> SetSubteamCommand : parentTeam
+deactivate Model
+
+SetSubteamCommand -> SetSubteamCommand : wouldCreateCycle(parent, child)
+activate SetSubteamCommand
+note right
+  Graph traversal to
+  detect circular
+  dependencies
+end note
+
+alt Would create cycle
+    SetSubteamCommand --> LogicManager : CommandException
+end
+deactivate SetSubteamCommand
+
+SetSubteamCommand -> Model : setSubteam(parent, child)
+activate Model
+Model --> SetSubteamCommand
+deactivate Model
+
+SetSubteamCommand --> LogicManager : CommandResult
+deactivate SetSubteamCommand
+
+[<-- LogicManager
+deactivate LogicManager
+
+@enduml

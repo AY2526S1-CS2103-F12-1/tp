@@ -1,0 +1,80 @@
+@startuml
+!include style.puml
+skinparam ActivityFontStyle plain
+
+start
+
+:User enters "import friends.json";
+
+partition "Input Validation" {
+  :Parse command arguments;
+
+  if (Arguments empty?) then (yes)
+    :Show error message;
+    stop
+  endif
+
+  if (Filename ends with .json?) then (no)
+    :Show error message;
+    stop
+  endif
+
+  :Construct file path;
+}
+
+partition "File Reading" {
+  if (File exists?) then (no)
+    :Show error message;
+    stop
+  endif
+
+  if (Valid JSON format?) then (no)
+    :Show error message;
+    stop
+  endif
+
+  :Read JSON file;
+  :Parse into ReadOnlyAddressBook;
+  :Extract list of Person objects;
+}
+
+partition "Person Import Loop" {
+  while (More persons to import?) is (yes)
+    :Get next person;
+
+    fork
+      :Validate person data;
+    fork again
+      :Check GitHub username uniqueness;
+    fork again
+      :Check required fields;
+    end fork
+
+    if (Person valid?) then (yes)
+      :Add person to model;
+      note right
+        Uses existing Employee ID
+        generation (gap-filling)
+        if ID conflicts
+      end note
+      :Person imported successfully;
+    else (no)
+      :Log skipped person;
+      note right
+        Reasons for skipping:
+        - Duplicate GitHub username
+        - Invalid email format
+        - Missing required fields
+        - Invalid salary format
+      end note
+      :Continue to next person;
+    endif
+
+  endwhile (no more persons)
+}
+
+:Display success message;
+
+stop
+
+@enduml

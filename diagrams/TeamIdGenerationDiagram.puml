@@ -1,0 +1,58 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":CreateTeamCommand" as CreateTeamCommand LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+participant ":AddressBook" as AddressBook MODEL_COLOR
+end box
+
+[-> LogicManager : execute("create-team Engineering E1001")
+activate LogicManager
+
+LogicManager -> LogicManager : parseCommand()
+activate LogicManager
+LogicManager -> CreateTeamCommand ** : create(teamName, leaderId)
+deactivate LogicManager
+
+LogicManager -> CreateTeamCommand : execute(model)
+activate CreateTeamCommand
+
+CreateTeamCommand -> Model : getAddressBook()
+activate Model
+Model --> CreateTeamCommand : addressBook
+deactivate Model
+
+CreateTeamCommand -> AddressBook : getTeamList()
+activate AddressBook
+AddressBook --> CreateTeamCommand : teams
+deactivate AddressBook
+
+CreateTeamCommand -> CreateTeamCommand : getCurrentMaxId(teams)
+activate CreateTeamCommand
+note right: Find max team ID\nfrom existing teams
+CreateTeamCommand --> CreateTeamCommand : maxId
+deactivate CreateTeamCommand
+
+CreateTeamCommand -> CreateTeamCommand : generateTeamId()
+activate CreateTeamCommand
+note right: nextId = maxId + 1\nFormat as "T%04d"
+CreateTeamCommand --> CreateTeamCommand : teamId (e.g., "T0001")
+deactivate CreateTeamCommand
+
+CreateTeamCommand -> Model : addTeam(team)
+activate Model
+Model --> CreateTeamCommand
+deactivate Model
+
+CreateTeamCommand --> LogicManager : commandResult
+deactivate CreateTeamCommand
+
+[<-- LogicManager
+deactivate LogicManager
+
+@enduml

@@ -51,8 +51,10 @@
         "storage-component": "Storage component",
         "common-classes": "Common classes",
         "implementation": "Implementation",
-        "proposed-import-feature-enhancement": "[Proposed] Import feature enhancement",
-        "customisable-command-words-to-fit-user-preference": "[] Customisable command words to fit user preference",
+        "employee-id-generation": "Employee ID generation",
+        "team-id-generation": "Team ID Generation",
+        "import-contacts": "Import Contacts",
+        "team-management": "Team Management",
         "documentation-logging-testing-configuration-dev-ops": "Documentation, logging, testing, configuration, dev-ops",
         "appendix-requirements": "Appendix: Requirements",
         "product-scope": "Product scope",
@@ -61,9 +63,8 @@
         "non-functional-requirements": "Non-Functional Requirements",
         "glossary": "Glossary",
         "appendix-instructions-for-manual-testing": "Appendix: Instructions for manual testing",
-        "launch-and-shutdown": "Launch and shutdown",
         "appendix-instructions-for-manual-testing-2": "Appendix: Instructions for manual testing",
-        "launch-and-shutdown-2": "Launch and shutdown",
+        "launch-and-shutdown": "Launch and shutdown",
         "add-command": "Add command",
         "add-to-team-command": "Add-to-team command",
         "audit-command": "Audit command",
@@ -83,7 +84,8 @@
         "tag-command": "Tag command",
         "untag-command": "Untag command",
         "view-command": "View command",
-        "saving-data": "Saving data"
+        "saving-data": "Saving data",
+        "appendix-planned-enhancement": "Appendix: Planned Enhancement"
       },
       "headingKeywords": {}
     },

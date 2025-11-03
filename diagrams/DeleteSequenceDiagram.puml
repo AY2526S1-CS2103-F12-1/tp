@@ -56,11 +56,16 @@ deactivate Model
 
 DeleteCommand -> DeleteCommand : find person with employeeId "E0001"
 
-DeleteCommand -> Model : deletePerson(personToDelete)
-activate Model
+DeleteCommand -> DeleteCommand : check if person is in teams
+alt person is in teams
+    DeleteCommand -> LogicManager : throw CommandException
+else person not in teams
+    DeleteCommand -> Model : deletePerson(personToDelete)
+    activate Model
 
-Model --> DeleteCommand
-deactivate Model
+    Model --> DeleteCommand
+    deactivate Model
+end
 
 create CommandResult
 DeleteCommand -> CommandResult
