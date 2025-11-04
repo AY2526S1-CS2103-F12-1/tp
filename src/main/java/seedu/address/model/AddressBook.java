@@ -183,7 +183,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      * @return true if the subteam was set successfully, false otherwise
      */
     public boolean setSubteam(Team parentTeam, Team subteam) {
-        if (parentTeam == null || subteam == null) {
+        if (parentTeam == null || subteam == null || subteam.getParentTeamId() != null) {
             return false;
         }
         return teams.setSubteam(parentTeam, subteam);
